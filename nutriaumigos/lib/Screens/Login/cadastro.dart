@@ -11,16 +11,16 @@ class CadastroPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(top: 10, left: 40, right: 40),
+        padding: const EdgeInsets.only(top: 10, left: 40, right: 40),
         color: Colors.white,
         child: ListView(
           children: <Widget>[
             Container(
               width: 200,
               height: 200,
-              alignment: Alignment(0.0, 1.15),
-              decoration: new BoxDecoration(
-                image: new DecorationImage(
+              alignment: const Alignment(0.0, 1.15),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
                   image: AssetImage("assets/icons/profile_dog.png"),
                   fit: BoxFit.fitHeight,
                 ),
@@ -30,7 +30,7 @@ class CadastroPage extends StatelessWidget {
                 width: 56,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     stops: [0.3, 1.0],
@@ -43,13 +43,13 @@ class CadastroPage extends StatelessWidget {
                     width: 4.0,
                     color: const Color(0xFFFFFFFF),
                   ),
-                  borderRadius: BorderRadius.all(
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(56),
                   ),
                 ),
                 child: SizedBox.expand(
                   child: TextButton(
-                    child: Icon(
+                    child: const Icon(
                       Icons.add,
                       color: Colors.white,
                     ),
@@ -58,13 +58,13 @@ class CadastroPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             TextFormField(
               // autofocus: true,
               keyboardType: TextInputType.text,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Nome",
                 labelStyle: TextStyle(
                   color: Colors.black38,
@@ -72,17 +72,17 @@ class CadastroPage extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TextFormField(
               // autofocus: true,
               keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "E-mail",
                 labelStyle: TextStyle(
                   color: Colors.black38,
@@ -90,18 +90,18 @@ class CadastroPage extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TextFormField(
               // autofocus: true,
               keyboardType: TextInputType.text,
               obscureText: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Senha",
                 labelStyle: TextStyle(
                   color: Colors.black38,
@@ -109,15 +109,15 @@ class CadastroPage extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
               height: 60,
               alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -133,7 +133,7 @@ class CadastroPage extends StatelessWidget {
               ),
               child: SizedBox.expand(
                 child: TextButton(
-                  child: Text(
+                  child: const Text(
                     "Cadastrar",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -146,14 +146,14 @@ class CadastroPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
               height: 40,
               alignment: Alignment.center,
               child: TextButton(
-                child: Text(
+                child: const Text(
                   "Cancelar",
                   textAlign: TextAlign.center,
                 ),

@@ -15,18 +15,18 @@ class HomePage extends StatelessWidget {
         leading: Container(
           height: 40,
           width: 40,
-          decoration: new BoxDecoration(
-            image: new DecorationImage(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
               image: AssetImage("assets/images/Logo.png"),
               fit: BoxFit.fitHeight,
             ),
           ),
         ),
         actions: <Widget>[
-          Container(
+          SizedBox(
             width: 60,
             child: TextButton(
-              child: Icon(
+              child: const Icon(
                 Icons.search,
                 color: Color(0xFFBABABA),
               ),
@@ -36,7 +36,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: Container(
-        color: Color(0xFFF2F3F6),
+        color: const Color(0xFFF2F3F6),
         child: ListView(
           children: <Widget>[
             cardItem(),
@@ -65,12 +65,10 @@ Widget cardItem() {
           subtitle: Text("09/05/2019 18:37"),
           trailing: Icon(Icons.more_vert),
         ),
+        Image.asset("assets/post-picture-001.png"),
         Container(
-          child: Image.asset("assets/post-picture-001.png"),
-        ),
-        Container(
-          padding: EdgeInsets.all(10),
-          child: Text(
+          padding: const EdgeInsets.all(10),
+          child: const Text(
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis ex sem. Praesent elit dui, iaculis at interdum eu, rutrum et mi. "),
         ),
         // ButtonTheme.bar(
