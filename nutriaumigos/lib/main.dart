@@ -8,9 +8,12 @@ import 'package:nutriaumigos/constants.dart';
 import 'Screens/Login/login.dart';
 
 void main() async{
-  //await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 } 
+  
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   
@@ -33,3 +36,26 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp();
+
+//   runApp(
+//     MaterialApp(
+      
+//       debugShowCheckedModeBanner: false,
+//       title: 'Nutri Aumigos',
+//       theme: ThemeData(
+//           primaryColor: kPrimaryColor,
+//         ),
+//       home: const LoginPage(),
+//       routes: {
+//         'login': (context) => const LoginPage(),
+//         'cadastro': (context) => const CadastroPage(),
+//         'recuperacao': (context) => const RecuperacaoSenhaPage(),
+//         'menuPrincipal': (context) => const HomePage(),
+//       },
+//     ),
+//   );
+// }
