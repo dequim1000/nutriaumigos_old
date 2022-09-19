@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:nutriaumigos/Screens/Login/cadastro.dart';
 import 'package:nutriaumigos/Screens/Login/recuperacao_senha.dart';
@@ -11,6 +12,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var txtEmail = TextEditingController();
+    var txtSenha = TextEditingController();
     return Scaffold(
       body: Container(
         color: kPrimaryLightColor,
@@ -30,6 +33,7 @@ class LoginPage extends StatelessWidget {
               height: 20,
             ),
             TextFormField(
+              controller: txtEmail,
               autofocus: true,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
@@ -48,6 +52,7 @@ class LoginPage extends StatelessWidget {
               height: 10,
             ),
             TextFormField(
+              controller: txtSenha,
               keyboardType: TextInputType.text,
               obscureText: true,
               decoration: const InputDecoration(
@@ -129,12 +134,7 @@ class LoginPage extends StatelessWidget {
                     ],
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomePage(),
-                      ),
-                    );
+                    login(txtEmail.value, txtSenha.value, context);
                   },
                 ),
               ),
@@ -205,31 +205,31 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  // void login(email, senha) {
-  //   FirebaseAuth.instance
-  //       .signInWithEmailAndPassword(email: email, password: senha)
-  //       .then((value) {
-  //     Navigator.pushReplacementNamed(context, 'nav');
-  //   }).catchError((erro) {
-  //     var msg = '';
+  void login(email, senha, context) {
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: senha)
+        .then((value) {
+      Navigator.pushReplacementNamed(context, 'menuPrincipal');
+    }).catchError((erro) {
+      var msg = '';
 
-  //     if (erro.code == 'user-not-found') {
-  //       msg = 'ERRO: Usuario não encontrado';
-  //     } else if (erro.code == 'wrong-password') {
-  //       msg = 'ERRO: Senha incorreta';
-  //     } else if (erro.code == 'invalid-email') {
-  //       msg = 'ERRO: Email inválido';
-  //     } else {
-  //       msg = 'ERRO: ${erro.message}';
-  //     }
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text(msg),
-  //         duration: Duration(
-  //           seconds: 2,
-  //         ),
-  //       ),
-  //     );
-  //   });
-  // }
+      if (erro.code == 'user-not-found') {
+        msg = 'ERRO: Usuario não encontrado';
+      } else if (erro.code == 'wrong-password') {
+        msg = 'ERRO: Senha incorreta';
+      } else if (erro.code == 'invalid-email') {
+        msg = 'ERRO: Email inválido';
+      } else {
+        msg = 'ERRO: ${erro.message}';
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(msg),
+          duration: Duration(
+            seconds: 2,
+          ),
+        ),
+      );
+    });
+  }
 }
