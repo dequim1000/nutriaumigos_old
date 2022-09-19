@@ -134,7 +134,7 @@ class LoginPage extends StatelessWidget {
                     ],
                   ),
                   onPressed: () {
-                    login(txtEmail.value, txtSenha.value, context);
+                    login(txtEmail.text, txtSenha.text, context);
                   },
                 ),
               ),
@@ -206,13 +206,16 @@ class LoginPage extends StatelessWidget {
   }
 
   void login(email, senha, context) {
+    print("HERE ANDRE");
+    print(email);
+    print(senha);
     FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: senha)
         .then((value) {
+      print("Andre12");
       Navigator.pushReplacementNamed(context, 'menuPrincipal');
     }).catchError((erro) {
       var msg = '';
-
       if (erro.code == 'user-not-found') {
         msg = 'ERRO: Usuario não encontrado';
       } else if (erro.code == 'wrong-password') {
@@ -222,6 +225,7 @@ class LoginPage extends StatelessWidget {
       } else {
         msg = 'ERRO: ${erro.message}';
       }
+      print("Mensagem"+msg);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(msg),
