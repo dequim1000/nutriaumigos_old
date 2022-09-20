@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget {
         title: Center(
           child: SizedBox(
             width: 100,
-            child: Image.asset("assets/images/Logo.pngpng"),
+            child: Image.asset("assets/images/Logo.png"),
           ),
         ),
         leading: Container(
@@ -59,15 +59,12 @@ Widget cardItem() {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         const ListTile(
-          leading: CircleAvatar(
-            backgroundImage: NetworkImage(
-                "https://baltaio.blob.core.windows.net/student-images/1edd5c50-bae9-11e8-8eb4-39de303632c1.jpg"),
-          ),
+          leading: CircleAvatar(),
           title: Text("Bruce Wayne"),
           subtitle: Text("09/05/2019 18:37"),
           trailing: Icon(Icons.more_vert),
         ),
-        Image.asset("assets/post-picture-001.png"),
+        Image.asset("assets/images/Logo.png"),
         Container(
           padding: const EdgeInsets.all(10),
           child: const Text(

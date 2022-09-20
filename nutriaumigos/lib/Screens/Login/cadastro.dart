@@ -9,6 +9,9 @@ class CadastroPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var txtNome = TextEditingController();
+    var txtEmail = TextEditingController();
+    var txtSenha = TextEditingController();
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.only(top: 10, left: 40, right: 40),
@@ -62,7 +65,8 @@ class CadastroPage extends StatelessWidget {
               height: 20,
             ),
             TextFormField(
-              // autofocus: true,
+              controller: txtNome,
+              autofocus: true,
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
                 labelText: "Nome",
@@ -80,7 +84,7 @@ class CadastroPage extends StatelessWidget {
               height: 10,
             ),
             TextFormField(
-              // autofocus: true,
+              controller: txtEmail,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 labelText: "E-mail",
@@ -98,7 +102,7 @@ class CadastroPage extends StatelessWidget {
               height: 10,
             ),
             TextFormField(
-              // autofocus: true,
+              controller: txtSenha,
               keyboardType: TextInputType.text,
               obscureText: true,
               decoration: const InputDecoration(
@@ -142,7 +146,9 @@ class CadastroPage extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    criarConta(txtEmail.text, txtSenha.text, context);
+                  },
                 ),
               ),
             ),
@@ -164,5 +170,36 @@ class CadastroPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void criarConta(email, senha, context) {
+    FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: senha)
+        .then((value) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Usuário criado com sucesso!'),
+          duration: Duration(
+            seconds: 2,
+          ),
+        ),
+      );
+      Navigator.pop(context);
+    }).catchError((erro) {
+      var msg = '';
+      if (erro.code == 'email-already-in-use') {
+        msg = 'ERRO: O email informado já está em uso';
+      } else {
+        msg = 'ERRO: ${erro.message}';
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(msg),
+          duration: Duration(
+            seconds: 2,
+          ),
+        ),
+      );
+    });
   }
 }
