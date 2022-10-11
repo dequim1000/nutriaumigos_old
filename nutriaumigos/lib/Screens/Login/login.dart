@@ -209,7 +209,9 @@ class LoginPage extends StatelessWidget {
     print("HERE ANDRE");
     print(email);
     print(senha);
-    FirebaseAuth.instance
+
+    Navigator.pushReplacementNamed(context, 'menuPrincipal');
+    /*FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: senha)
         .then((value) {
       print("Andre12");
@@ -234,6 +236,6 @@ class LoginPage extends StatelessWidget {
           ),
         ),
       );
-    });
+    });*/
   }
 }

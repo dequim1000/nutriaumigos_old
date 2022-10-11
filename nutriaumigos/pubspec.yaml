@@ -69,6 +69,14 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/icons/patinhaColor_icon.png
+    - assets/icons/patinha_icon.png
+  
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+          weight: 500
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
