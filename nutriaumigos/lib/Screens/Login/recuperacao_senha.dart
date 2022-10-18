@@ -3,11 +3,14 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nutriaumigos/constants.dart';
 
+import '../../methods/auth.dart';
+
 class RecuperacaoSenhaPage extends StatelessWidget {
   const RecuperacaoSenhaPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var txtEmail = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -61,6 +64,7 @@ class RecuperacaoSenhaPage extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       TextFormField(
+                        controller: txtEmail,
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
                           labelText: "E-mail",
@@ -103,7 +107,16 @@ class RecuperacaoSenhaPage extends StatelessWidget {
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            onPressed: () {},
+                            onPressed: () async {
+                              await Authent()
+                                  .resetPasswordWithEmail(txtEmail.text)
+                                  .then(
+                                (value) {
+                                  Navigator.pop(context);
+                                },
+                              );
+                              ;
+                            },
                           ),
                         ),
                       ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:nutriaumigos/Screens/Login/cadastro.dart';
 import 'package:nutriaumigos/Screens/Login/recuperacao_senha.dart';
 import 'package:nutriaumigos/Screens/Menu/home.page.dart';
+import 'package:nutriaumigos/methods/auth.dart';
 
 import '../../constants.dart';
 
@@ -205,29 +206,23 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  void login(email, senha, context) {
-    print("HERE ANDRE");
-    print(email);
-    print(senha);
-
-    Navigator.pushReplacementNamed(context, 'menuPrincipal');
-    /*FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: senha)
-        .then((value) {
-      print("Andre12");
-      Navigator.pushReplacementNamed(context, 'menuPrincipal');
-    }).catchError((erro) {
+  Future<void> login(email, senha, context) async {
+    //Navigator.pushReplacementNamed(context, 'menuPrincipal');
+    try {
+      await Authent().loginwithEmailAndPassword(email, senha).then((value){
+        Navigator.pushReplacementNamed(context, 'menuPrincipal');
+      });
+    } on FirebaseException catch(e) {
       var msg = '';
-      if (erro.code == 'user-not-found') {
+      if (e.code == 'user-not-found') {
         msg = 'ERRO: Usuario não encontrado';
-      } else if (erro.code == 'wrong-password') {
+      } else if (e.code == 'wrong-password') {
         msg = 'ERRO: Senha incorreta';
-      } else if (erro.code == 'invalid-email') {
+      } else if (e.code == 'invalid-email') {
         msg = 'ERRO: Email inválido';
       } else {
-        msg = 'ERRO: ${erro.message}';
+        msg = 'ERRO: ${e.message}';
       }
-      print("Mensagem"+msg);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(msg),
@@ -236,6 +231,6 @@ class LoginPage extends StatelessWidget {
           ),
         ),
       );
-    });*/
+    }
   }
 }

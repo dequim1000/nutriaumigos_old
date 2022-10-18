@@ -332,10 +332,15 @@ class _CadastroPageState extends State<CadastroPage> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           try {
-                            txtNome.text;
-                            await Authent().createUserwithEmailAndPassword(txtNome.text ,txtEmail.text, txtSenha.text, txtTelefone.text, txtDataNascimento.text, txtCpf.text, txtCodigoNutricionista.text ?? "", context).then((value){
-                              Navigator.pop(context);
-                            });
+                            if(_character?.index == 0){
+                              await Authent().createUserwithEmailAndPassword(txtNome.text ,txtEmail.text, txtSenha.text, txtTelefone.text, txtDataNascimento.text, txtCpf.text, context).then((value){
+                                Navigator.pop(context);
+                              });
+                            }else{
+                              await Authent().createNutricionitawithEmailAndPassword(txtNome.text ,txtEmail.text, txtSenha.text, txtTelefone.text, txtDataNascimento.text, txtCpf.text, txtCodigoNutricionista.text, context).then((value){
+                                Navigator.pop(context);
+                              });
+                            }
                           } on FirebaseException catch (e) {
                             var msg = '';
                             if (e.code == 'email-already-in-use') {

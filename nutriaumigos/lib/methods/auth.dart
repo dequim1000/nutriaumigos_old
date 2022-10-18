@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'database.dart';
 
 class Authent{
@@ -9,11 +8,26 @@ class Authent{
     return await auth.currentUser!;
   } 
   Future<void> createUserwithEmailAndPassword(
-    String nome, String email, String senha, String telefone,String data, String cpf, String crmv, context) async {
-      print("Estou Aqui");
+    String nome, String email, String senha, String telefone,String data, String cpf, context) async {
     UserCredential userCredential = await auth.createUserWithEmailAndPassword(
         email: email, password: senha);
-    print("Estou Aqui 2");
+    Map<String, dynamic> userInfoMap = {
+      'nome': nome,
+      'email': email,
+      'telefone': telefone,
+      'data': data,
+      'cpf': cpf,
+    };
+
+    if (userCredential != null) {
+      DatabaseMethods().addUserInfoToDB(auth.currentUser!.uid, userInfoMap);
+    }
+  }
+
+  Future<void> createNutricionitawithEmailAndPassword(
+    String nome, String email, String senha, String telefone,String data, String cpf, String crmv, context) async {
+    UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+        email: email, password: senha);
     Map<String, dynamic> userInfoMap = {
       'nome': nome,
       'email': email,
@@ -24,13 +38,19 @@ class Authent{
     };
 
     if (userCredential != null) {
-      DatabaseMethods().addUserInfoToDB(auth.currentUser!.uid, userInfoMap);
+      DatabaseMethods().addNutriInfoToDB(auth.currentUser!.uid, userInfoMap);
     }
   }
+
   Future<void> loginwithEmailAndPassword(String email, String password) async {
     UserCredential userCredential = 
       await auth.signInWithEmailAndPassword(email: email, password: password);
   }
+
+  Future<void> resetPasswordWithEmail(String email) async {
+    await auth.sendPasswordResetEmail(email: email);
+  }
+
   Future<void> logout() async {
     await auth.signOut();
   }
