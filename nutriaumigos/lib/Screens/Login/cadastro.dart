@@ -3,172 +3,339 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nutriaumigos/constants.dart';
+import 'package:cpf_cnpj_validator/cpf_validator.dart';
 
-class CadastroPage extends StatelessWidget {
+enum SingingCharacter { cliente, nutricionista }
+
+class CadastroPage extends StatefulWidget {
   const CadastroPage({super.key});
 
   @override
+  State<CadastroPage> createState() => _CadastroPageState();
+}
+
+class _CadastroPageState extends State<CadastroPage> {
+  final _formKey = GlobalKey<FormState>();
+  SingingCharacter? _character = SingingCharacter.cliente;
+  static final RegExp nameRegExp = RegExp('[a-zA-Z]');
+  static final RegExp numberTelefoneExp = RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)');
+  static final RegExp emailRegExp = RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+  @override
   Widget build(BuildContext context) {
-    var txtNome = TextEditingController();
-    var txtEmail = TextEditingController();
-    var txtSenha = TextEditingController();
+    var txtNome,
+        txtEmail,
+        txtSenha,
+        txtTelefone,
+        txtCpf,
+        txtDataNascimento,
+        txtIdade,
+        txtCodigoNutricionista = TextEditingController();
+
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.only(top: 10, left: 40, right: 40),
-        color: Colors.white,
-        child: ListView(
-          children: <Widget>[
-            Container(
-              width: 200,
-              height: 200,
-              alignment: const Alignment(0.0, 1.15),
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/icons/profile_dog.png"),
-                  fit: BoxFit.fitHeight,
-                ),
-              ),
-              child: Container(
-                height: 56,
-                width: 56,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    stops: [0.3, 1.0],
-                    colors: [
-                      kPrimaryColor,
-                      kSecondColor,
-                    ],
-                  ),
-                  border: Border.all(
-                    width: 4.0,
-                    color: const Color(0xFFFFFFFF),
-                  ),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(56),
-                  ),
-                ),
-                child: SizedBox.expand(
-                  child: TextButton(
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.white,
+          padding: const EdgeInsets.only(top: 10, left: 40, right: 40),
+          color: Colors.white,
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: <Widget>[
+                Container(
+                  width: 200,
+                  height: 200,
+                  alignment: const Alignment(0.0, 1.15),
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/icons/profile_dog.png"),
+                      fit: BoxFit.fitHeight,
                     ),
-                    onPressed: () {},
+                  ),
+                  child: Container(
+                    height: 56,
+                    width: 56,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        stops: [0.3, 1.0],
+                        colors: [
+                          kPrimaryColor,
+                          kSecondColor,
+                        ],
+                      ),
+                      border: Border.all(
+                        width: 4.0,
+                        color: const Color(0xFFFFFFFF),
+                      ),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(56),
+                      ),
+                    ),
+                    child: SizedBox.expand(
+                      child: TextButton(
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              controller: txtNome,
-              autofocus: true,
-              keyboardType: TextInputType.text,
-              decoration: const InputDecoration(
-                labelText: "Nome",
-                labelStyle: TextStyle(
-                  color: Colors.black38,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
+                const SizedBox(
+                  height: 20,
                 ),
-              ),
-              style: const TextStyle(
-                fontSize: 20,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: txtEmail,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                labelText: "E-mail",
-                labelStyle: TextStyle(
-                  color: Colors.black38,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
+                const Text(
+                  'Qual seu tipo de usuário?',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w600),
                 ),
-              ),
-              style: const TextStyle(
-                fontSize: 20,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: txtSenha,
-              keyboardType: TextInputType.text,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: "Senha",
-                labelStyle: TextStyle(
-                  color: Colors.black38,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),
-              ),
-              style: const TextStyle(fontSize: 20),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              height: 60,
-              alignment: Alignment.centerLeft,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  stops: [0.3, 1],
-                  colors: [
-                    kPrimaryColor,
-                    kSecondColor,
+                Row(
+                  children: [
+                    Expanded(
+                      child: RadioListTile<SingingCharacter>(
+                        title: const Text('Cliente'),
+                        value: SingingCharacter.cliente,
+                        dense: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        contentPadding: const EdgeInsets.all(0.0),
+                        groupValue: _character,
+                        onChanged: (SingingCharacter? value) {
+                          setState(() {
+                            _character = value;
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 5.0),
+                    Expanded(
+                      child: RadioListTile<SingingCharacter>(
+                        title: const Text('Nutricionista'),
+                        value: SingingCharacter.nutricionista,
+                        dense: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        contentPadding: const EdgeInsets.all(0.0),
+                        groupValue: _character,
+                        onChanged: (SingingCharacter? value) {
+                          setState(() {
+                            _character = value;
+                          });
+                        },
+                      ),
+                    ),
                   ],
                 ),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
-              child: SizedBox.expand(
-                child: TextButton(
-                  child: const Text(
-                    "Cadastrar",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                TextFormField(
+                  controller: txtNome,
+                  enabled: _character?.index == 0 ? true : false,
+                  autofocus: true,
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(
+                    labelText: "Nome",
+                    labelStyle: TextStyle(
+                      color: Colors.black38,
+                      fontWeight: FontWeight.w400,
                       fontSize: 20,
                     ),
-                    textAlign: TextAlign.center,
                   ),
-                  onPressed: () {
-                    criarConta(txtEmail.text, txtSenha.text, context);
-                  },
+                  style: const TextStyle(
+                    fontSize: 20,
+                  ),
+                  validator: (value) => value == null || value.isEmpty
+                      ? 'Digite seu Nome'
+                      : (nameRegExp.hasMatch(value)
+                          ? null
+                          : 'Digite um nome válido!'),
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              height: 40,
-              alignment: Alignment.center,
-              child: TextButton(
-                child: const Text(
-                  "Cancelar",
-                  textAlign: TextAlign.center,
+                const SizedBox(
+                  height: 10,
                 ),
-                onPressed: () => Navigator.pop(context, false),
-              ),
+                TextFormField(
+                  controller: txtEmail,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(
+                    labelText: "E-mail",
+                    labelStyle: TextStyle(
+                      color: Colors.black38,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 20,
+                    ),
+                  ),
+                  style: const TextStyle(
+                    fontSize: 20,
+                  ),
+                  validator: (value) => value == null || value.isEmpty
+                      ? 'Preencha o campo de email!'
+                      : (emailRegExp.hasMatch(value)
+                          ? null
+                          : 'Digite um email válido!'),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  controller: txtSenha,
+                  keyboardType: TextInputType.text,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: "Senha",
+                    labelStyle: TextStyle(
+                      color: Colors.black38,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 20,
+                    ),
+                  ),
+                  style: const TextStyle(fontSize: 20),
+                  validator: ((value) {
+                    if (value == null || value.isEmpty ) {
+                      return 'Preencha o campo de senha!';
+                    }else if(value.length < 8){
+                      return 'Digite uma senha válida, maior que 8 caracteres!';
+                    }
+                    return null;
+                  }),
+                ),
+                TextFormField(
+                  controller: txtTelefone,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: "Telefone",
+                    labelStyle: TextStyle(
+                      color: Colors.black38,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 20,
+                    ),
+                  ),
+                  style: const TextStyle(fontSize: 20),
+                  validator: ((value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Preencha o campo de telefone!';
+                    }else if(!numberTelefoneExp.hasMatch(value)){
+                      return 'Digite um telefone válido!';
+                    }
+                    return null;
+                  }),
+                ),
+                TextFormField(
+                  controller: txtDataNascimento,
+                  keyboardType: TextInputType.datetime,
+                  decoration: const InputDecoration(
+                    labelText: "Data de Nascimento",
+                    labelStyle: TextStyle(
+                      color: Colors.black38,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 20,
+                    ),
+                  ),
+                  style: const TextStyle(fontSize: 20),
+                  validator: ((value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Preencha o campo de CRMV';
+                    }
+                    return null;
+                  }),
+                ),
+                TextFormField(
+                  controller: txtCpf,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: "CPF",
+                    labelStyle: TextStyle(
+                      color: Colors.black38,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 20,
+                    ),
+                  ),
+                  style: const TextStyle(fontSize: 20),
+                  validator: ((value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Preencha o campo de CPF';
+                    }else if(!CPFValidator.isValid(value)){
+                      return 'Digite um CPF válido!';
+                    }
+                    return null;
+                  }),
+                ),
+                TextFormField(
+                  controller: txtCodigoNutricionista,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: "CRMV",
+                    labelStyle: TextStyle(
+                      color: Colors.black38,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 20,
+                    ),
+                  ),
+                  style: const TextStyle(fontSize: 20),
+                  validator: ((value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Preencha o campo de CRMV';
+                    }
+                    return null;
+                  }),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 60,
+                  alignment: Alignment.centerLeft,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      stops: [0.3, 1],
+                      colors: [
+                        kPrimaryColor,
+                        kSecondColor,
+                      ],
+                    ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  child: SizedBox.expand(
+                    child: TextButton(
+                      child: const Text(
+                        "Cadastrar",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          criarConta(txtEmail.text, txtSenha.text, context);
+                        }
+                      },
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 40,
+                  alignment: Alignment.center,
+                  child: TextButton(
+                    child: const Text(
+                      "Cancelar",
+                      textAlign: TextAlign.center,
+                    ),
+                    onPressed: () => Navigator.pop(context, false),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          )),
     );
   }
 
@@ -195,7 +362,7 @@ class CadastroPage extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(msg),
-          duration: Duration(
+          duration: const Duration(
             seconds: 2,
           ),
         ),
