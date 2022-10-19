@@ -141,47 +141,7 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 10,
-            ),
-            Container(
-              height: 60,
-              alignment: Alignment.centerLeft,
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 255, 255, 255),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
-              child: SizedBox.expand(
-                child: TextButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 28,
-                        width: 28,
-                        child: Image.asset("assets/icons/google.png"),
-                      ),
-                      Container(
-                        width: 10,
-                      ),
-                      const Text(
-                        "Continuar com Google",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          color: Color.fromARGB(255, 65, 65, 65),
-                          fontSize: 20,
-                        ),
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
+              height: 5,
             ),
             SizedBox(
               height: 40,
