@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
 
   _body(context) {
     return Container(
-      color: const Color.fromARGB(184, 76, 0, 255),
+      color: kPrimaryColor,
       height: 800,
       child: SafeArea(
         child: SingleChildScrollView(
@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
               _actions(context),
               _banner(),
               _diasSemanas(),
-              _cardAlimentacao(),
+              _cardAlimentacao(context),
             ],
           ),
         ),
@@ -95,12 +95,23 @@ _banner() {
   return Container(
     width: 400,
     height: 100,
+    child: const Center(
+      child: Text(
+        "Anuncie Aqui!",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: kPrimaryColor,
+          fontWeight: FontWeight.bold,
+          fontSize: 40,
+        ),
+      ),
+    ),
     margin: const EdgeInsets.all(20),
     decoration: const BoxDecoration(
       borderRadius: BorderRadius.all(
         Radius.circular(15.0),
       ),
-      color: Colors.red,
+      color: kSecondColor,
     ),
   );
 }
@@ -146,16 +157,42 @@ _diasSemanas() {
   );
 }
 
-_cardAlimentacao() {
+_cardAlimentacao(context) {
   return Container(
     width: 400,
-    height: 500,
+    height: MediaQuery.of(context).size.height * 0.5,
     margin: const EdgeInsets.all(20),
     decoration: const BoxDecoration(
       borderRadius: BorderRadius.all(
         Radius.circular(15.0),
       ),
-      color: Colors.red,
+      color: kPrimaryLightColor,
+    ),
+    child: SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _listaAlimentos(),
+          _listaAlimentos(),
+          _listaAlimentos(),
+        ],
+      ),
+    ),
+  );
+}
+
+_listaAlimentos() {
+  return Container(
+    width: 390,
+    height: 90,
+    margin: const EdgeInsets.all(20),
+    decoration: BoxDecoration(
+      color: kPrimaryColor,
+      border: Border.all(
+          color: const Color.fromARGB(255, 0, 0, 0),
+          width: 3.0), // Set border width
+      borderRadius: const BorderRadius.all(
+          Radius.circular(10.0)), // Set rounded corner radius
     ),
   );
 }
@@ -163,8 +200,8 @@ _cardAlimentacao() {
 _buildCard(
     BuildContext context, String name, String imageButton, String nomeTela) {
   return SizedBox(
-    width: 100,
-    height: 100,
+    width: 110,
+    height: 110,
     child: Column(
       children: [
         GestureDetector(
