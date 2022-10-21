@@ -26,7 +26,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
         ),
         child: ListView(
           children: <Widget>[
-            Center(
+            const Center(
               child: Text(
                 "Cadastro de Alimento",
                 textAlign: TextAlign.center,
@@ -44,7 +44,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                   color: Colors.white,
                   onPressed: () {},
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 25,
                 ),
                 const Text(
