@@ -32,6 +32,9 @@ class _HomePageState extends State<HomePage> {
 
   _body(context) {
     double altura = tipoUsuario == null || tipoUsuario == '' ? 100 : 350;
+    String nomeUsuario = tipoUsuario == null || tipoUsuario == '' ? 'Clientes' : 'Nutricionistas';
+
+
     return Container(
       color: kPrimaryColor,
       height: 800,
@@ -41,7 +44,7 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _title(),
-              _actions(context),
+              _actions(context, nomeUsuario),
               _banner(altura),
               _diasSemanas(tipoUsuario),
               _cardAlimentacao(context, tipoUsuario),
@@ -70,7 +73,8 @@ _title() {
   );
 }
 
-_actions(context) {
+_actions(context, nomeUsuario) {
+  
   return Container(
     height: 100,
     margin: const EdgeInsets.only(top: 30),
@@ -83,7 +87,7 @@ _actions(context) {
               left: 7,
             ),
           ),
-          _buildCard(context, 'Nutricionista',
+          _buildCard(context, nomeUsuario,
               'assets/icons/patinhaColor_icon.png', 'login'),
           const SizedBox(width: 5),
           _buildCard(
