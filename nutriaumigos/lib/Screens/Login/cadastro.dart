@@ -38,12 +38,11 @@ class _CadastroPageState extends State<CadastroPage> {
   @override
   Widget build(BuildContext context) {
     var txtNome = TextEditingController();
-    var txtEmail = TextEditingController(); 
+    var txtEmail = TextEditingController();
     var txtSenha = TextEditingController();
     var txtTelefone = TextEditingController();
     var txtCpf = TextEditingController();
     var txtDataNascimento = TextEditingController();
-    var txtIdade = TextEditingController();
     var txtCodigoNutricionista = TextEditingController();
     return Scaffold(
       body: Container(
@@ -332,20 +331,26 @@ class _CadastroPageState extends State<CadastroPage> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           try {
-                            if(_character?.index == 0){
-                              await Authent().createUserwithEmailAndPassword(txtNome.text ,txtEmail.text, txtSenha.text, txtTelefone.text, txtDataNascimento.text, txtCpf.text, context).then((value){
+                            await Authent()
+                                .createUserwithEmailAndPassword(
+                                    txtNome.text,
+                                    txtEmail.text,
+                                    txtSenha.text,
+                                    txtTelefone.text,
+                                    txtDataNascimento.text,
+                                    txtCpf.text,
+                                    txtCodigoNutricionista.text ?? '',
+                                    context)
+                                .then(
+                              (value) {
                                 Navigator.pop(context);
-                              });
-                            }else{
-                              await Authent().createNutricionitawithEmailAndPassword(txtNome.text ,txtEmail.text, txtSenha.text, txtTelefone.text, txtDataNascimento.text, txtCpf.text, txtCodigoNutricionista.text, context).then((value){
-                                Navigator.pop(context);
-                              });
-                            }
+                              },
+                            );
                           } on FirebaseException catch (e) {
                             var msg = '';
                             if (e.code == 'email-already-in-use') {
                               msg = 'ERRO: O email informado já está em uso';
-                            }else {
+                            } else {
                               msg = 'ERRO: ${e.message}';
                             }
                             ScaffoldMessenger.of(context).showSnackBar(

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:nutriaumigos/Screens/Alimentacao/alimentacao.dart';
 import 'package:nutriaumigos/Screens/Login/cadastro.dart';
 import 'package:nutriaumigos/Screens/Login/recuperacao_senha.dart';
 import 'package:nutriaumigos/Screens/Menu/home.page.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         'cadastro': (context) => const CadastroPage(),
         'recuperacao': (context) => const RecuperacaoSenhaPage(),
         'menuPrincipal': (context) => const HomePage(),
+        'alimentacao': (context) => const AlimentacaoPage(),
       },
     );
   }

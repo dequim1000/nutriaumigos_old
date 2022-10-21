@@ -8,23 +8,6 @@ class Authent{
     return await auth.currentUser!;
   } 
   Future<void> createUserwithEmailAndPassword(
-    String nome, String email, String senha, String telefone,String data, String cpf, context) async {
-    UserCredential userCredential = await auth.createUserWithEmailAndPassword(
-        email: email, password: senha);
-    Map<String, dynamic> userInfoMap = {
-      'nome': nome,
-      'email': email,
-      'telefone': telefone,
-      'data': data,
-      'cpf': cpf,
-    };
-
-    if (userCredential != null) {
-      DatabaseMethods().addUserInfoToDB(auth.currentUser!.uid, userInfoMap);
-    }
-  }
-
-  Future<void> createNutricionitawithEmailAndPassword(
     String nome, String email, String senha, String telefone,String data, String cpf, String crmv, context) async {
     UserCredential userCredential = await auth.createUserWithEmailAndPassword(
         email: email, password: senha);
@@ -38,7 +21,7 @@ class Authent{
     };
 
     if (userCredential != null) {
-      DatabaseMethods().addNutriInfoToDB(auth.currentUser!.uid, userInfoMap);
+      DatabaseMethods().addUserInfoToDB(auth.currentUser!.uid, userInfoMap);
     }
   }
 
