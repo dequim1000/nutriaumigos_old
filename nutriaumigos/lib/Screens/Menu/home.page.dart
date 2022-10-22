@@ -18,22 +18,27 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),
-      body: FutureBuilder<DocumentSnapshot>(future: DatabaseMethods().getUserFromDB(FirebaseAuth.instance.currentUser!.uid), builder: (context, snapshot) {
-        final crmv = snapshot.data?.data();
-        if (crmv != null) {
-          tipoUsuario = (crmv as Map)['crmv'];
-        } else {
-          tipoUsuario = null;
-        }
-        return _body(context);
-      },),
+      body: FutureBuilder<DocumentSnapshot>(
+        future: DatabaseMethods()
+            .getUserFromDB(FirebaseAuth.instance.currentUser!.uid),
+        builder: (context, snapshot) {
+          final crmv = snapshot.data?.data();
+          if (crmv != null) {
+            tipoUsuario = (crmv as Map)['crmv'];
+          } else {
+            tipoUsuario = null;
+          }
+          return _body(context);
+        },
+      ),
     );
   }
 
   _body(context) {
     double altura = tipoUsuario == null || tipoUsuario == '' ? 100 : 350;
-    String nomeUsuario = tipoUsuario == null || tipoUsuario == '' ? 'Clientes' : 'Nutricionistas';
-
+    String nomeUsuario = tipoUsuario == null || tipoUsuario == ''
+        ? 'Clientes'
+        : 'Nutricionistas';
 
     return Container(
       color: kPrimaryColor,
@@ -74,7 +79,6 @@ _title() {
 }
 
 _actions(context, nomeUsuario) {
-  
   return Container(
     height: 100,
     margin: const EdgeInsets.only(top: 30),
@@ -87,11 +91,11 @@ _actions(context, nomeUsuario) {
               left: 7,
             ),
           ),
-          _buildCard(context, nomeUsuario,
-              'assets/icons/patinhaColor_icon.png', 'login'),
+          _buildCard(context, nomeUsuario, 'assets/icons/patinhaColor_icon.png',
+              'login'),
           const SizedBox(width: 5),
           _buildCard(
-              context, 'Pet', 'assets/icons/patinha_icon.png', 'cadastro'),
+              context, 'Pet', 'assets/icons/patinha_icon.png', 'animais'),
           const SizedBox(width: 5),
           _buildCard(context, 'Alimentos', 'assets/icons/osso-de-cao.png',
               'alimentacao'),
@@ -137,44 +141,44 @@ _banner(double altura) {
 _diasSemanas(tipoUsuario) {
   if (tipoUsuario == '' || tipoUsuario == null) {
     return Container(
-    margin: const EdgeInsets.only(top: 5, left: 20),
-    child: Row(
-      children: [
-        const Text(
-          "Plano Alimentar",
-          textAlign: TextAlign.start,
-          style: TextStyle(
-            color: kPrimaryLightColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
+      margin: const EdgeInsets.only(top: 5, left: 20),
+      child: Row(
+        children: [
+          const Text(
+            "Plano Alimentar",
+            textAlign: TextAlign.start,
+            style: TextStyle(
+              color: kPrimaryLightColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
           ),
-        ),
-        const SizedBox(
-          width: 25,
-        ),
-        IconButton(
-          icon: const Icon(Icons.arrow_back),
-          color: Colors.white,
-          onPressed: () {},
-        ),
-        const Text(
-          "Terça",
-          textAlign: TextAlign.end,
-          style: TextStyle(
-            color: kPrimaryLightColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
+          const SizedBox(
+            width: 25,
           ),
-        ),
-        IconButton(
-          icon: const Icon(Icons.arrow_forward),
-          color: Colors.white,
-          onPressed: () {},
-        ),
-      ],
-    ),
-  );
-  }else{
+          IconButton(
+            icon: const Icon(Icons.arrow_back),
+            color: Colors.white,
+            onPressed: () {},
+          ),
+          const Text(
+            "Terça",
+            textAlign: TextAlign.end,
+            style: TextStyle(
+              color: kPrimaryLightColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.arrow_forward),
+            color: Colors.white,
+            onPressed: () {},
+          ),
+        ],
+      ),
+    );
+  } else {
     return Container();
   }
 }

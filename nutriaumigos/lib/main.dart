@@ -6,18 +6,18 @@ import 'package:nutriaumigos/Screens/Login/recuperacao_senha.dart';
 import 'package:nutriaumigos/Screens/Menu/home.page.dart';
 import 'package:nutriaumigos/constants.dart';
 
+import 'Screens/Animais/animais.dart';
 import 'Screens/Login/login.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
-} 
-  
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Nutri Aumigos',
       theme: ThemeData(
-          primaryColor: kPrimaryColor,
-        ),
+        primaryColor: kPrimaryColor,
+      ),
       home: const LoginPage(),
       routes: {
         'login': (context) => const LoginPage(),
@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         'recuperacao': (context) => const RecuperacaoSenhaPage(),
         'menuPrincipal': (context) => const HomePage(),
         'alimentacao': (context) => const AlimentacaoPage(),
+        'animais': (context) => const AnimaisPage(),
       },
     );
   }

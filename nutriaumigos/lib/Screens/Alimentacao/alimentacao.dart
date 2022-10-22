@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -13,7 +15,7 @@ class AlimentacaoPage extends StatefulWidget {
 class _AlimentacaoPageState extends State<AlimentacaoPage> {
   @override
   Widget build(BuildContext context) {
-    var txtNomeAlimento = TextEditingController();
+    var txtNomeAnimal = TextEditingController();
     var txtQuantidade = TextEditingController();
     var txtDescricao = TextEditingController();
     bool DiaSemana = false;
@@ -53,7 +55,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                   width: 25,
                 ),
                 const Text(
-                  "Plano Alimentar",
+                  "Animal",
                   textAlign: TextAlign.start,
                   style: TextStyle(
                     color: kPrimaryLightColor,
@@ -67,7 +69,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
               height: 10,
             ),
             TextFormField(
-              controller: txtNomeAlimento,
+              controller: txtNomeAnimal,
               autofocus: true,
               decoration: InputDecoration(
                 filled: true,
@@ -83,7 +85,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                     style: BorderStyle.none,
                   ),
                 ),
-                labelText: "Nome do Alimento",
+                labelText: "Nome do Animal",
                 labelStyle: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w400,
@@ -97,7 +99,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
             const SizedBox(
               height: 10,
             ),
-           TextFormField(
+            TextFormField(
               controller: txtQuantidade,
               autofocus: true,
               decoration: InputDecoration(
