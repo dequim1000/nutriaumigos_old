@@ -14,6 +14,8 @@ class UsuariosPage extends StatefulWidget {
 
 class _UsuariosPageState extends State<UsuariosPage> {
   var tipoUsuario;
+  
+  get kPrimaryColor => null;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +32,28 @@ class _UsuariosPageState extends State<UsuariosPage> {
     );
   }
 
-  _body(context){
-    return Container();
+  _body(context) {
+    double altura = tipoUsuario == null || tipoUsuario == '' ? 100 : 350;
+    String nomeUsuario = tipoUsuario == null || tipoUsuario == '' ? 'Clientes' : 'Nutricionistas';
+
+
+    return Container(
+      color: kPrimaryColor,
+      height: 800,
+      child: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              
+            ],
+          ),
+        ),
+      ),
+    );
   }
+}
+
+_dart(){
+  
 }
