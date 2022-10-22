@@ -16,6 +16,8 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
     var txtNomeAlimento = TextEditingController();
     var txtQuantidade = TextEditingController();
     var txtDescricao = TextEditingController();
+    bool DiaSemana = false;
+
     return Scaffold(
       body: Container(
         color: kPrimaryColor,
@@ -37,6 +39,9 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                 ),
               ),
             ),
+            const SizedBox(
+              height: 20,
+            ),
             Row(
               children: [
                 IconButton(
@@ -45,7 +50,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                   onPressed: () {},
                 ),
                 SizedBox(
-                  width: 25,
+                  width: 10,
                 ),
                 const Text(
                   "Plano Alimentar",
@@ -53,17 +58,31 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                   style: TextStyle(
                     color: kPrimaryLightColor,
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 25,
                   ),
                 ),
               ],
             ),
+            const SizedBox(
+              height: 10,
+            ),
             TextFormField(
               controller: txtNomeAlimento,
               autofocus: true,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
+                isDense: true,
+                contentPadding: EdgeInsets.all(20),
+                border: UnderlineInputBorder(
+                  borderRadius: const BorderRadius.all(
+                    const Radius.circular(10.0),
+                  ),
+                  borderSide: BorderSide(
+                    width: 0,
+                    style: BorderStyle.none,
+                  ),
+                ),
                 labelText: "Nome do Alimento",
                 labelStyle: TextStyle(
                   color: Colors.black,
@@ -73,18 +92,28 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
               ),
               style: const TextStyle(
                 fontSize: 20,
-                color: Colors.white,
               ),
             ),
             const SizedBox(
               height: 10,
             ),
-            TextFormField(
+           TextFormField(
               controller: txtQuantidade,
-              obscureText: true,
-              decoration: const InputDecoration(
+              autofocus: true,
+              decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
+                isDense: true,
+                contentPadding: EdgeInsets.all(20),
+                border: UnderlineInputBorder(
+                  borderRadius: const BorderRadius.all(
+                    const Radius.circular(10.0),
+                  ),
+                  borderSide: BorderSide(
+                    width: 0,
+                    style: BorderStyle.none,
+                  ),
+                ),
                 labelText: "Quantidade",
                 labelStyle: TextStyle(
                   color: Colors.black,
@@ -102,9 +131,20 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
             TextFormField(
               controller: txtDescricao,
               autofocus: true,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
+                isDense: true,
+                contentPadding: EdgeInsets.all(20),
+                border: UnderlineInputBorder(
+                  borderRadius: const BorderRadius.all(
+                    const Radius.circular(10.0),
+                  ),
+                  borderSide: BorderSide(
+                    width: 0,
+                    style: BorderStyle.none,
+                  ),
+                ),
                 labelText: "Descrição",
                 labelStyle: TextStyle(
                   color: Colors.black,
@@ -119,6 +159,16 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
             const SizedBox(
               height: 40,
             ),
+            // Checkbox(
+            //     value: "Segunda",
+            //     onChanged: (DiaSemana) {
+            //       print(checked);
+            //     }),
+            // Checkbox(
+            //     value: "Segunda",
+            //     onChanged: (DiaSemana) {
+            //       print(checked);
+            //     }),
             Container(
               height: 60,
               alignment: Alignment.centerLeft,
@@ -128,8 +178,8 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                   end: Alignment.bottomRight,
                   stops: [0.3, 1],
                   colors: [
-                    kPrimaryColor,
-                    kSecondColor,
+                    Color.fromARGB(255, 238, 214, 3),
+                    Color.fromARGB(255, 247, 225, 32),
                   ],
                 ),
                 borderRadius: BorderRadius.all(
@@ -151,7 +201,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           wordSpacing: 10,
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: 20,
                         ),
                         textAlign: TextAlign.left,
