@@ -13,13 +13,23 @@ class AlimentacaoPage extends StatefulWidget {
 }
 
 class _AlimentacaoPageState extends State<AlimentacaoPage> {
+  List<String> items = [
+    'Segunda-Feira',
+    'Terça-Feira',
+    'Quarta-Feira',
+    'Quinta-Feira',
+    'Sexta-Feira',
+    'Sábado',
+    'Domingo'
+  ];
+  String? selectedItem = 'Segunda-Feira';
+
   @override
   Widget build(BuildContext context) {
     var txtNomeAnimal = TextEditingController();
     var txtHorario = TextEditingController();
     var txtQuantidade = TextEditingController();
     var txtDescricao = TextEditingController();
-    bool DiaSemana = false;
 
     final _formKey = GlobalKey<FormState>();
 
@@ -69,6 +79,31 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                child: DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                            color: Colors.white)),
+                  ),
+                  value: selectedItem,
+                  items: items
+                      .map((item) => DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(item, style: TextStyle(fontSize: 20)),
+                          ))
+                      .toList(),
+                  onChanged: (item) => setState(() => selectedItem = item),
+                ),
               ),
               const SizedBox(
                 height: 10,
