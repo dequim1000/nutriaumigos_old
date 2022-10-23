@@ -32,7 +32,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
           children: <Widget>[
             const Center(
               child: Text(
-                "Cadastro de Alimento",
+                "Alimentos",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.black,
@@ -55,7 +55,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                   width: 25,
                 ),
                 const Text(
-                  "Animal",
+                  "Cadastro de Alimento",
                   textAlign: TextAlign.start,
                   style: TextStyle(
                     color: kPrimaryLightColor,

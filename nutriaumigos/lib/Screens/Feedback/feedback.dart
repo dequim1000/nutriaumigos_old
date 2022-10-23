@@ -1,28 +1,25 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nutriaumigos/constants.dart';
 
-class AnimaisPage extends StatefulWidget {
-  const AnimaisPage({super.key});
+class FeedbackPage extends StatefulWidget {
+  const FeedbackPage({super.key});
 
   @override
-  State<AnimaisPage> createState() => _AnimaisPageState();
+  State<FeedbackPage> createState() => _FeedbackPageState();
 }
 
-class _AnimaisPageState extends State<AnimaisPage> {
+class _FeedbackPageState extends State<FeedbackPage> {
   @override
   Widget build(BuildContext context) {
-    var txtNomeAnimal = TextEditingController();
-    var txtRaca = TextEditingController();
-    var txtCor = TextEditingController();
-    var txtTipo = TextEditingController();
-    var txtAlergias = TextEditingController();
-    var txtPeso = TextEditingController();
+    var txtNomeAlimento = TextEditingController();
+    var txtAvaliacao = TextEditingController();
     var txtRejeicao = TextEditingController();
-    var txtProblemas = TextEditingController();
+    var txtQuantidade = TextEditingController();
     var txtObservacao = TextEditingController();
-    var txtDescricao = TextEditingController();
 
     return Scaffold(
       body: Container(
@@ -36,7 +33,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
           children: <Widget>[
             const Center(
               child: Text(
-                "Pets",
+                "Feedback",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.black,
@@ -51,7 +48,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
             Row(
               children: [
                 IconButton(
-                  icon: Image.asset("assets/icons/pet.png"),
+                  icon: Image.asset("assets/icons/feedback.png"),
                   color: Colors.white,
                   onPressed: () {},
                 ),
@@ -59,7 +56,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
                   width: 25,
                 ),
                 const Text(
-                  "Cadastro de Animais",
+                  "Cadastro de Feedback",
                   textAlign: TextAlign.start,
                   style: TextStyle(
                     color: kPrimaryLightColor,
@@ -73,7 +70,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
               height: 10,
             ),
             TextFormField(
-              controller: txtNomeAnimal,
+              controller: txtNomeAlimento,
               autofocus: true,
               decoration: InputDecoration(
                 filled: true,
@@ -89,7 +86,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
                     style: BorderStyle.none,
                   ),
                 ),
-                labelText: "Nome do Animal",
+                labelText: "Nome do Alimento",
                 labelStyle: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w400,
@@ -104,7 +101,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
               height: 10,
             ),
             TextFormField(
-              controller: txtRaca,
+              controller: txtAvaliacao,
               autofocus: true,
               decoration: InputDecoration(
                 filled: true,
@@ -120,131 +117,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
                     style: BorderStyle.none,
                   ),
                 ),
-                labelText: "Raca",
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),
-              ),
-              style: const TextStyle(
-                fontSize: 20,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: txtCor,
-              autofocus: true,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                isDense: true,
-                contentPadding: EdgeInsets.all(20),
-                border: UnderlineInputBorder(
-                  borderRadius: const BorderRadius.all(
-                    const Radius.circular(10.0),
-                  ),
-                  borderSide: BorderSide(
-                    width: 0,
-                    style: BorderStyle.none,
-                  ),
-                ),
-                labelText: "Cor",
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),
-              ),
-              style: const TextStyle(
-                fontSize: 20,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: txtTipo,
-              autofocus: true,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                isDense: true,
-                contentPadding: EdgeInsets.all(20),
-                border: UnderlineInputBorder(
-                  borderRadius: const BorderRadius.all(
-                    const Radius.circular(10.0),
-                  ),
-                  borderSide: BorderSide(
-                    width: 0,
-                    style: BorderStyle.none,
-                  ),
-                ),
-                labelText: "Tipo Ex:(Cachorro,Gato...)",
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),
-              ),
-              style: const TextStyle(
-                fontSize: 20,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: txtAlergias,
-              autofocus: true,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                isDense: true,
-                contentPadding: EdgeInsets.all(20),
-                border: UnderlineInputBorder(
-                  borderRadius: const BorderRadius.all(
-                    const Radius.circular(10.0),
-                  ),
-                  borderSide: BorderSide(
-                    width: 0,
-                    style: BorderStyle.none,
-                  ),
-                ),
-                labelText: "Alergia(s)",
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),
-              ),
-              style: const TextStyle(
-                fontSize: 20,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: txtPeso,
-              autofocus: true,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                isDense: true,
-                contentPadding: EdgeInsets.all(20),
-                border: UnderlineInputBorder(
-                  borderRadius: const BorderRadius.all(
-                    const Radius.circular(10.0),
-                  ),
-                  borderSide: BorderSide(
-                    width: 0,
-                    style: BorderStyle.none,
-                  ),
-                ),
-                labelText: "Peso (Kg)",
+                labelText: "Avaliação",
                 labelStyle: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w400,
@@ -275,7 +148,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
                     style: BorderStyle.none,
                   ),
                 ),
-                labelText: "Possui alguma Rejeição?",
+                labelText: "Rejeição",
                 labelStyle: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w400,
@@ -290,7 +163,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
               height: 10,
             ),
             TextFormField(
-              controller: txtProblemas,
+              controller: txtQuantidade,
               autofocus: true,
               decoration: InputDecoration(
                 filled: true,
@@ -306,7 +179,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
                     style: BorderStyle.none,
                   ),
                 ),
-                labelText: "Problemas",
+                labelText: "Quantidade",
                 labelStyle: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w400,
@@ -322,37 +195,6 @@ class _AnimaisPageState extends State<AnimaisPage> {
             ),
             TextFormField(
               controller: txtObservacao,
-              autofocus: true,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                isDense: true,
-                contentPadding: EdgeInsets.all(20),
-                border: UnderlineInputBorder(
-                  borderRadius: const BorderRadius.all(
-                    const Radius.circular(10.0),
-                  ),
-                  borderSide: BorderSide(
-                    width: 0,
-                    style: BorderStyle.none,
-                  ),
-                ),
-                labelText: "Observações",
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),
-              ),
-              style: const TextStyle(
-                fontSize: 20,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: txtDescricao,
               autofocus: true,
               decoration: InputDecoration(
                 filled: true,
