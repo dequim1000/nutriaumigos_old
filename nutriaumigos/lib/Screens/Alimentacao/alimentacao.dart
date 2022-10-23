@@ -102,14 +102,14 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
             TextFormField(
               controller: txtQuantidade,
               autofocus: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
                 isDense: true,
                 contentPadding: EdgeInsets.all(20),
                 border: UnderlineInputBorder(
-                  borderRadius: const BorderRadius.all(
-                    const Radius.circular(10.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
                   ),
                   borderSide: BorderSide(
                     width: 0,
@@ -133,14 +133,14 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
             TextFormField(
               controller: txtDescricao,
               autofocus: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
                 isDense: true,
                 contentPadding: EdgeInsets.all(20),
                 border: UnderlineInputBorder(
-                  borderRadius: const BorderRadius.all(
-                    const Radius.circular(10.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
                   ),
                   borderSide: BorderSide(
                     width: 0,
