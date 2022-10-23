@@ -72,14 +72,14 @@ class _FeedbackPageState extends State<FeedbackPage> {
             TextFormField(
               controller: txtNomeAlimento,
               autofocus: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
                 isDense: true,
                 contentPadding: EdgeInsets.all(20),
                 border: UnderlineInputBorder(
-                  borderRadius: const BorderRadius.all(
-                    const Radius.circular(10.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
                   ),
                   borderSide: BorderSide(
                     width: 0,
@@ -103,14 +103,14 @@ class _FeedbackPageState extends State<FeedbackPage> {
             TextFormField(
               controller: txtAvaliacao,
               autofocus: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
                 isDense: true,
                 contentPadding: EdgeInsets.all(20),
                 border: UnderlineInputBorder(
-                  borderRadius: const BorderRadius.all(
-                    const Radius.circular(10.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
                   ),
                   borderSide: BorderSide(
                     width: 0,
@@ -134,14 +134,14 @@ class _FeedbackPageState extends State<FeedbackPage> {
             TextFormField(
               controller: txtRejeicao,
               autofocus: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
                 isDense: true,
                 contentPadding: EdgeInsets.all(20),
                 border: UnderlineInputBorder(
-                  borderRadius: const BorderRadius.all(
-                    const Radius.circular(10.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
                   ),
                   borderSide: BorderSide(
                     width: 0,
@@ -165,14 +165,14 @@ class _FeedbackPageState extends State<FeedbackPage> {
             TextFormField(
               controller: txtQuantidade,
               autofocus: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
                 isDense: true,
                 contentPadding: EdgeInsets.all(20),
                 border: UnderlineInputBorder(
-                  borderRadius: const BorderRadius.all(
-                    const Radius.circular(10.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
                   ),
                   borderSide: BorderSide(
                     width: 0,
@@ -196,14 +196,14 @@ class _FeedbackPageState extends State<FeedbackPage> {
             TextFormField(
               controller: txtObservacao,
               autofocus: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
                 isDense: true,
                 contentPadding: EdgeInsets.all(20),
                 border: UnderlineInputBorder(
-                  borderRadius: const BorderRadius.all(
-                    const Radius.circular(10.0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
                   ),
                   borderSide: BorderSide(
                     width: 0,

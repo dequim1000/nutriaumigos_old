@@ -5,14 +5,14 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nutriaumigos/methods/database.dart';
 
-class UsuariosPage extends StatefulWidget {
-  const UsuariosPage({super.key});
+class ListaAnimaisPage extends StatefulWidget {
+  const ListaAnimaisPage({super.key});
 
   @override
-  State<UsuariosPage> createState() => _UsuariosPageState();
+  State<ListaAnimaisPage> createState() => _ListaAnimaisPageState();
 }
 
-class _UsuariosPageState extends State<UsuariosPage> {
+class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
   var tipoUsuario;
   
   get kPrimaryColor => null;
@@ -49,8 +49,4 @@ class _UsuariosPageState extends State<UsuariosPage> {
       ),
     );
   }
-}
-
-_dart(){
-  
 }
