@@ -4,6 +4,7 @@ import 'package:nutriaumigos/Screens/Alimentacao/alimentacao.dart';
 import 'package:nutriaumigos/Screens/Login/cadastro.dart';
 import 'package:nutriaumigos/Screens/Login/recuperacao_senha.dart';
 import 'package:nutriaumigos/Screens/Menu/home.page.dart';
+import 'package:nutriaumigos/Screens/usuarios/usariosPage.dart';
 import 'package:nutriaumigos/constants.dart';
 
 import 'Screens/Animais/animais.dart';
@@ -35,6 +36,9 @@ class MyApp extends StatelessWidget {
         'menuPrincipal': (context) => const HomePage(),
         'alimentacao': (context) => const AlimentacaoPage(),
         'animais': (context) => const AnimaisPage(),
+        'listaUsuarios': (context) => UsuariosPage(
+              tipoUsuario: (ModalRoute.of(context)?.settings.arguments as Map)['tipoUsuario'],
+            ),
       },
     );
   }

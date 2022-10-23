@@ -92,7 +92,7 @@ _actions(context, nomeUsuario) {
             ),
           ),
           _buildCard(context, nomeUsuario, 'assets/icons/patinhaColor_icon.png',
-              'login'),
+              'listaUsuarios'),
           const SizedBox(width: 5),
           _buildCard(
               context, 'Pet', 'assets/icons/patinha_icon.png', 'animais'),
@@ -294,14 +294,14 @@ _listaAlimentos() {
 }
 
 _buildCard(
-    BuildContext context, String name, String imageButton, String nomeTela) {
+    BuildContext context, String tipoUsuario, String imageButton, String nomeTela) {
   return SizedBox(
     width: 110,
     height: 110,
     child: Column(
       children: [
         GestureDetector(
-          onTap: () => {Navigator.pushReplacementNamed(context, nomeTela)},
+          onTap: () => {Navigator.pushReplacementNamed(context, nomeTela, arguments: {'tipoUsuario': tipoUsuario})},
           child: Container(
             width: 74,
             height: 74,
@@ -320,7 +320,7 @@ _buildCard(
           ),
         ),
         Text(
-          name,
+          tipoUsuario=='Clientes'?'Nutricionitas':'Clientes',
           style: const TextStyle(
               fontFamily: 'Inter',
               fontWeight: FontWeight.w500,
