@@ -37,8 +37,8 @@ class _HomePageState extends State<HomePage> {
   _body(context) {
     double altura = tipoUsuario == null || tipoUsuario == '' ? 100 : 350;
     String nomeUsuario = tipoUsuario == null || tipoUsuario == ''
-        ? 'Clientes'
-        : 'Nutricionistas';
+        ? 'Nutricionistas'
+        : 'Clientes';
 
     return Container(
       color: kPrimaryColor,
@@ -69,7 +69,7 @@ _title() {
         "Menu",
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: kPrimaryLightColor,
+          color: Colors.black,
           fontWeight: FontWeight.bold,
           fontSize: 40,
         ),
@@ -101,7 +101,7 @@ _actions(context, nomeUsuario) {
               'alimentacao'),
           const SizedBox(width: 5),
           _buildCard(
-              context, 'FeedBack', 'assets/icons/estrela.png', 'menuPrincipal'),
+              context, 'FeedBack', 'assets/icons/estrela.png', 'feedback'),
           const Padding(
             padding: EdgeInsets.only(
               right: 15,
