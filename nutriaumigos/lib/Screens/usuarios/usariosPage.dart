@@ -23,6 +23,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
   @override
   void initState() {
     super.initState();
+    print(widget.tipoUsuario);
     if (widget.tipoUsuario == 'Clientes') {
       usuarios = FirebaseFirestore.instance
           .collection('user')

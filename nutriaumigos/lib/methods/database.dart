@@ -15,11 +15,10 @@ class DatabaseMethods {
         .set(alimentoInfoMap);
   }
 
-  Future addPetsInfoToDB(String petId, Map<String, dynamic> petsInfoMap) {
+  Future addPetsInfoToDB(Map<String, dynamic> petsInfoMap) {
     return FirebaseFirestore.instance
         .collection("pets")
-        .doc(petId)
-        .set(petsInfoMap);
+        .add(petsInfoMap);
   }
 
   Future addFeedbackInfoToDB(String feedbackId, Map<String, dynamic> feedbackInfoMap) {

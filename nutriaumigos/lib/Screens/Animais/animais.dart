@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:nutriaumigos/constants.dart';
+
+import '../../methods/pets.dart';
 
 class AnimaisPage extends StatefulWidget {
   const AnimaisPage({super.key});
@@ -19,6 +19,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
     var txtTipo = TextEditingController();
     var txtAlergias = TextEditingController();
     var txtPeso = TextEditingController();
+    var txtSexo = TextEditingController();
     var txtRejeicao = TextEditingController();
     var txtProblemas = TextEditingController();
     var txtObservacao = TextEditingController();
@@ -31,8 +32,9 @@ class _AnimaisPageState extends State<AnimaisPage> {
         color: kPrimaryColor,
         padding: const EdgeInsets.only(
           top: 40,
-          left: 40,
-          right: 40,
+          left: 20,
+          right: 20,
+          bottom: 10,
         ),
         child: Form(
           key: _formKey,
@@ -188,6 +190,43 @@ class _AnimaisPageState extends State<AnimaisPage> {
                 height: 10,
               ),
               TextFormField(
+                controller: txtSexo,
+                autofocus: true,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  isDense: true,
+                  contentPadding: EdgeInsets.all(20),
+                  border: UnderlineInputBorder(
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(10.0),
+                    ),
+                    borderSide: BorderSide(
+                      width: 0,
+                      style: BorderStyle.none,
+                    ),
+                  ),
+                  labelText: "Sexo",
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 20,
+                  ),
+                ),
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+                validator: ((value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Preencha o campo de Sexo';
+                  }
+                  return null;
+                }),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
                 controller: txtTipo,
                 autofocus: true,
                 decoration: InputDecoration(
@@ -264,6 +303,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtPeso,
                 autofocus: true,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -485,9 +525,38 @@ class _AnimaisPageState extends State<AnimaisPage> {
                         ),
                       ],
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.pop(context);
+                        try {
+                          await Pets().createPets(
+                                  txtNomeAnimal.text,
+                                  txtTipo.text,
+                                  txtRaca.text,
+                                  txtCor.text,
+                                  txtSexo.text,
+                                  double.parse(txtPeso.text),
+                                  txtAlergias.text,
+                                  txtRejeicao.text,
+                                  txtProblemas.text,
+                                  txtObservacao.text,
+                                  txtDescricao.text,
+                                  context)
+                              .then(
+                            (value) {
+                              Navigator.pop(context);
+                            },
+                          );
+                        } catch (e) {
+                          print(e);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Erro ao Cadastrar o Animal"),
+                              duration: const Duration(
+                                seconds: 2,
+                              ),
+                            ),
+                          );
+                        }
                       }
                     },
                   ),

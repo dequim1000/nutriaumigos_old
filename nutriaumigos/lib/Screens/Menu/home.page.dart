@@ -36,9 +36,6 @@ class _HomePageState extends State<HomePage> {
 
   _body(context) {
     double altura = tipoUsuario == null || tipoUsuario == '' ? 100 : 350;
-    String nomeUsuario = tipoUsuario == null || tipoUsuario == ''
-        ? 'Clientes'
-        : 'Nutricionistas';
 
     return Container(
       color: kPrimaryColor,
@@ -49,7 +46,7 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _title(),
-              _actions(context, nomeUsuario),
+              _actions(context, tipoUsuario),
               _banner(altura),
               _diasSemanas(tipoUsuario),
               _cardAlimentacao(context, tipoUsuario),
@@ -66,7 +63,7 @@ _title() {
     margin: const EdgeInsets.only(top: 30),
     child: const Center(
       child: Text(
-        "Menu",
+        "NutriAumigos",
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.black,
@@ -78,7 +75,10 @@ _title() {
   );
 }
 
-_actions(context, nomeUsuario) {
+_actions(context, String? tpUsuario) {
+  String tipoUsuario =
+      tpUsuario == null || tpUsuario == '' ? 'Clientes' : 'Nutricionistas';
+  String nomeCardUsuario = tipoUsuario == 'Clientes' ? 'Nutricionistas' : 'Clientes';
   return Container(
     height: 100,
     margin: const EdgeInsets.only(top: 30),
@@ -91,17 +91,17 @@ _actions(context, nomeUsuario) {
               left: 7,
             ),
           ),
-          _buildCard(context, nomeUsuario, 'assets/icons/patinhaColor_icon.png',
-              'listaUsuarios'),
+          _buildCard(context, nomeCardUsuario, tipoUsuario,
+              'assets/icons/patinhaColor_icon.png', 'listaUsuarios'),
           const SizedBox(width: 5),
-          _buildCard(
-              context, 'Pet', 'assets/icons/patinha_icon.png', 'animais'),
+          _buildCard(context, 'Pet', tipoUsuario,
+              'assets/icons/patinha_icon.png', 'animais'),
           const SizedBox(width: 5),
-          _buildCard(context, 'Alimentos', 'assets/icons/osso-de-cao.png',
-              'alimentacao'),
+          _buildCard(context, 'Alimentos', tipoUsuario,
+              'assets/icons/osso-de-cao.png', 'alimentacao'),
           const SizedBox(width: 5),
-          _buildCard(
-              context, 'FeedBack', 'assets/icons/estrela.png', 'feedback'),
+          _buildCard(context, 'FeedBack', tipoUsuario,
+              'assets/icons/estrela.png', 'feedback'),
           const Padding(
             padding: EdgeInsets.only(
               right: 15,
@@ -293,15 +293,18 @@ _listaAlimentos() {
   );
 }
 
-_buildCard(
-    BuildContext context, String tipoUsuario, String imageButton, String nomeTela) {
+_buildCard(BuildContext context, String tituloCard, String tipoUsuario,
+    String imageButton, String nomeTela) {
   return SizedBox(
     width: 110,
     height: 110,
     child: Column(
       children: [
         GestureDetector(
-          onTap: () => {Navigator.pushReplacementNamed(context, nomeTela, arguments: {'tipoUsuario': tipoUsuario})},
+          onTap: () => {
+            Navigator.pushReplacementNamed(context, nomeTela,
+                arguments: {'tipoUsuario': tipoUsuario})
+          },
           child: Container(
             width: 74,
             height: 74,
@@ -320,7 +323,7 @@ _buildCard(
           ),
         ),
         Text(
-          tipoUsuario=='Clientes'?'Nutricionitas':'Clientes',
+          tituloCard,
           style: const TextStyle(
               fontFamily: 'Inter',
               fontWeight: FontWeight.w500,
