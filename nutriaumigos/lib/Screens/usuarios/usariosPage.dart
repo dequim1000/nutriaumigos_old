@@ -23,23 +23,23 @@ class _UsuariosPageState extends State<UsuariosPage> {
   @override
   void initState() {
     super.initState();
-    if(widget.tipoUsuario == 'Clientes'){
+    if (widget.tipoUsuario == 'Clientes') {
       usuarios = FirebaseFirestore.instance
-        .collection('user')
-        .where('crmv', isNotEqualTo: '');
-    }else{
+          .collection('user')
+          .where('crmv', isNotEqualTo: '');
+    } else {
       usuarios = FirebaseFirestore.instance
-        .collection('user')
-        .where('crmv', isEqualTo: '');
+          .collection('user')
+          .where('crmv', isEqualTo: '');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     String usuario = '';
-    if(widget.tipoUsuario == 'Clientes'){
+    if (widget.tipoUsuario == 'Clientes') {
       usuario = 'Nutricionistas';
-    }else{
+    } else {
       usuario = 'Clientes';
     }
     return Scaffold(
@@ -60,7 +60,10 @@ class _UsuariosPageState extends State<UsuariosPage> {
         title: Text(usuario),
         centerTitle: true,
         backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),
-        leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {  },),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {},
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.logout_outlined),
@@ -73,9 +76,25 @@ class _UsuariosPageState extends State<UsuariosPage> {
       ),
       body: Column(
         children: [
+          const SizedBox(
+            height: 10,
+          ),
           TextField(
             decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.search), hintText: 'Pesquisar...'),
+              prefixIcon: Icon(Icons.search),
+              hintText: 'Pesquisar...',
+              filled: true,
+              fillColor: Colors.white,
+              border: UnderlineInputBorder(
+                borderRadius: const BorderRadius.all(
+                  const Radius.circular(10.0),
+                ),
+                borderSide: BorderSide(
+                  width: 0,
+                  style: BorderStyle.none,
+                ),
+              ),
+            ),
             onChanged: ((value) {
               setState(() {
                 namePesquisa = value;
@@ -102,7 +121,10 @@ class _UsuariosPageState extends State<UsuariosPage> {
 
                   default:
                     return Container(
-                      height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - AppBar().preferredSize.height - 72,
+                      height: MediaQuery.of(context).size.height -
+                          MediaQuery.of(context).padding.top -
+                          AppBar().preferredSize.height -
+                          82,
                       child: ListView.builder(
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
@@ -179,7 +201,42 @@ class _UsuariosPageState extends State<UsuariosPage> {
             ),
           ],
         ),
+        onTap: () {
+          if (widget.tipoUsuario == 'Clientes') {
+            dialog(context);
+          } else {
+            Navigator.pushReplacementNamed(context, 'login');
+          }
+        },
       ),
     );
   }
+}
+
+Future<void> dialog(context) {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Vincular Nutricionista?'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: const <Widget>[
+              Text(
+                  'Ao vincular o nutricionista, ele se tornará seu nutricionista responsável!'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Vincular'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

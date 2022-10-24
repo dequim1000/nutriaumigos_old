@@ -37,8 +37,8 @@ class _HomePageState extends State<HomePage> {
   _body(context) {
     double altura = tipoUsuario == null || tipoUsuario == '' ? 100 : 350;
     String nomeUsuario = tipoUsuario == null || tipoUsuario == ''
-        ? 'Nutricionistas'
-        : 'Clientes';
+        ? 'Clientes'
+        : 'Nutricionistas';
 
     return Container(
       color: kPrimaryColor,
