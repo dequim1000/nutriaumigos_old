@@ -14,6 +14,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var tipoUsuario;
+  String usuario = '';
+  String nomeUsuario = '';
+  final USER_CLIENTE = 'Clientes';
+  final USER_NUTRI = 'Nutricionistas';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +30,10 @@ class _HomePageState extends State<HomePage> {
           final crmv = snapshot.data?.data();
           if (crmv != null) {
             tipoUsuario = (crmv as Map)['crmv'];
+            usuario = tipoUsuario == null || tipoUsuario == ''
+                ? USER_CLIENTE
+                : USER_NUTRI;
+            nomeUsuario = usuario == USER_CLIENTE ? USER_NUTRI : USER_CLIENTE;
           } else {
             tipoUsuario = null;
           }
@@ -36,7 +45,6 @@ class _HomePageState extends State<HomePage> {
 
   _body(context) {
     double altura = tipoUsuario == null || tipoUsuario == '' ? 100 : 350;
-
     return Container(
       color: kPrimaryColor,
       height: 800,
@@ -46,7 +54,7 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _title(),
-              _actions(context, tipoUsuario),
+              _actions(context, usuario, nomeUsuario),
               _banner(altura),
               _diasSemanas(tipoUsuario),
               _cardAlimentacao(context, tipoUsuario),
@@ -75,10 +83,7 @@ _title() {
   );
 }
 
-_actions(context, String? tpUsuario) {
-  String tipoUsuario =
-      tpUsuario == null || tpUsuario == '' ? 'Clientes' : 'Nutricionistas';
-  String nomeCardUsuario = tipoUsuario == 'Clientes' ? 'Nutricionistas' : 'Clientes';
+_actions(context, String tipoUsuario, String nomeUsuario) {
   return Container(
     height: 100,
     margin: const EdgeInsets.only(top: 30),
@@ -91,7 +96,7 @@ _actions(context, String? tpUsuario) {
               left: 7,
             ),
           ),
-          _buildCard(context, nomeCardUsuario, tipoUsuario,
+          _buildCard(context, nomeUsuario, tipoUsuario,
               'assets/icons/patinhaColor_icon.png', 'listaUsuarios'),
           const SizedBox(width: 5),
           _buildCard(context, 'Pet', tipoUsuario,
@@ -302,7 +307,7 @@ _buildCard(BuildContext context, String tituloCard, String tipoUsuario,
       children: [
         GestureDetector(
           onTap: () => {
-            Navigator.pushReplacementNamed(context, nomeTela,
+            Navigator.pushNamed(context, nomeTela,
                 arguments: {'tipoUsuario': tipoUsuario})
           },
           child: Container(

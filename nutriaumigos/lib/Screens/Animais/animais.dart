@@ -14,9 +14,10 @@ class _AnimaisPageState extends State<AnimaisPage> {
   @override
   Widget build(BuildContext context) {
     var txtNomeAnimal = TextEditingController();
+    var txtTipo = TextEditingController();
     var txtRaca = TextEditingController();
     var txtCor = TextEditingController();
-    var txtTipo = TextEditingController();
+    var txtIdade = TextEditingController();
     var txtAlergias = TextEditingController();
     var txtPeso = TextEditingController();
     var txtSexo = TextEditingController();
@@ -81,14 +82,14 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtNomeAnimal,
                 autofocus: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   isDense: true,
                   contentPadding: EdgeInsets.all(20),
                   border: UnderlineInputBorder(
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
                     ),
                     borderSide: BorderSide(
                       width: 0,
@@ -116,16 +117,53 @@ class _AnimaisPageState extends State<AnimaisPage> {
                 height: 10,
               ),
               TextFormField(
-                controller: txtRaca,
+                controller: txtTipo,
                 autofocus: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   isDense: true,
                   contentPadding: EdgeInsets.all(20),
                   border: UnderlineInputBorder(
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    borderSide: BorderSide(
+                      width: 0,
+                      style: BorderStyle.none,
+                    ),
+                  ),
+                  labelText: "Tipo Ex:(Cachorro,Gato...)",
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 20,
+                  ),
+                ),
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+                validator: ((value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Preencha o campo de Tipo do Animal';
+                  }
+                  return null;
+                }),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: txtRaca,
+                autofocus: true,
+                decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  isDense: true,
+                  contentPadding: EdgeInsets.all(20),
+                  border: UnderlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
                     ),
                     borderSide: BorderSide(
                       width: 0,
@@ -155,14 +193,14 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtCor,
                 autofocus: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   isDense: true,
                   contentPadding: EdgeInsets.all(20),
                   border: UnderlineInputBorder(
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
                     ),
                     borderSide: BorderSide(
                       width: 0,
@@ -192,14 +230,14 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtSexo,
                 autofocus: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   isDense: true,
                   contentPadding: EdgeInsets.all(20),
                   border: UnderlineInputBorder(
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
                     ),
                     borderSide: BorderSide(
                       width: 0,
@@ -227,23 +265,24 @@ class _AnimaisPageState extends State<AnimaisPage> {
                 height: 10,
               ),
               TextFormField(
-                controller: txtTipo,
+                controller: txtIdade,
                 autofocus: true,
-                decoration: InputDecoration(
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   isDense: true,
                   contentPadding: EdgeInsets.all(20),
                   border: UnderlineInputBorder(
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
                     ),
                     borderSide: BorderSide(
                       width: 0,
                       style: BorderStyle.none,
                     ),
                   ),
-                  labelText: "Tipo Ex:(Cachorro,Gato...)",
+                  labelText: "Idade",
                   labelStyle: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w400,
@@ -255,44 +294,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
                 ),
                 validator: ((value) {
                   if (value == null || value.isEmpty) {
-                    return 'Preencha o campo de Tipo do Animal';
-                  }
-                  return null;
-                }),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                controller: txtAlergias,
-                autofocus: true,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  isDense: true,
-                  contentPadding: EdgeInsets.all(20),
-                  border: UnderlineInputBorder(
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
-                    ),
-                    borderSide: BorderSide(
-                      width: 0,
-                      style: BorderStyle.none,
-                    ),
-                  ),
-                  labelText: "Alergia(s)",
-                  labelStyle: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 20,
-                  ),
-                ),
-                style: const TextStyle(
-                  fontSize: 20,
-                ),
-                validator: ((value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Preencha o campo de Alergias';
+                    return 'Preencha o campo de Idade do Animal';
                   }
                   return null;
                 }),
@@ -304,14 +306,14 @@ class _AnimaisPageState extends State<AnimaisPage> {
                 controller: txtPeso,
                 autofocus: true,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   isDense: true,
                   contentPadding: EdgeInsets.all(20),
                   border: UnderlineInputBorder(
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
                     ),
                     borderSide: BorderSide(
                       width: 0,
@@ -339,16 +341,53 @@ class _AnimaisPageState extends State<AnimaisPage> {
                 height: 10,
               ),
               TextFormField(
-                controller: txtRejeicao,
+                controller: txtAlergias,
                 autofocus: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   isDense: true,
                   contentPadding: EdgeInsets.all(20),
                   border: UnderlineInputBorder(
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    borderSide: BorderSide(
+                      width: 0,
+                      style: BorderStyle.none,
+                    ),
+                  ),
+                  labelText: "Alergia(s)",
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 20,
+                  ),
+                ),
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+                validator: ((value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Preencha o campo de Alergias';
+                  }
+                  return null;
+                }),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: txtRejeicao,
+                autofocus: true,
+                decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  isDense: true,
+                  contentPadding: EdgeInsets.all(20),
+                  border: UnderlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
                     ),
                     borderSide: BorderSide(
                       width: 0,
@@ -378,14 +417,14 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtProblemas,
                 autofocus: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   isDense: true,
                   contentPadding: EdgeInsets.all(20),
                   border: UnderlineInputBorder(
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
                     ),
                     borderSide: BorderSide(
                       width: 0,
@@ -415,14 +454,14 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtObservacao,
                 autofocus: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   isDense: true,
                   contentPadding: EdgeInsets.all(20),
                   border: UnderlineInputBorder(
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
                     ),
                     borderSide: BorderSide(
                       width: 0,
@@ -446,14 +485,14 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtDescricao,
                 autofocus: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   isDense: true,
                   contentPadding: EdgeInsets.all(20),
                   border: UnderlineInputBorder(
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
                     ),
                     borderSide: BorderSide(
                       width: 0,
@@ -528,12 +567,14 @@ class _AnimaisPageState extends State<AnimaisPage> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         try {
-                          await Pets().createPets(
+                          await Pets()
+                              .createPets(
                                   txtNomeAnimal.text,
                                   txtTipo.text,
                                   txtRaca.text,
                                   txtCor.text,
                                   txtSexo.text,
+                                  double.parse(txtIdade.text),
                                   double.parse(txtPeso.text),
                                   txtAlergias.text,
                                   txtRejeicao.text,
@@ -549,9 +590,9 @@ class _AnimaisPageState extends State<AnimaisPage> {
                         } catch (e) {
                           print(e);
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text("Erro ao Cadastrar o Animal"),
-                              duration: const Duration(
+                              duration: Duration(
                                 seconds: 2,
                               ),
                             ),

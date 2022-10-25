@@ -24,6 +24,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
   void initState() {
     super.initState();
     print(widget.tipoUsuario);
+    //MEXER AQUI
     if (widget.tipoUsuario == 'Clientes') {
       usuarios = FirebaseFirestore.instance
           .collection('user')
@@ -63,7 +64,9 @@ class _UsuariosPageState extends State<UsuariosPage> {
         backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         actions: [
           IconButton(
@@ -131,6 +134,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
                         itemBuilder: (context, index) {
                           var data = snapshot.data!.docs[index].data()
                               as Map<String, dynamic>;
+
                           if (namePesquisa.isEmpty) {
                             return exibirItem(data);
                           }
@@ -206,7 +210,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
           if (widget.tipoUsuario == 'Clientes') {
             dialog(context);
           } else {
-            Navigator.pushReplacementNamed(context, 'login');
+            Navigator.pop(context);
           }
         },
       ),
