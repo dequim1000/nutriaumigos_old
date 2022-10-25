@@ -6,6 +6,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:nutriaumigos/constants.dart';
 import 'package:nutriaumigos/methods/database.dart';
 
+import '../../methods/usuarios.dart';
+
 class UsuariosPage extends StatefulWidget {
   const UsuariosPage({super.key, required this.tipoUsuario});
   final tipoUsuario;
@@ -19,11 +21,15 @@ class _UsuariosPageState extends State<UsuariosPage> {
   get kPrimaryColor => null;
 
   var usuarios;
+  var nutricionista;
+  String idUsuario = '';
 
   @override
   void initState() {
     super.initState();
     print(widget.tipoUsuario);
+    idUsuario = FirebaseAuth.instance.currentUser!.uid;
+    print(idUsuario);
     //MEXER AQUI
     if (widget.tipoUsuario == 'Clientes') {
       usuarios = FirebaseFirestore.instance
@@ -38,9 +44,17 @@ class _UsuariosPageState extends State<UsuariosPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("IdUsuario1:"+idUsuario);
     String usuario = '';
     if (widget.tipoUsuario == 'Clientes') {
       usuario = 'Nutricionistas';
+      nutricionista = DatabaseMethods().getNutritoClientesFromDB(idUsuario);
+
+      if(nutricionista == null || nutricionista == ''){
+        print("Nao Existe"+nutricionista.toString());
+      }else{
+        print("Existe"+nutricionista.toString());
+      }
     } else {
       usuario = 'Clientes';
     }
@@ -90,8 +104,8 @@ class _UsuariosPageState extends State<UsuariosPage> {
               filled: true,
               fillColor: Colors.white,
               border: UnderlineInputBorder(
-                borderRadius: const BorderRadius.all(
-                  const Radius.circular(10.0),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
                 ),
                 borderSide: BorderSide(
                   width: 0,
@@ -134,15 +148,15 @@ class _UsuariosPageState extends State<UsuariosPage> {
                         itemBuilder: (context, index) {
                           var data = snapshot.data!.docs[index].data()
                               as Map<String, dynamic>;
-
+                          var idNutri = snapshot.data!.docs[index].reference.id;
                           if (namePesquisa.isEmpty) {
-                            return exibirItem(data);
+                            return exibirItem(data, idUsuario, idNutri);
                           }
                           if (data['name']
                               .toString()
                               .toLowerCase()
                               .startsWith(namePesquisa.toLowerCase())) {
-                            return exibirItem(data);
+                            return exibirItem(data, idUsuario, idNutri);
                           }
                           return Container();
                         },
@@ -158,7 +172,8 @@ class _UsuariosPageState extends State<UsuariosPage> {
     );
   }
 
-  Widget exibirItem(item) {
+  Widget exibirItem(item, String idUsuario, String idNutri) {
+    print("IdUsuario2:"+idUsuario);
     String nomeUsuario = item['nome'];
     String descricao = item['crmv'] == '' ? 'Cliente' : item['crmv'];
 
@@ -208,7 +223,8 @@ class _UsuariosPageState extends State<UsuariosPage> {
         ),
         onTap: () {
           if (widget.tipoUsuario == 'Clientes') {
-            dialog(context);
+            print("IdUsuario3:"+idUsuario);
+            dialog(idUsuario, idNutri, context);
           } else {
             Navigator.pop(context);
           }
@@ -218,7 +234,8 @@ class _UsuariosPageState extends State<UsuariosPage> {
   }
 }
 
-Future<void> dialog(context) {
+Future<void> dialog(String idCliente, String idNutri, context) {
+  print("IdUsuario4:"+idCliente);
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
@@ -236,8 +253,33 @@ Future<void> dialog(context) {
         actions: <Widget>[
           TextButton(
             child: const Text('Vincular'),
-            onPressed: () {
-              Navigator.of(context).pop();
+            onPressed: () async {
+              try {
+                await Usuarios().createUsers(idCliente, idNutri, context).then(
+                  (value) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Nutricionista vinculado com sucesso!"),
+                        duration: Duration(
+                          seconds: 2,
+                        ),
+                      ),
+                    );
+                    Navigator.pop(context);
+                  },
+                );
+              } catch (e) {
+                print(e);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Erro ao Cadastrar o Animal"),
+                    duration: Duration(
+                      seconds: 2,
+                    ),
+                  ),
+                );
+              }
+              Navigator.pop(context);
             },
           ),
         ],
