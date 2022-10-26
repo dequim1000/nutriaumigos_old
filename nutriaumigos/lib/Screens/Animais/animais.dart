@@ -1,33 +1,40 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:nutriaumigos/constants.dart';
 
 import '../../methods/pets.dart';
 
 class AnimaisPage extends StatefulWidget {
-  const AnimaisPage({super.key});
+  const AnimaisPage(
+      {super.key, required this.idPet, required this.tipoUsuario});
+  final idPet;
+  final tipoUsuario;
 
   @override
   State<AnimaisPage> createState() => _AnimaisPageState();
 }
 
+var txtNomeAnimal = TextEditingController();
+var txtTipo = TextEditingController();
+var txtRaca = TextEditingController();
+var txtCor = TextEditingController();
+var txtIdade = TextEditingController();
+var txtAlergias = TextEditingController();
+var txtPeso = TextEditingController();
+var txtSexo = TextEditingController();
+var txtRejeicao = TextEditingController();
+var txtProblemas = TextEditingController();
+var txtObservacao = TextEditingController();
+var txtDescricao = TextEditingController();
+
+final _formKey = GlobalKey<FormState>();
+
 class _AnimaisPageState extends State<AnimaisPage> {
   @override
   Widget build(BuildContext context) {
-    var txtNomeAnimal = TextEditingController();
-    var txtTipo = TextEditingController();
-    var txtRaca = TextEditingController();
-    var txtCor = TextEditingController();
-    var txtIdade = TextEditingController();
-    var txtAlergias = TextEditingController();
-    var txtPeso = TextEditingController();
-    var txtSexo = TextEditingController();
-    var txtRejeicao = TextEditingController();
-    var txtProblemas = TextEditingController();
-    var txtObservacao = TextEditingController();
-    var txtDescricao = TextEditingController();
-
-    final _formKey = GlobalKey<FormState>();
-
+    if (widget.idPet != null) {
+      getPetById(widget.idPet);
+    }
     return Scaffold(
       body: Container(
         color: kPrimaryColor,
@@ -566,37 +573,73 @@ class _AnimaisPageState extends State<AnimaisPage> {
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        try {
-                          await Pets()
-                              .createPets(
-                                  txtNomeAnimal.text,
-                                  txtTipo.text,
-                                  txtRaca.text,
-                                  txtCor.text,
-                                  txtSexo.text,
-                                  double.parse(txtIdade.text),
-                                  double.parse(txtPeso.text),
-                                  txtAlergias.text,
-                                  txtRejeicao.text,
-                                  txtProblemas.text,
-                                  txtObservacao.text,
-                                  txtDescricao.text,
-                                  context)
-                              .then(
-                            (value) {
-                              Navigator.pop(context);
-                            },
-                          );
-                        } catch (e) {
-                          print(e);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Erro ao Cadastrar o Animal"),
-                              duration: Duration(
-                                seconds: 2,
+                        if (widget.idPet == null) {
+                          try {
+                            await Pets()
+                                .createPets(
+                                    txtNomeAnimal.text,
+                                    txtTipo.text,
+                                    txtRaca.text,
+                                    txtCor.text,
+                                    txtSexo.text,
+                                    double.parse(txtIdade.text),
+                                    double.parse(txtPeso.text),
+                                    txtAlergias.text,
+                                    txtRejeicao.text,
+                                    txtProblemas.text,
+                                    txtObservacao.text,
+                                    txtDescricao.text,
+                                    context)
+                                .then(
+                              (value) {
+                                Navigator.pop(context);
+                              },
+                            );
+                          } catch (e) {
+                            print(e);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Erro ao Cadastrar o Animal"),
+                                duration: Duration(
+                                  seconds: 2,
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          }
+                        } else {
+                          try {
+                            await Pets()
+                                .updatePets(
+                                    txtNomeAnimal.text,
+                                    txtTipo.text,
+                                    txtRaca.text,
+                                    txtCor.text,
+                                    txtSexo.text,
+                                    double.parse(txtIdade.text),
+                                    double.parse(txtPeso.text),
+                                    txtAlergias.text,
+                                    txtRejeicao.text,
+                                    txtProblemas.text,
+                                    txtObservacao.text,
+                                    txtDescricao.text,
+                                    widget.idPet.toString(),
+                                    context)
+                                .then(
+                              (value) {
+                                Navigator.pop(context);
+                              },
+                            );
+                          } catch (e) {
+                            print(e);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Erro ao Atualizar o Animal"),
+                                duration: Duration(
+                                  seconds: 2,
+                                ),
+                              ),
+                            );
+                          }
                         }
                       }
                     },
@@ -612,4 +655,25 @@ class _AnimaisPageState extends State<AnimaisPage> {
       ),
     );
   }
+}
+
+getPetById(String idPet) async {
+  await FirebaseFirestore.instance
+      .collection('pets')
+      .doc(idPet)
+      .get()
+      .then((value) {
+    txtNomeAnimal.text = value.get('nome');
+    txtTipo.text = value.get('tipo');
+    txtRaca.text = value.get('raca');
+    txtCor.text = value.get('cor');
+    txtIdade.text = value.get('idade').toString();
+    txtAlergias.text = value.get('alergia');
+    txtPeso.text = value.get('peso').toString();
+    txtSexo.text = value.get('sexo');
+    txtRejeicao.text = value.get('rejeicao');
+    txtProblemas.text = value.get('problemas');
+    txtObservacao.text = value.get('observacoes');
+    txtDescricao.text = value.get('descricao');
+  });
 }

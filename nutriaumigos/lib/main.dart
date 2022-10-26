@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:nutriaumigos/Screens/Alimentacao/alimentacao.dart';
+import 'package:nutriaumigos/Screens/Animais/listaAnimaisPage.dart';
 import 'package:nutriaumigos/Screens/Feedback/feedback.dart';
 import 'package:nutriaumigos/Screens/Login/cadastro.dart';
 import 'package:nutriaumigos/Screens/Login/recuperacao_senha.dart';
@@ -36,9 +37,19 @@ class MyApp extends StatelessWidget {
         'recuperacao': (context) => const RecuperacaoSenhaPage(),
         'menuPrincipal': (context) => const HomePage(),
         'alimentacao': (context) => const AlimentacaoPage(),
-        'animais': (context) => const AnimaisPage(),
+        'animais': (context) => AnimaisPage(
+              idPet:
+                  (ModalRoute.of(context)?.settings.arguments as Map)['idPet'],
+              tipoUsuario: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['tipoUsuario'],
+            ),
         'listaUsuarios': (context) => UsuariosPage(
-              tipoUsuario: (ModalRoute.of(context)?.settings.arguments as Map)['tipoUsuario'],
+              tipoUsuario: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['tipoUsuario'],
+            ),
+        'listaAnimais': (context) => ListaAnimaisPage(
+              tipoUsuario: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['tipoUsuario'],
             ),
       },
     );

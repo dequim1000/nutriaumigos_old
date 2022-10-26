@@ -37,6 +37,40 @@ class Pets {
     DatabaseMethods().addPetsInfoToDB(petsInfoMap);
   }
 
+  Future<void> updatePets(
+      String nome,
+      String tipo,
+      String raca,
+      String cor,
+      String sexo,
+      double idade,
+      double peso,
+      String alergia,
+      String rejeicao,
+      String problemas,
+      String observacoes,
+      String descricao,
+      idPet,
+      context) async {
+    Map<String, dynamic> petsInfoMap = {
+      'idDono': auth.currentUser?.uid,
+      'nome': nome,
+      'tipo': tipo,
+      'raca': raca,
+      'cor': cor,
+      'sexo': sexo,
+      'peso': peso,
+      'idade': idade,
+      'alergia': alergia,
+      'rejeicao': rejeicao,
+      'problemas': problemas,
+      'observacoes': observacoes,
+      'descricao': descricao
+    };
+
+    DatabaseMethods().updatePetsInfoToDB(petsInfoMap, idPet);
+  }
+
   Future<void> loginwithEmailAndPassword(String email, String password) async {
     UserCredential userCredential =
         await auth.signInWithEmailAndPassword(email: email, password: password);

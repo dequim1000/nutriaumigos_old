@@ -27,6 +27,13 @@ class DatabaseMethods {
         .add(petsInfoMap);
   }
 
+  Future updatePetsInfoToDB(Map<String, dynamic> petsInfoMap, String idPet) {
+    return FirebaseFirestore.instance
+        .collection("pets")
+        .doc(idPet)
+        .set(petsInfoMap);
+  }
+
   Future addFeedbackInfoToDB(String feedbackId, Map<String, dynamic> feedbackInfoMap) {
     return FirebaseFirestore.instance
         .collection("feedback")
@@ -38,8 +45,8 @@ class DatabaseMethods {
     return FirebaseFirestore.instance.collection("user").doc(userId).get();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getNutritoClientesFromDB(String clienteId) {
-    return FirebaseFirestore.instance.collection("usernutri").where("idClientes", isEqualTo:clienteId).snapshots();
+  Future<QuerySnapshot<Map<String, dynamic>>> getNutritoClientesFromDB(String clienteId) {
+    return FirebaseFirestore.instance.collection("usernutri").where("idClientes", isEqualTo:clienteId).get();
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getClientestoNutriFromDB(String nutriId) {
