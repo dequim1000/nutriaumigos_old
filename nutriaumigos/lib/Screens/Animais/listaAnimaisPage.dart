@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nutriaumigos/constants.dart';
 import 'package:nutriaumigos/methods/database.dart';
+import 'package:nutriaumigos/methods/pets.dart';
 
 class ListaAnimaisPage extends StatefulWidget {
   const ListaAnimaisPage({super.key, required this.tipoUsuario});
@@ -68,7 +69,14 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
           size: 32,
         ),
         onPressed: () {
-          Navigator.pushNamed(context, 'brocasPage');
+          Navigator.pushNamed(
+            context,
+            'animais',
+            arguments: {
+              'idPets': '',
+              'tipoUsuario': tipoUsuario,
+            },
+          );
         },
       ),
       appBar: AppBar(
@@ -203,6 +211,8 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
           ),
         ),
         subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
               racaPet,
@@ -256,7 +266,7 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
               context,
               'animais',
               arguments: {
-                'idPets': idPet,
+                'idPet': idPet,
                 'tipoUsuario': tipoUsuario,
               },
             );
@@ -264,7 +274,57 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
             Navigator.pop(context);
           }
         },
+        onLongPress: () {
+          dialog(idUsuario, idPet, context);
+        },
       ),
     );
   }
+}
+
+Future<void> dialog(String idUsuario, String idPet, context) {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Excluir Pet?'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: const <Widget>[
+              Text(
+                  'Você excluirá permanentemente o Pet junto com seus alimentos!'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Cancelar'),
+            onPressed: () async {
+              Navigator.pop(context);
+            },
+          ),
+          TextButton(
+            child: const Text('Excluir'),
+            onPressed: () async {
+              try {
+                await Pets().deletePet(idPet);
+              } catch (e) {
+                print(e);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Erro ao Excluir o Animal"),
+                    duration: Duration(
+                      seconds: 2,
+                    ),
+                  ),
+                );
+              }
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

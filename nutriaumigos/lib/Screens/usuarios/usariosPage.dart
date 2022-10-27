@@ -22,15 +22,27 @@ class _UsuariosPageState extends State<UsuariosPage> {
 
   var usuarios;
   var nutricionista;
+  var allData;
   String idUsuario = '';
+
+  CollectionReference _collectionReference =
+      FirebaseFirestore.instance.collection("usernutri");
+
+  Future<void> getData() async {
+    QuerySnapshot querySnapshot = await _collectionReference
+        .where("idClientes", isEqualTo: idUsuario)
+        .get();
+
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    print("Oii" + allData.toString());
+  }
 
   @override
   void initState() {
     super.initState();
-    print(widget.tipoUsuario);
     idUsuario = FirebaseAuth.instance.currentUser!.uid;
-    print(idUsuario);
-    //MEXER AQUI
+    getData();
+
     if (widget.tipoUsuario == 'Clientes') {
       usuarios = FirebaseFirestore.instance
           .collection('user')
@@ -44,17 +56,16 @@ class _UsuariosPageState extends State<UsuariosPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("IdUsuario1:"+idUsuario);
+    print("IdUsuario1:" + idUsuario);
     String usuario = '';
+
     if (widget.tipoUsuario == 'Clientes') {
       usuario = 'Nutricionistas';
-      nutricionista = DatabaseMethods().getNutritoClientesFromDB(idUsuario);
+      //nutricionista = DatabaseMethods().getNutritoClientesFromDB(idUsuario);
+      //print(nutricionista);
 
-      if(nutricionista == null || nutricionista == ''){
-        print("Nao Existe"+nutricionista.toString());
-      }else{
-        print("Existe"+nutricionista.toString());
-      }
+      // if (allData.toString().isEmpty;) {
+      // } else {}
     } else {
       usuario = 'Clientes';
     }
@@ -119,53 +130,58 @@ class _UsuariosPageState extends State<UsuariosPage> {
               });
             }),
           ),
-          Container(
-            child: StreamBuilder<QuerySnapshot>(
-              //fonte de dados (coleção)
-              stream: usuarios.snapshots(),
+          if (allData.toString().isEmpty && widget.tipoUsuario == 'Clientes')
+            Container(
+              child: StreamBuilder<QuerySnapshot>(
+                //fonte de dados (coleção)
+                stream: usuarios.snapshots(),
 
-              //exibir os dados recuperados
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                    return const Center(
-                      child: Text('Não foi possível conectar ao Firestore'),
-                    );
+                //exibir os dados recuperados
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return const Center(
+                        child: Text('Não foi possível conectar ao Firestore'),
+                      );
 
-                  case ConnectionState.waiting:
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    case ConnectionState.waiting:
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
 
-                  default:
-                    return Container(
-                      height: MediaQuery.of(context).size.height -
-                          MediaQuery.of(context).padding.top -
-                          AppBar().preferredSize.height -
-                          82,
-                      child: ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          var data = snapshot.data!.docs[index].data()
-                              as Map<String, dynamic>;
-                          var idNutri = snapshot.data!.docs[index].reference.id;
-                          if (namePesquisa.isEmpty) {
-                            return exibirItem(data, idUsuario, idNutri);
-                          }
-                          if (data['name']
-                              .toString()
-                              .toLowerCase()
-                              .startsWith(namePesquisa.toLowerCase())) {
-                            return exibirItem(data, idUsuario, idNutri);
-                          }
-                          return Container();
-                        },
-                        padding: EdgeInsets.all(20),
-                      ),
-                    );
-                }
-              },
+                    default:
+                      return Container(
+                        height: MediaQuery.of(context).size.height -
+                            MediaQuery.of(context).padding.top -
+                            AppBar().preferredSize.height -
+                            82,
+                        child: ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            var data = snapshot.data!.docs[index].data()
+                                as Map<String, dynamic>;
+                            var idNutri =
+                                snapshot.data!.docs[index].reference.id;
+                            if (namePesquisa.isEmpty) {
+                              return exibirItem(data, idUsuario, idNutri);
+                            }
+                            if (data['name']
+                                .toString()
+                                .toLowerCase()
+                                .startsWith(namePesquisa.toLowerCase())) {
+                              return exibirItem(data, idUsuario, idNutri);
+                            }
+                            return Container();
+                          },
+                          padding: EdgeInsets.all(20),
+                        ),
+                      );
+                  }
+                },
+              ),
             ),
+          Container(
+            child: Text("Usuarios Nulo"),
           ),
         ],
       ),
@@ -173,7 +189,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
   }
 
   Widget exibirItem(item, String idUsuario, String idNutri) {
-    print("IdUsuario2:"+idUsuario);
+    print("IdUsuario2:" + idUsuario);
     String nomeUsuario = item['nome'];
     String descricao = item['crmv'] == '' ? 'Cliente' : item['crmv'];
 
@@ -223,7 +239,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
         ),
         onTap: () {
           if (widget.tipoUsuario == 'Clientes') {
-            print("IdUsuario3:"+idUsuario);
+            print("IdUsuario3:" + idUsuario);
             dialog(idUsuario, idNutri, context);
           } else {
             Navigator.pop(context);
@@ -235,7 +251,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
 }
 
 Future<void> dialog(String idCliente, String idNutri, context) {
-  print("IdUsuario4:"+idCliente);
+  print("IdUsuario4:" + idCliente);
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!

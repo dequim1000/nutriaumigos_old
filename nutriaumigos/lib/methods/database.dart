@@ -9,12 +9,11 @@ class DatabaseMethods {
   }
 
   Future addUsersInfoToDB(Map<String, dynamic> usersInfoMap) {
-    return FirebaseFirestore.instance
-        .collection("usernutri")
-        .add(usersInfoMap);
+    return FirebaseFirestore.instance.collection("usernutri").add(usersInfoMap);
   }
 
-  Future addAlimentosInfoToDB(String alimentoId, Map<String, dynamic> alimentoInfoMap) {
+  Future addAlimentosInfoToDB(
+      String alimentoId, Map<String, dynamic> alimentoInfoMap) {
     return FirebaseFirestore.instance
         .collection("alimentos")
         .doc(alimentoId)
@@ -22,9 +21,7 @@ class DatabaseMethods {
   }
 
   Future addPetsInfoToDB(Map<String, dynamic> petsInfoMap) {
-    return FirebaseFirestore.instance
-        .collection("pets")
-        .add(petsInfoMap);
+    return FirebaseFirestore.instance.collection("pets").add(petsInfoMap);
   }
 
   Future updatePetsInfoToDB(Map<String, dynamic> petsInfoMap, String idPet) {
@@ -34,7 +31,12 @@ class DatabaseMethods {
         .set(petsInfoMap);
   }
 
-  Future addFeedbackInfoToDB(String feedbackId, Map<String, dynamic> feedbackInfoMap) {
+  Future deletePetsInfoToDB(String idPet) {
+    return FirebaseFirestore.instance.collection('pets').doc(idPet).delete();
+  }
+
+  Future addFeedbackInfoToDB(
+      String feedbackId, Map<String, dynamic> feedbackInfoMap) {
     return FirebaseFirestore.instance
         .collection("feedback")
         .doc(feedbackId)
@@ -45,16 +47,28 @@ class DatabaseMethods {
     return FirebaseFirestore.instance.collection("user").doc(userId).get();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getNutritoClientesFromDB(String clienteId) {
-    return FirebaseFirestore.instance.collection("usernutri").where("idClientes", isEqualTo:clienteId).get();
+  Stream<QuerySnapshot<Map<String, dynamic>>> getNutritoClientesFromDB(
+      String clienteId) {
+    return FirebaseFirestore.instance
+        .collection("usernutri")
+        .where("idClientes", isEqualTo: clienteId)
+        .snapshots();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getClientestoNutriFromDB(String nutriId) {
-    return FirebaseFirestore.instance.collection("usernutri").where("idNutri", isEqualTo:nutriId).snapshots();
+  Stream<QuerySnapshot<Map<String, dynamic>>> getClientestoNutriFromDB(
+      String nutriId) {
+    return FirebaseFirestore.instance
+        .collection("usernutri")
+        .where("idNutri", isEqualTo: nutriId)
+        .snapshots();
   }
-  
-  Stream<QuerySnapshot<Map<String, dynamic>>> getUsertoClienteFromDB(String userId) {
-    return FirebaseFirestore.instance.collection("user").where('crmv', isEqualTo: '').snapshots();
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getUsertoClienteFromDB(
+      String userId) {
+    return FirebaseFirestore.instance
+        .collection("user")
+        .where('crmv', isEqualTo: '')
+        .snapshots();
   }
 
   Future<DocumentSnapshot> getUsertoNutricionistaFromDB(String userId) {

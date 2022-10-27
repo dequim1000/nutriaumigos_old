@@ -32,7 +32,7 @@ final _formKey = GlobalKey<FormState>();
 class _AnimaisPageState extends State<AnimaisPage> {
   @override
   Widget build(BuildContext context) {
-    if (widget.idPet != null) {
+    if (widget.idPet != null || widget.idPet == '') {
       getPetById(widget.idPet);
     }
     return Scaffold(
@@ -573,7 +573,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        if (widget.idPet == null) {
+                        if (widget.idPet == null || widget.idPet == '') {
                           try {
                             await Pets()
                                 .createPets(

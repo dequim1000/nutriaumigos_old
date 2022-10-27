@@ -100,7 +100,7 @@ _actions(context, String tipoUsuario, String nomeUsuario) {
               'assets/icons/patinhaColor_icon.png', 'listaUsuarios'),
           const SizedBox(width: 5),
           _buildCard(context, 'Pet', tipoUsuario,
-              'assets/icons/patinha_icon.png', 'animais'),
+              'assets/icons/patinha_icon.png', 'listaAnimais'),
           const SizedBox(width: 5),
           _buildCard(context, 'Alimentos', tipoUsuario,
               'assets/icons/osso-de-cao.png', 'alimentacao'),
