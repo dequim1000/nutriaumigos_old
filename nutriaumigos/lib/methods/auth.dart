@@ -12,6 +12,7 @@ class Authent{
     UserCredential userCredential = await auth.createUserWithEmailAndPassword(
         email: email, password: senha);
     Map<String, dynamic> userInfoMap = {
+      'uid': auth.currentUser!.uid,
       'nome': nome,
       'email': email,
       'telefone': telefone,

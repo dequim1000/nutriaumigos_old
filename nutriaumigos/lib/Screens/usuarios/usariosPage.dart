@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,68 +24,65 @@ class _UsuariosPageState extends State<UsuariosPage> {
   get kPrimaryColor => null;
 
   var usuarios;
+  var clientesToNutricionista;
   var nutricionista;
-  var allData;
+  List allData = [];
   String idUsuario = '';
 
   CollectionReference _collectionReference =
       FirebaseFirestore.instance.collection("usernutri");
 
-  Future<void> getData() async {
+  Future<void> getDataCliente() async {
     QuerySnapshot querySnapshot = await _collectionReference
         .where("idClientes", isEqualTo: idUsuario)
         .get();
 
-    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    print("Oii" + allData.toString());
+    setState(() {
+      allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    });
+  }
+
+  Future<void> getDataNutri() async {
+    QuerySnapshot querySnapshot =
+        await _collectionReference.where("idNutri", isEqualTo: idUsuario).get();
+    setState(() {
+      allData = querySnapshot. docs.map((doc) => doc.data()).toList();
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    idUsuario = FirebaseAuth.instance.currentUser!.uid;
-    getData();
-
     if (widget.tipoUsuario == 'Clientes') {
+      Timer(Duration(seconds: 1), () => getDataCliente());
+      
       usuarios = FirebaseFirestore.instance
           .collection('user')
           .where('crmv', isNotEqualTo: '');
     } else {
+      Timer(Duration(seconds: 1), () => getDataNutri());
       usuarios = FirebaseFirestore.instance
           .collection('user')
           .where('crmv', isEqualTo: '');
     }
+    idUsuario = FirebaseAuth.instance.currentUser!.uid;
   }
 
   @override
   Widget build(BuildContext context) {
     print("IdUsuario1:" + idUsuario);
     String usuario = '';
+    print(allData);
+    
 
     if (widget.tipoUsuario == 'Clientes') {
       usuario = 'Nutricionistas';
-      //nutricionista = DatabaseMethods().getNutritoClientesFromDB(idUsuario);
-      //print(nutricionista);
-
-      // if (allData.toString().isEmpty;) {
-      // } else {}
     } else {
       usuario = 'Clientes';
     }
     return Scaffold(
       backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),
-      // floatingActionButton: FloatingActionButton(
-      //   foregroundColor: kPrimaryColor,
-      //   backgroundColor: kSecondColor,
-      //   child: const Icon(
-      //     Icons.add,
-      //     color: Color.fromRGBO(3, 152, 158, 0.73),
-      //     size: 32,
-      //   ),
-      //   onPressed: () {
-      //     Navigator.pushNamed(context, 'brocasPage');
-      //   },
-      // ),
+      
       appBar: AppBar(
         title: Text(usuario),
         centerTitle: true,
@@ -130,7 +130,8 @@ class _UsuariosPageState extends State<UsuariosPage> {
               });
             }),
           ),
-          if (allData.toString().isEmpty && widget.tipoUsuario == 'Clientes')
+          //Mostrar Lista de Nutricionistas Disponiveis
+          if (allData.isEmpty && widget.tipoUsuario == 'Clientes')
             Container(
               child: StreamBuilder<QuerySnapshot>(
                 //fonte de dados (coleção)
@@ -180,15 +181,77 @@ class _UsuariosPageState extends State<UsuariosPage> {
                 },
               ),
             ),
-          Container(
-            child: Text("Usuarios Nulo"),
-          ),
+          if (allData.isNotEmpty && widget.tipoUsuario == 'Clientes')
+            Container(
+              child: Text("Usuario já tem um nutricionista cadastrado"),
+            ),
+          //Mostrar Usuarios Cadastrados daquele nutri
+          if (allData.isNotEmpty && widget.tipoUsuario != 'Clientes')
+            Container(
+              child: StreamBuilder<QuerySnapshot>(
+                //fonte de dados (coleção)
+                stream: usuarios.snapshots(),
+
+                //exibir os dados recuperados
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return const Center(
+                        child: Text('Não foi possível conectar ao Firestore'),
+                      );
+
+                    case ConnectionState.waiting:
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+
+                    default:
+                      return Container(
+                        height: MediaQuery.of(context).size.height -
+                            MediaQuery.of(context).padding.top -
+                            AppBar().preferredSize.height -
+                            82,
+                        child: ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            var data = snapshot.data!.docs[index].data()
+                                as Map<String, dynamic>;
+                            var idNutri =
+                                snapshot.data!.docs[index].reference.id;
+                            if (namePesquisa.isEmpty) {
+                              var teste = allData[0] as Map<String,dynamic>;
+                              teste['idNutri'];
+                              print("Ola"+teste['idNutri']);
+                              if(idNutri == teste['idNutri']){
+                                print("Oi"+teste['idNutri']);
+                              }
+                              return exibirItem(data, idUsuario, idNutri);
+                            }
+                            if (data['name']
+                                .toString()
+                                .toLowerCase()
+                                .startsWith(namePesquisa.toLowerCase())) {
+                              return exibirItem(data, idUsuario, idNutri);
+                            }
+                            return Container();
+                          },
+                          padding: EdgeInsets.all(20),
+                        ),
+                      );
+                  }
+                },
+              ),
+            ),
+          if (allData.isEmpty && widget.tipoUsuario != 'Clientes')
+            Container(
+              child: Text("Você não possui nenhum cliente vinculado!"),
+            ),
         ],
       ),
     );
   }
 
-  Widget exibirItem(item, String idUsuario, String idNutri) {
+  Widget exibirItem(item, String idUsuario, String idItem) {
     print("IdUsuario2:" + idUsuario);
     String nomeUsuario = item['nome'];
     String descricao = item['crmv'] == '' ? 'Cliente' : item['crmv'];
@@ -240,9 +303,14 @@ class _UsuariosPageState extends State<UsuariosPage> {
         onTap: () {
           if (widget.tipoUsuario == 'Clientes') {
             print("IdUsuario3:" + idUsuario);
-            dialog(idUsuario, idNutri, context);
+            dialog(idUsuario, idItem, context);
           } else {
-            Navigator.pop(context);
+            print(idUsuario);
+            print(idItem);
+
+            Navigator.pushNamed(context, 'listaAnimais',
+                arguments: {'idDono': idItem});
+            //Navigator.pop(context);
           }
         },
       ),

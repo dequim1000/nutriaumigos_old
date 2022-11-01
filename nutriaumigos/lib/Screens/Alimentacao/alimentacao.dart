@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nutriaumigos/constants.dart';
+import 'package:nutriaumigos/methods/alimentos.dart';
 
 class AlimentacaoPage extends StatefulWidget {
-  const AlimentacaoPage({super.key});
+  const AlimentacaoPage({super.key, required this.idAlimento, required this.tipoUsuario, required this.idPet});
+  final idAlimento;
+  final tipoUsuario;
+  final idPet;
 
   @override
   State<AlimentacaoPage> createState() => _AlimentacaoPageState();
@@ -311,9 +315,64 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                         ),
                       ],
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.pop(context);
+                        if (widget.idAlimento == null || widget.idAlimento == '') {
+                          try {
+                            await Alimentos()
+                                .createAlimento(
+                                    widget.idPet,
+                                    selectedItem.toString(),
+                                    txtNomeAnimal.text,
+                                    txtHorario.text,
+                                    txtQuantidade.text,
+                                    txtDescricao.text,
+                                    context)
+                                .then(
+                              (value) {
+                                Navigator.pop(context);
+                              },
+                            );
+                          } catch (e) {
+                            print(e);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Erro ao Cadastrar o Animal"),
+                                duration: Duration(
+                                  seconds: 2,
+                                ),
+                              ),
+                            );
+                          }
+                        } else {
+                          try {
+                            await Alimentos()
+                                .updateAlimento(
+                                    widget.idPet,
+                                    selectedItem.toString(),
+                                    txtNomeAnimal.text,
+                                    txtHorario.text,
+                                    txtQuantidade.text,
+                                    txtDescricao.text,
+                                    widget.idAlimento.toString(),
+                                    context)
+                                .then(
+                              (value) {
+                                Navigator.pop(context);
+                              },
+                            );
+                          } catch (e) {
+                            print(e);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Erro ao Atualizar o Animal"),
+                                duration: Duration(
+                                  seconds: 2,
+                                ),
+                              ),
+                            );
+                          }
+                        }
                       }
                     },
                   ),

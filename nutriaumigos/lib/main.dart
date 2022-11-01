@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:nutriaumigos/Screens/Alimentacao/alimentacao.dart';
+import 'package:nutriaumigos/Screens/Alimentacao/listaAlimentosPage.dart';
 import 'package:nutriaumigos/Screens/Animais/listaAnimaisPage.dart';
 import 'package:nutriaumigos/Screens/Feedback/feedback.dart';
 import 'package:nutriaumigos/Screens/Login/cadastro.dart';
@@ -36,7 +37,14 @@ class MyApp extends StatelessWidget {
         'cadastro': (context) => const CadastroPage(),
         'recuperacao': (context) => const RecuperacaoSenhaPage(),
         'menuPrincipal': (context) => const HomePage(),
-        'alimentacao': (context) => const AlimentacaoPage(),
+        'alimentacao': (context) => AlimentacaoPage(
+              idAlimento: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['idAlimento'],
+              idPet:
+                  (ModalRoute.of(context)?.settings.arguments as Map)['idPet'],
+              tipoUsuario: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['tipoUsuario'],
+            ),
         'animais': (context) => AnimaisPage(
               idPet:
                   (ModalRoute.of(context)?.settings.arguments as Map)['idPet'],
@@ -50,6 +58,24 @@ class MyApp extends StatelessWidget {
         'listaAnimais': (context) => ListaAnimaisPage(
               tipoUsuario: (ModalRoute.of(context)?.settings.arguments
                   as Map)['tipoUsuario'],
+              stateAlimentacao: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['stateAlimentacao'],
+              stateFeedback: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['stateFeedback'],
+              idDono:
+                  (ModalRoute.of(context)?.settings.arguments as Map)['idDono'],
+            ),
+        'listaAlimentos': (context) => ListaAlimentosPage(
+              tipoUsuario: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['tipoUsuario'],
+              idPet:
+                  (ModalRoute.of(context)?.settings.arguments as Map)['idPet'],
+              stateAlimentacao: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['stateAlimentacao'],
+              stateFeedback: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['stateFeedback'],
+              idDono:
+                  (ModalRoute.of(context)?.settings.arguments as Map)['idDono'],
             ),
       },
     );

@@ -8,8 +8,16 @@ import 'package:nutriaumigos/methods/database.dart';
 import 'package:nutriaumigos/methods/pets.dart';
 
 class ListaAnimaisPage extends StatefulWidget {
-  const ListaAnimaisPage({super.key, required this.tipoUsuario});
+  const ListaAnimaisPage(
+      {super.key,
+      required this.tipoUsuario,
+      required this.stateAlimentacao,
+      required this.stateFeedback,
+      this.idDono});
   final tipoUsuario;
+  final stateAlimentacao;
+  final stateFeedback;
+  final idDono;
 
   @override
   State<ListaAnimaisPage> createState() => _ListaAnimaisPageState();
@@ -30,7 +38,6 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
     print(widget.tipoUsuario);
     idUsuario = FirebaseAuth.instance.currentUser!.uid;
     print(idUsuario);
-    //MEXER AQUI
     if (widget.tipoUsuario == 'Clientes') {
       pets = FirebaseFirestore.instance
           .collection('pets')
@@ -38,23 +45,18 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
     } else {
       pets = FirebaseFirestore.instance
           .collection('pets')
-          .where('crmv', isEqualTo: '');
+          .where('idDono', isEqualTo: widget.idDono);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    print('StatusAlimentacao'+widget.stateAlimentacao.toString());
+    print('StateFeedback'+widget.stateFeedback.toString());
     print("IdUsuario1:" + idUsuario);
     String usuario = '';
     if (widget.tipoUsuario == 'Clientes') {
       usuario = 'Nutricionistas';
-      nutricionista = DatabaseMethods().getNutritoClientesFromDB(idUsuario);
-
-      if (nutricionista == null || nutricionista == '') {
-        print("Nao Existe" + nutricionista.toString());
-      } else {
-        print("Existe" + nutricionista.toString());
-      }
     } else {
       usuario = 'Clientes';
     }
@@ -260,14 +262,89 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
           ],
         ),
         onTap: () {
-          if (widget.tipoUsuario == 'Clientes') {
+          if (widget.tipoUsuario == 'Clientes' &&
+              !widget.stateAlimentacao &&
+              !widget.stateFeedback) {
             print("IdUsuario3:" + idUsuario);
             Navigator.pushNamed(
               context,
               'animais',
               arguments: {
+                'tipoUsuario': widget.tipoUsuario,
                 'idPet': idPet,
-                'tipoUsuario': tipoUsuario,
+                'idDono': widget.idDono,
+                'stateAlimentacao': widget.stateAlimentacao,
+                'stateFeedback': widget.stateFeedback,
+              },
+            );
+          } else if (widget.tipoUsuario != 'Clientes' &&
+              !widget.stateAlimentacao &&
+              !widget.stateFeedback) {
+            Navigator.pushNamed(
+              context,
+              'animais',
+              arguments: {
+                'tipoUsuario': widget.tipoUsuario,
+                'idPet': idPet,
+                'idDono': widget.idDono,
+                'stateAlimentacao': widget.stateAlimentacao,
+                'stateFeedback': widget.stateFeedback,
+              },
+            );
+          } else if (widget.tipoUsuario == 'Clientes' &&
+              widget.stateAlimentacao &&
+              !widget.stateFeedback) {
+            Navigator.pushNamed(
+              context,
+              'listaAlimentos',
+              arguments: {
+                'tipoUsuario': widget.tipoUsuario,
+                'idPet': idPet,
+                'idDono': widget.idDono,
+                'stateAlimentacao': widget.stateAlimentacao,
+                'stateFeedback': widget.stateFeedback,
+              },
+            );
+          } else if (widget.tipoUsuario != 'Clientes' &&
+              widget.stateAlimentacao &&
+              !widget.stateFeedback) {
+            Navigator.pushNamed(
+              context,
+              'listaAlimentos',
+              arguments: {
+                'tipoUsuario': widget.tipoUsuario,
+                'idPet': idPet,
+                'idDono': widget.idDono,
+                'stateAlimentacao': widget.stateAlimentacao,
+                'stateFeedback': widget.stateFeedback,
+              },
+            );
+          } else if (widget.tipoUsuario == 'Clientes' &&
+              !widget.stateAlimentacao &&
+              widget.stateFeedback) {
+            Navigator.pushNamed(
+              context,
+              'listaAlimentos',
+              arguments: {
+                'tipoUsuario': widget.tipoUsuario,
+                'idPet': idPet,
+                'idDono': widget.idDono,
+                'stateAlimentacao': widget.stateAlimentacao,
+                'stateFeedback': widget.stateFeedback,
+              },
+            );
+          } else if (widget.tipoUsuario != 'Clientes' &&
+              !widget.stateAlimentacao &&
+              widget.stateFeedback) {
+            Navigator.pushNamed(
+              context,
+              'listaAlimentos',
+              arguments: {
+                'tipoUsuario': widget.tipoUsuario,
+                'idPet': idPet,
+                'idDono': widget.idDono,
+                'stateAlimentacao': widget.stateAlimentacao,
+                'stateFeedback': widget.stateFeedback,
               },
             );
           } else {

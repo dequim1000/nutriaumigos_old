@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nutriaumigos/constants.dart';
 
@@ -36,6 +37,26 @@ class _AnimaisPageState extends State<AnimaisPage> {
       getPetById(widget.idPet);
     }
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Pets", style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800),),
+        centerTitle: true,
+        backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout_outlined),
+            onPressed: () async {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushReplacementNamed(context, 'login');
+            },
+          ),
+        ],
+      ),
       body: Container(
         color: kPrimaryColor,
         padding: const EdgeInsets.only(
@@ -48,20 +69,6 @@ class _AnimaisPageState extends State<AnimaisPage> {
           key: _formKey,
           child: ListView(
             children: <Widget>[
-              const Center(
-                child: Text(
-                  "Pets",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 40,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
               Row(
                 children: [
                   IconButton(
@@ -644,6 +651,18 @@ class _AnimaisPageState extends State<AnimaisPage> {
                       }
                     },
                   ),
+                ),
+              ),
+              Container(
+                height: 40,
+                alignment: Alignment.center,
+                child: TextButton(
+                  child: const Text(
+                    "Cancelar",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: kSecondColor),
+                  ),
+                  onPressed: () => Navigator.pop(context, false),
                 ),
               ),
               const SizedBox(

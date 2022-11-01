@@ -12,11 +12,16 @@ class DatabaseMethods {
     return FirebaseFirestore.instance.collection("usernutri").add(usersInfoMap);
   }
 
-  Future addAlimentosInfoToDB(
-      String alimentoId, Map<String, dynamic> alimentoInfoMap) {
+  Future addAlimentosInfoToDB(Map<String, dynamic> alimentoInfoMap) {
     return FirebaseFirestore.instance
         .collection("alimentos")
-        .doc(alimentoId)
+        .add(alimentoInfoMap);
+  }
+
+  Future updateAlimentosInfoToDB(Map<String, dynamic> alimentoInfoMap, String idAlimento) {
+    return FirebaseFirestore.instance
+        .collection("alimentos")
+        .doc(idAlimento)
         .set(alimentoInfoMap);
   }
 

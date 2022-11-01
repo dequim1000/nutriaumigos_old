@@ -97,16 +97,16 @@ _actions(context, String tipoUsuario, String nomeUsuario) {
             ),
           ),
           _buildCard(context, nomeUsuario, tipoUsuario,
-              'assets/icons/patinhaColor_icon.png', 'listaUsuarios'),
+              'assets/icons/patinhaColor_icon.png', 'listaUsuarios', false, false),
           const SizedBox(width: 5),
           _buildCard(context, 'Pet', tipoUsuario,
-              'assets/icons/patinha_icon.png', 'listaAnimais'),
+              'assets/icons/patinha_icon.png', 'listaAnimais', false, false),
           const SizedBox(width: 5),
           _buildCard(context, 'Alimentos', tipoUsuario,
-              'assets/icons/osso-de-cao.png', 'alimentacao'),
+              'assets/icons/osso-de-cao.png', 'listaAnimais', true, false),
           const SizedBox(width: 5),
           _buildCard(context, 'FeedBack', tipoUsuario,
-              'assets/icons/estrela.png', 'feedback'),
+              'assets/icons/estrela.png', 'listaAnimais', false, true),
           const Padding(
             padding: EdgeInsets.only(
               right: 15,
@@ -298,8 +298,14 @@ _listaAlimentos() {
   );
 }
 
-_buildCard(BuildContext context, String tituloCard, String tipoUsuario,
-    String imageButton, String nomeTela) {
+_buildCard(
+    BuildContext context,
+    String tituloCard,
+    String tipoUsuario,
+    String imageButton,
+    String nomeTela,
+    bool stateAlimentacao,
+    bool stateFeedback) {
   return SizedBox(
     width: 110,
     height: 110,
@@ -307,8 +313,11 @@ _buildCard(BuildContext context, String tituloCard, String tipoUsuario,
       children: [
         GestureDetector(
           onTap: () => {
-            Navigator.pushNamed(context, nomeTela,
-                arguments: {'tipoUsuario': tipoUsuario})
+            Navigator.pushNamed(context, nomeTela, arguments: {
+              'tipoUsuario': tipoUsuario,
+              'stateAlimentacao': stateAlimentacao,
+              'stateFeedback': stateFeedback,
+            })
           },
           child: Container(
             width: 74,
