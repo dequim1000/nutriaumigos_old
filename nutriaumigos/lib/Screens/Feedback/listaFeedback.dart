@@ -7,23 +7,25 @@ import 'package:nutriaumigos/constants.dart';
 import 'package:nutriaumigos/methods/database.dart';
 import 'package:nutriaumigos/methods/pets.dart';
 
-class ListaAnimaisPage extends StatefulWidget {
-  const ListaAnimaisPage(
+class ListaFeedbackPage extends StatefulWidget {
+  const ListaFeedbackPage(
       {super.key,
       required this.tipoUsuario,
       required this.stateAlimentacao,
       required this.stateFeedback,
-      this.idDono});
+      required this.idPet,
+      required this.idAlimento});
   final tipoUsuario;
   final stateAlimentacao;
   final stateFeedback;
-  final idDono;
+  final idPet;
+  final idAlimento;
 
   @override
-  State<ListaAnimaisPage> createState() => _ListaAnimaisPageState();
+  State<ListaFeedbackPage> createState() => _ListaFeedbackPageState();
 }
 
-class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
+class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
   String namePesquisa = '';
   var tipoUsuario;
   var pets;
@@ -39,13 +41,13 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
     idUsuario = FirebaseAuth.instance.currentUser!.uid;
     print(idUsuario);
     if (widget.tipoUsuario == 'Clientes') {
-      pets = FirebaseFirestore.instance
-          .collection('pets')
-          .where('idDono', isEqualTo: idUsuario);
+      // pets = FirebaseFirestore.instance
+      //     .collection('pets')
+      //     .where('idDono', isEqualTo: idUsuario);
     } else {
-      pets = FirebaseFirestore.instance
-          .collection('pets')
-          .where('idDono', isEqualTo: widget.idDono);
+      // pets = FirebaseFirestore.instance
+      //     .collection('pets')
+      //     .where('idDono', isEqualTo: widget.idDono);
     }
   }
 

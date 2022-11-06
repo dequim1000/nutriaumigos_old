@@ -84,6 +84,12 @@ _title() {
 }
 
 _actions(context, String tipoUsuario, String nomeUsuario) {
+  String navegacaoTela = '';
+  if (tipoUsuario == 'Clientes') {
+    navegacaoTela = 'listaAnimais';
+  } else {
+    navegacaoTela = 'listaUsuarios';
+  }
   return Container(
     height: 100,
     margin: const EdgeInsets.only(top: 30),
@@ -96,17 +102,23 @@ _actions(context, String tipoUsuario, String nomeUsuario) {
               left: 7,
             ),
           ),
-          _buildCard(context, nomeUsuario, tipoUsuario,
-              'assets/icons/patinhaColor_icon.png', 'listaUsuarios', false, false),
+          _buildCard(
+              context,
+              nomeUsuario,
+              tipoUsuario,
+              'assets/icons/patinhaColor_icon.png',
+              'listaUsuarios',
+              false,
+              false),
           const SizedBox(width: 5),
           _buildCard(context, 'Pet', tipoUsuario,
-              'assets/icons/patinha_icon.png', 'listaAnimais', false, false),
+              'assets/icons/patinha_icon.png', navegacaoTela, false, false),
           const SizedBox(width: 5),
           _buildCard(context, 'Alimentos', tipoUsuario,
-              'assets/icons/osso-de-cao.png', 'listaAnimais', true, false),
+              'assets/icons/osso-de-cao.png', navegacaoTela, true, false),
           const SizedBox(width: 5),
           _buildCard(context, 'FeedBack', tipoUsuario,
-              'assets/icons/estrela.png', 'listaAnimais', false, true),
+              'assets/icons/estrela.png', navegacaoTela, false, true),
           const Padding(
             padding: EdgeInsets.only(
               right: 15,

@@ -11,7 +11,7 @@ class Alimentos{
   Future<void> createAlimento(
       String idPet,
       String diaSemana,
-      String nomeAnimal,
+      String nomeAlimento,
       String horario,
       String quantidade,
       String descricao,
@@ -21,7 +21,7 @@ class Alimentos{
       'idPet': idPet,
       //'idDono': auth.currentUser?.uid,
       'diaSemana': diaSemana,
-      'nomeAnimal': nomeAnimal,
+      'nomeAlimento': nomeAlimento,
       'horario': horario,
       'quantidade': quantidade,
       'descricao': descricao,
@@ -33,7 +33,7 @@ class Alimentos{
   Future<void> updateAlimento(
       String idPet,
       String diaSemana,
-      String nomeAnimal,
+      String nomeAlimento,
       String horario,
       String quantidade,
       String descricao,
@@ -44,7 +44,7 @@ class Alimentos{
       'idPet': idPet,
       //'idDono': auth.currentUser?.uid,
       'diaSemana': diaSemana,
-      'nomeAnimal': nomeAnimal,
+      'nomeAlimento': nomeAlimento,
       'horario': horario,
       'quantidade': quantidade,
       'descricao': descricao,
@@ -55,15 +55,6 @@ class Alimentos{
 
   Future<void> deleteAlimento(idPet) async {
     await DatabaseMethods().deletePetsInfoToDB(idPet);
-  }
-
-  Future<void> loginwithEmailAndPassword(String email, String password) async {
-    UserCredential userCredential = 
-      await auth.signInWithEmailAndPassword(email: email, password: password);
-  }
-
-  Future<void> resetPasswordWithEmail(String email) async {
-    await auth.sendPasswordResetEmail(email: email);
   }
 
   Future<void> logout() async {

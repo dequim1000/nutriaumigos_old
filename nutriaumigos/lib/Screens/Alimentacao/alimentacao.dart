@@ -1,23 +1,26 @@
 import 'dart:ffi';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:nutriaumigos/Screens/Animais/animais.dart';
 import 'package:nutriaumigos/constants.dart';
 import 'package:nutriaumigos/methods/alimentos.dart';
 
 class AlimentacaoPage extends StatefulWidget {
-  const AlimentacaoPage({super.key, required this.idAlimento, required this.tipoUsuario, required this.idPet});
+  const AlimentacaoPage({super.key, required this.tipoUsuario, required this.idAlimento, required this.idPet, required this.stateAlimentacao, required this.stateFeedback});
   final idAlimento;
   final tipoUsuario;
   final idPet;
+  final stateAlimentacao;
+  final stateFeedback;
 
   @override
   State<AlimentacaoPage> createState() => _AlimentacaoPageState();
 }
-
-class _AlimentacaoPageState extends State<AlimentacaoPage> {
-  List<String> items = [
+    List<String> items = [
     'Segunda-Feira',
     'Terça-Feira',
     'Quarta-Feira',
@@ -28,16 +31,47 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
   ];
   String? selectedItem = 'Segunda-Feira';
 
-  @override
-  Widget build(BuildContext context) {
-    var txtNomeAnimal = TextEditingController();
+
+    var txtNomeAlimento = TextEditingController();
     var txtHorario = TextEditingController();
     var txtQuantidade = TextEditingController();
     var txtDescricao = TextEditingController();
 
     final _formKey = GlobalKey<FormState>();
+class _AlimentacaoPageState extends State<AlimentacaoPage> {
+  @override
+  Widget build(BuildContext context) {
+    print("OI ANDRE");
+    print(widget.idPet);
+    print(widget.idAlimento);
+    print(widget.stateAlimentacao);
+    print(widget.stateFeedback);
+    print(widget.tipoUsuario);
+    if (widget.idAlimento != null) {
+      getAlimentosById(widget.idAlimento);
+    }
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Alimentos", style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800),),
+        centerTitle: true,
+        backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout_outlined),
+            onPressed: () async {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushReplacementNamed(context, 'login');
+            },
+          ),
+        ],
+      ),
       body: Container(
         color: kPrimaryColor,
         padding: const EdgeInsets.only(
@@ -49,20 +83,6 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
           key: _formKey,
           child: ListView(
             children: <Widget>[
-              const Center(
-                child: Text(
-                  "Alimentos",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 40,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
               Row(
                 children: [
                   IconButton(
@@ -71,7 +91,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                     onPressed: () {},
                   ),
                   const SizedBox(
-                    width: 25,
+                    width: 5,
                   ),
                   const Text(
                     "Cadastro de Alimento",
@@ -79,7 +99,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                     style: TextStyle(
                       color: kPrimaryLightColor,
                       fontWeight: FontWeight.bold,
-                      fontSize: 25,
+                      fontSize: 20,
                     ),
                   ),
                 ],
@@ -94,7 +114,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                     fillColor: Colors.white,
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                             width: 0,
                             style: BorderStyle.none,
                             color: Colors.white)),
@@ -103,26 +123,27 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                   items: items
                       .map((item) => DropdownMenuItem<String>(
                             value: item,
-                            child: Text(item, style: TextStyle(fontSize: 20)),
+                            child: Text(item, style: const TextStyle(fontSize: 20)),
                           ))
                       .toList(),
-                  onChanged: (item) => setState(() => selectedItem = item),
+                  onChanged: widget.tipoUsuario != 'Clientes' ? (item) => setState(() => selectedItem = item) : null,
                 ),
               ),
               const SizedBox(
                 height: 10,
               ),
               TextFormField(
-                controller: txtNomeAnimal,
+                controller: txtNomeAlimento,
                 autofocus: true,
-                decoration: InputDecoration(
+                enabled: widget.tipoUsuario != 'Clientes',
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   isDense: true,
                   contentPadding: EdgeInsets.all(20),
                   border: UnderlineInputBorder(
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
                     ),
                     borderSide: BorderSide(
                       width: 0,
@@ -152,14 +173,15 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
               TextFormField(
                 controller: txtHorario,
                 autofocus: true,
-                decoration: InputDecoration(
+                enabled: widget.tipoUsuario != 'Clientes',
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   isDense: true,
                   contentPadding: EdgeInsets.all(20),
                   border: UnderlineInputBorder(
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
                     ),
                     borderSide: BorderSide(
                       width: 0,
@@ -189,14 +211,15 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
               TextFormField(
                 controller: txtQuantidade,
                 autofocus: true,
-                decoration: InputDecoration(
+                enabled: widget.tipoUsuario != 'Clientes',
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   isDense: true,
                   contentPadding: EdgeInsets.all(20),
                   border: UnderlineInputBorder(
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
                     ),
                     borderSide: BorderSide(
                       width: 0,
@@ -226,14 +249,15 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
               TextFormField(
                 controller: txtDescricao,
                 autofocus: true,
-                decoration: InputDecoration(
+                enabled: widget.tipoUsuario != 'Clientes',
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   isDense: true,
                   contentPadding: EdgeInsets.all(20),
                   border: UnderlineInputBorder(
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(10.0),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
                     ),
                     borderSide: BorderSide(
                       width: 0,
@@ -260,16 +284,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
               const SizedBox(
                 height: 40,
               ),
-              // Checkbox(
-              //     value: "Segunda",
-              //     onChanged: (DiaSemana) {
-              //       print(checked);
-              //     }),
-              // Checkbox(
-              //     value: "Segunda",
-              //     onChanged: (DiaSemana) {
-              //       print(checked);
-              //     }),
+              if(widget.tipoUsuario != 'Clientes')
               Container(
                 height: 60,
                 alignment: Alignment.centerLeft,
@@ -323,7 +338,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                                 .createAlimento(
                                     widget.idPet,
                                     selectedItem.toString(),
-                                    txtNomeAnimal.text,
+                                    txtNomeAlimento.text,
                                     txtHorario.text,
                                     txtQuantidade.text,
                                     txtDescricao.text,
@@ -350,7 +365,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                                 .updateAlimento(
                                     widget.idPet,
                                     selectedItem.toString(),
-                                    txtNomeAnimal.text,
+                                    txtNomeAlimento.text,
                                     txtHorario.text,
                                     txtQuantidade.text,
                                     txtDescricao.text,
@@ -378,6 +393,22 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                   ),
                 ),
               ),
+              if(widget.tipoUsuario != 'Clientes')
+              Container(
+                height: 40,
+                alignment: Alignment.center,
+                child: TextButton(
+                  child: const Text(
+                    "Cancelar",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: kSecondColor),
+                  ),
+                  onPressed: () {
+                    cleanCampos();
+                    Navigator.pop(context, false);
+                  } 
+                ),
+              ),
               const SizedBox(
                 height: 5,
               ),
@@ -387,4 +418,19 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
       ),
     );
   }
+}
+
+getAlimentosById(String idAlimento) async {
+  print(idAlimento);
+  // await FirebaseFirestore.instance
+  //     .collection('alimentos')
+  //     .doc(idAlimento)
+  //     .get()
+  //     .then((value) {
+  //   txtNomeAlimento.text = value.get('nomeAlimento');
+  //   txtHorario.text = value.get('horario');
+  //   txtQuantidade.text = value.get('quantidade');
+  //   txtDescricao.text = value.get('descricao');
+  //   selectedItem = value.get('diaSemana');
+  // });
 }

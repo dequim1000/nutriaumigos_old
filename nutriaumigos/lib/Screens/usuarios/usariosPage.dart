@@ -12,8 +12,14 @@ import 'package:nutriaumigos/methods/database.dart';
 import '../../methods/usuarios.dart';
 
 class UsuariosPage extends StatefulWidget {
-  const UsuariosPage({super.key, required this.tipoUsuario});
+  const UsuariosPage(
+      {super.key,
+      required this.tipoUsuario,
+      required this.stateAlimentacao,
+      required this.stateFeedback});
   final tipoUsuario;
+  final stateAlimentacao;
+  final stateFeedback;
   @override
   State<UsuariosPage> createState() => _UsuariosPageState();
 }
@@ -46,7 +52,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
     QuerySnapshot querySnapshot =
         await _collectionReference.where("idNutri", isEqualTo: idUsuario).get();
     setState(() {
-      allData = querySnapshot. docs.map((doc) => doc.data()).toList();
+      allData = querySnapshot.docs.map((doc) => doc.data()).toList();
     });
   }
 
@@ -55,7 +61,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
     super.initState();
     if (widget.tipoUsuario == 'Clientes') {
       Timer(Duration(seconds: 1), () => getDataCliente());
-      
+
       usuarios = FirebaseFirestore.instance
           .collection('user')
           .where('crmv', isNotEqualTo: '');
@@ -73,7 +79,6 @@ class _UsuariosPageState extends State<UsuariosPage> {
     print("IdUsuario1:" + idUsuario);
     String usuario = '';
     print(allData);
-    
 
     if (widget.tipoUsuario == 'Clientes') {
       usuario = 'Nutricionistas';
@@ -82,7 +87,6 @@ class _UsuariosPageState extends State<UsuariosPage> {
     }
     return Scaffold(
       backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),
-      
       appBar: AppBar(
         title: Text(usuario),
         centerTitle: true,
@@ -219,11 +223,11 @@ class _UsuariosPageState extends State<UsuariosPage> {
                             var idNutri =
                                 snapshot.data!.docs[index].reference.id;
                             if (namePesquisa.isEmpty) {
-                              var teste = allData[0] as Map<String,dynamic>;
+                              var teste = allData[0] as Map<String, dynamic>;
                               teste['idNutri'];
-                              print("Ola"+teste['idNutri']);
-                              if(idNutri == teste['idNutri']){
-                                print("Oi"+teste['idNutri']);
+                              print("Ola" + teste['idNutri']);
+                              if (idNutri == teste['idNutri']) {
+                                print("Oi" + teste['idNutri']);
                               }
                               return exibirItem(data, idUsuario, idNutri);
                             }
@@ -308,8 +312,12 @@ class _UsuariosPageState extends State<UsuariosPage> {
             print(idUsuario);
             print(idItem);
 
-            Navigator.pushNamed(context, 'listaAnimais',
-                arguments: {'idDono': idItem});
+            Navigator.pushNamed(context, 'listaAnimais', arguments: {
+              'tipoUsuario': widget.tipoUsuario,
+              'idDono': idItem,
+              'stateAlimentacao': widget.stateAlimentacao,
+              'stateFeedback': widget.stateFeedback,
+            });
             //Navigator.pop(context);
           }
         },

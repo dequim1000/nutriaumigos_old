@@ -4,6 +4,7 @@ import 'package:nutriaumigos/Screens/Alimentacao/alimentacao.dart';
 import 'package:nutriaumigos/Screens/Alimentacao/listaAlimentosPage.dart';
 import 'package:nutriaumigos/Screens/Animais/listaAnimaisPage.dart';
 import 'package:nutriaumigos/Screens/Feedback/feedback.dart';
+import 'package:nutriaumigos/Screens/Feedback/listaFeedback.dart';
 import 'package:nutriaumigos/Screens/Login/cadastro.dart';
 import 'package:nutriaumigos/Screens/Login/recuperacao_senha.dart';
 import 'package:nutriaumigos/Screens/Menu/home.page.dart';
@@ -38,12 +39,16 @@ class MyApp extends StatelessWidget {
         'recuperacao': (context) => const RecuperacaoSenhaPage(),
         'menuPrincipal': (context) => const HomePage(),
         'alimentacao': (context) => AlimentacaoPage(
+              tipoUsuario: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['tipoUsuario'],
               idAlimento: (ModalRoute.of(context)?.settings.arguments
                   as Map)['idAlimento'],
               idPet:
                   (ModalRoute.of(context)?.settings.arguments as Map)['idPet'],
-              tipoUsuario: (ModalRoute.of(context)?.settings.arguments
-                  as Map)['tipoUsuario'],
+              stateAlimentacao: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['stateAlimentacao'],
+              stateFeedback: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['stateFeedback']
             ),
         'animais': (context) => AnimaisPage(
               idPet:
@@ -54,6 +59,10 @@ class MyApp extends StatelessWidget {
         'listaUsuarios': (context) => UsuariosPage(
               tipoUsuario: (ModalRoute.of(context)?.settings.arguments
                   as Map)['tipoUsuario'],
+              stateAlimentacao: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['stateAlimentacao'],
+              stateFeedback: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['stateFeedback'],
             ),
         'listaAnimais': (context) => ListaAnimaisPage(
               tipoUsuario: (ModalRoute.of(context)?.settings.arguments
@@ -62,8 +71,6 @@ class MyApp extends StatelessWidget {
                   as Map)['stateAlimentacao'],
               stateFeedback: (ModalRoute.of(context)?.settings.arguments
                   as Map)['stateFeedback'],
-              idDono:
-                  (ModalRoute.of(context)?.settings.arguments as Map)['idDono'],
             ),
         'listaAlimentos': (context) => ListaAlimentosPage(
               tipoUsuario: (ModalRoute.of(context)?.settings.arguments
@@ -74,33 +81,21 @@ class MyApp extends StatelessWidget {
                   as Map)['stateAlimentacao'],
               stateFeedback: (ModalRoute.of(context)?.settings.arguments
                   as Map)['stateFeedback'],
-              idDono:
-                  (ModalRoute.of(context)?.settings.arguments as Map)['idDono'],
             ),
+        'feedback': (context) => const FeedbackPage(),
+        'listaFeedback': ((context) => ListaFeedbackPage(
+              tipoUsuario: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['tipoUsuario'],
+              idPet:
+                  (ModalRoute.of(context)?.settings.arguments as Map)['idPet'],
+              idAlimento:
+                  (ModalRoute.of(context)?.settings.arguments as Map)['idAlimento'],
+              stateAlimentacao: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['stateAlimentacao'],
+              stateFeedback: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['stateFeedback'],
+            ))
       },
     );
   }
 }
-
-// Future<void> main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp();
-
-//   runApp(
-//     MaterialApp(
-      
-//       debugShowCheckedModeBanner: false,
-//       title: 'Nutri Aumigos',
-//       theme: ThemeData(
-//           primaryColor: kPrimaryColor,
-//         ),
-//       home: const LoginPage(),
-//       routes: {
-//         'login': (context) => const LoginPage(),
-//         'cadastro': (context) => const CadastroPage(),
-//         'recuperacao': (context) => const RecuperacaoSenhaPage(),
-//         'menuPrincipal': (context) => const HomePage(),
-//       },
-//     ),
-//   );
-// }

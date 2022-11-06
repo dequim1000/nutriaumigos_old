@@ -33,17 +33,21 @@ final _formKey = GlobalKey<FormState>();
 class _AnimaisPageState extends State<AnimaisPage> {
   @override
   Widget build(BuildContext context) {
-    if (widget.idPet != null || widget.idPet == '') {
+    if (widget.idPet != null) {
       getPetById(widget.idPet);
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text("Pets", style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800),),
+        title: Text(
+          "Pets",
+          style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800),
+        ),
         centerTitle: true,
         backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
+            cleanCampos();
             Navigator.pop(context);
           },
         ),
@@ -77,7 +81,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
                     onPressed: () {},
                   ),
                   const SizedBox(
-                    width: 25,
+                    width: 5,
                   ),
                   const Text(
                     "Cadastro de Animais",
@@ -85,7 +89,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
                     style: TextStyle(
                       color: kPrimaryLightColor,
                       fontWeight: FontWeight.bold,
-                      fontSize: 25,
+                      fontSize: 20,
                     ),
                   ),
                 ],
@@ -96,6 +100,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtNomeAnimal,
                 autofocus: true,
+                enabled: widget.tipoUsuario == 'Clientes',
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -133,6 +138,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtTipo,
                 autofocus: true,
+                enabled: widget.tipoUsuario == 'Clientes',
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -170,6 +176,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtRaca,
                 autofocus: true,
+                enabled: widget.tipoUsuario == 'Clientes',
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -207,6 +214,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtCor,
                 autofocus: true,
+                enabled: widget.tipoUsuario == 'Clientes',
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -244,6 +252,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtSexo,
                 autofocus: true,
+                enabled: widget.tipoUsuario == 'Clientes',
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -281,6 +290,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtIdade,
                 autofocus: true,
+                enabled: widget.tipoUsuario == 'Clientes',
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   filled: true,
@@ -319,6 +329,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtPeso,
                 autofocus: true,
+                enabled: widget.tipoUsuario == 'Clientes',
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   filled: true,
@@ -357,6 +368,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtAlergias,
                 autofocus: true,
+                enabled: widget.tipoUsuario == 'Clientes',
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -394,6 +406,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtRejeicao,
                 autofocus: true,
+                enabled: widget.tipoUsuario == 'Clientes',
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -431,6 +444,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtProblemas,
                 autofocus: true,
+                enabled: widget.tipoUsuario == 'Clientes',
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -468,6 +482,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtObservacao,
                 autofocus: true,
+                enabled: widget.tipoUsuario == 'Clientes',
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -499,6 +514,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
               TextFormField(
                 controller: txtDescricao,
                 autofocus: true,
+                enabled: widget.tipoUsuario == 'Clientes',
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -533,6 +549,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
               const SizedBox(
                 height: 40,
               ),
+              if(widget.tipoUsuario == 'Clientes')
               Container(
                 height: 60,
                 alignment: Alignment.centerLeft,
@@ -599,6 +616,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
                                     context)
                                 .then(
                               (value) {
+                                cleanCampos();
                                 Navigator.pop(context);
                               },
                             );
@@ -633,6 +651,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
                                     context)
                                 .then(
                               (value) {
+                                cleanCampos();
                                 Navigator.pop(context);
                               },
                             );
@@ -653,6 +672,7 @@ class _AnimaisPageState extends State<AnimaisPage> {
                   ),
                 ),
               ),
+              if(widget.tipoUsuario == 'Clientes')
               Container(
                 height: 40,
                 alignment: Alignment.center,
@@ -662,7 +682,10 @@ class _AnimaisPageState extends State<AnimaisPage> {
                     textAlign: TextAlign.center,
                     style: TextStyle(color: kSecondColor),
                   ),
-                  onPressed: () => Navigator.pop(context, false),
+                  onPressed: () {
+                    cleanCampos();
+                    Navigator.pop(context, false);
+                  } 
                 ),
               ),
               const SizedBox(
@@ -695,4 +718,19 @@ getPetById(String idPet) async {
     txtObservacao.text = value.get('observacoes');
     txtDescricao.text = value.get('descricao');
   });
+}
+
+cleanCampos() {
+  txtNomeAnimal.text = '';
+  txtTipo.text = '';
+  txtRaca.text = '';
+  txtCor.text = '';
+  txtSexo.text = '';
+  txtIdade.text = '';
+  txtPeso.text = '';
+  txtAlergias.text = '';
+  txtRejeicao.text = '';
+  txtProblemas.text = '';
+  txtObservacao.text = '';
+  txtDescricao.text = '';
 }

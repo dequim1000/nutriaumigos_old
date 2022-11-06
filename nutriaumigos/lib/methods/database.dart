@@ -67,40 +67,4 @@ class DatabaseMethods {
         .where("idNutri", isEqualTo: nutriId)
         .snapshots();
   }
-
-  Stream<QuerySnapshot<Map<String, dynamic>>> getUsertoClienteFromDB(
-      String userId) {
-    return FirebaseFirestore.instance
-        .collection("user")
-        .where('crmv', isEqualTo: '')
-        .snapshots();
-  }
-
-  Future<DocumentSnapshot> getUsertoNutricionistaFromDB(String userId) {
-    return FirebaseFirestore.instance.collection("user").doc(userId).get();
-  }
-
-  Future<DocumentSnapshot> getAlimentostoClienteFromDB(String userId) {
-    return FirebaseFirestore.instance.collection("user").doc(userId).get();
-  }
-
-  Future<DocumentSnapshot> getAlimentostoNutricionistaFromDB(String userId) {
-    return FirebaseFirestore.instance.collection("user").doc(userId).get();
-  }
-
-  Future<DocumentSnapshot> getPetstoClientesFromDB(String userId) {
-    return FirebaseFirestore.instance.collection("user").doc(userId).get();
-  }
-
-  Future<DocumentSnapshot> getPetstoNutricionistaFromDB(String userId) {
-    return FirebaseFirestore.instance.collection("user").doc(userId).get();
-  }
-
-  Future<DocumentSnapshot> getFeedbacktoClientesFromDB(String userId) {
-    return FirebaseFirestore.instance.collection("user").doc(userId).get();
-  }
-
-  Future<DocumentSnapshot> getFeedbacktoNutricionistaFromDB(String userId) {
-    return FirebaseFirestore.instance.collection("user").doc(userId).get();
-  }
 }

@@ -75,15 +75,6 @@ class Pets {
     await DatabaseMethods().deletePetsInfoToDB(idPet);
   }
 
-  Future<void> loginwithEmailAndPassword(String email, String password) async {
-    UserCredential userCredential =
-        await auth.signInWithEmailAndPassword(email: email, password: password);
-  }
-
-  Future<void> resetPasswordWithEmail(String email) async {
-    await auth.sendPasswordResetEmail(email: email);
-  }
-
   Future<void> logout() async {
     await auth.signOut();
   }

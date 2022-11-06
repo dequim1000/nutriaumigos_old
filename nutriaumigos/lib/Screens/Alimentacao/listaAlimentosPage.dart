@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nutriaumigos/constants.dart';
 import 'package:nutriaumigos/methods/database.dart';
+import 'package:intl/intl.dart';
 
 class ListaAlimentosPage extends StatefulWidget {
   const ListaAlimentosPage(
@@ -12,13 +13,11 @@ class ListaAlimentosPage extends StatefulWidget {
       required this.tipoUsuario,
       required this.idPet,
       required this.stateAlimentacao,
-      required this.stateFeedback,
-      this.idDono});
+      required this.stateFeedback});
   final tipoUsuario;
   final idPet;
   final stateAlimentacao;
   final stateFeedback;
-  final idDono;
 
   @override
   State<ListaAlimentosPage> createState() => _ListaAlimentosPageState();
@@ -31,22 +30,37 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
   var nutricionista;
   String idUsuario = '';
 
+  var date = DateTime.now();
+  List diasdaSemana = [
+    'Segunda-Feira',
+    'Terça-Feira',
+    'Quarta-Feira',
+    'Quinta-Feira',
+    'Sexta-Feira',
+    'Sábado',
+    'Domingo'
+  ];
+
+  var index = 0;
+
   get kPrimaryColor => null;
+
+  getAlimentos(int index) {
+    return FirebaseFirestore.instance
+        .collection('alimentos')
+        .where('idPet', isEqualTo: widget.idPet)
+        .where('diaSemana', isEqualTo: diasdaSemana[index]);
+  }
 
   @override
   void initState() {
     super.initState();
-    print(widget.tipoUsuario);
     idUsuario = FirebaseAuth.instance.currentUser!.uid;
-    print(idUsuario);
+    index = date.weekday - 1;
     if (widget.tipoUsuario == 'Clientes') {
-      alimentos = FirebaseFirestore.instance
-          .collection('alimentos')
-          .where('idPet', isEqualTo: widget.idPet);
+      alimentos = getAlimentos(index);
     } else {
-      alimentos = FirebaseFirestore.instance
-          .collection('alimentos')
-          .where('idPet', isEqualTo: widget.idPet);
+      alimentos = getAlimentos(index);
     }
   }
 
@@ -63,25 +77,7 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
     }
     return Scaffold(
       backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),
-      floatingActionButton: FloatingActionButton(
-        foregroundColor: kPrimaryColor,
-        backgroundColor: kSecondColor,
-        child: const Icon(
-          Icons.add,
-          color: Color.fromRGBO(3, 152, 158, 0.73),
-          size: 32,
-        ),
-        onPressed: () {
-          Navigator.pushNamed(
-            context,
-            'animais',
-            arguments: {
-              'idPets': '',
-              'tipoUsuario': tipoUsuario,
-            },
-          );
-        },
-      ),
+      floatingActionButton: _getFAB(),
       appBar: AppBar(
         title: Text("Plano Alimentar"),
         centerTitle: true,
@@ -130,6 +126,52 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
             }),
           ),
           Container(
+            height: 50,
+            child: Center(
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    color: Colors.white,
+                    onPressed: () {
+                      setState(() {
+                        index--;
+                        if (index < 0) {
+                          index = 6;
+                        }
+                        alimentos = getAlimentos(index);
+                        print(index);
+                      });
+                    },
+                  ),
+                  Text(
+                    diasdaSemana[index],
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900,
+                      color: kPrimaryLightColor,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.arrow_forward),
+                    color: Colors.white,
+                    onPressed: () {
+                      setState(() {
+                        index++;
+                        if (index > 6) {
+                          index = 0;
+                        }
+                        alimentos = getAlimentos(index);
+                        print(index);
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
             child: StreamBuilder<QuerySnapshot>(
               //fonte de dados (coleção)
               stream: alimentos.snapshots(),
@@ -152,13 +194,14 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
                       height: MediaQuery.of(context).size.height -
                           MediaQuery.of(context).padding.top -
                           AppBar().preferredSize.height -
-                          82,
+                          150,
                       child: ListView.builder(
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
                           var data = snapshot.data!.docs[index].data()
                               as Map<String, dynamic>;
-                          var idAlimento = snapshot.data!.docs[index].reference.id;
+                          var idAlimento =
+                              snapshot.data!.docs[index].reference.id;
                           if (namePesquisa.isEmpty) {
                             return exibirItem(data, idUsuario, idAlimento);
                           }
@@ -182,12 +225,44 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
     );
   }
 
+  Widget _getFAB() {
+    print(widget.tipoUsuario);
+    if (widget.tipoUsuario == 'Clientes') {
+      return Container();
+    } else {
+      return FloatingActionButton(
+        foregroundColor: kPrimaryColor,
+        backgroundColor: kSecondColor,
+        child: const Icon(
+          Icons.add,
+          color: Color.fromRGBO(3, 152, 158, 0.73),
+          size: 32,
+        ),
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            'alimentacao',
+            arguments: {
+                'tipoUsuario': widget.tipoUsuario,
+                'idAlimento': '',
+                'idPet': widget.idPet,
+                'stateAlimentacao': widget.stateAlimentacao,
+                'stateFeedback': widget.stateFeedback,
+            },
+          );
+        },
+      );
+    }
+  }
+
   Widget exibirItem(item, String idUsuario, String idAlimento) {
     print("IdUsuario2:" + idUsuario);
+    print(idAlimento);
     String? diaSemanaAlimento = item['diaSemana'];
-    String? nomeAnimalAlimento = item['nomeAnimal'];
+    String? nomeAnimalAlimento = item['nomeAlimento'];
     String? horarioAlimento = item['horario'];
     String? quantidadeAlimento = item['quantidade'];
+    String? descricaoAlimento = item['descricao'];
 
     return Container(
       padding: EdgeInsets.only(top: 20),
@@ -199,9 +274,9 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
         contentPadding: EdgeInsets.all(10),
         dense: true,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        leading: Image.asset('assets/icons/osso-de-cao.png'),
+        //leading: Image.asset('assets/icons/osso-de-cao.png'),
         title: Text(
-          diaSemanaAlimento.toString(),
+          nomeAnimalAlimento.toString(),
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w500,
@@ -212,22 +287,20 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              nomeAnimalAlimento.toString(),
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontSize: 18,
-                color: kPrimaryColor,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              horarioAlimento.toString(),
+              descricaoAlimento.toString(),
               textAlign: TextAlign.left,
               style: TextStyle(
                 fontSize: 16,
                 color: kPrimaryColor,
+              ),
+            ),
+            Text(
+              quantidadeAlimento.toString(),
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                color: kSecondColor,
               ),
             ),
           ],
@@ -236,39 +309,127 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              quantidadeAlimento.toString(),
+              horarioAlimento.toString(),
               textAlign: TextAlign.left,
               style: TextStyle(
-                fontSize: 16,
-                color: kPrimaryColor,
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                color: Colors.orange,
               ),
             ),
-            const SizedBox(
-              width: 10,
-            ),
             Container(
-              child: Image.asset(
-                'assets/icons/osso-de-cao.png',
-                height: 40,
-                width: 40,
-                color: kPrimaryColor,
+              child: TextButton(
+                child: Image.asset(
+                  'assets/icons/osso-de-cao.png',
+                  height: 40,
+                  width: 40,
+                  color: kPrimaryColor,
+                ),
+                onPressed: () async {
+                  Navigator.pushNamed(
+                    context,
+                    'feedback',
+                    arguments: {
+                      'tipoUsuario': widget.tipoUsuario,
+                      'idAlimento': idAlimento,
+                      'idPet': widget.idPet,
+                      'stateAlimentacao': widget.stateAlimentacao,
+                      'stateFeedback': widget.stateFeedback,
+                    },
+                  );
+                },
               ),
             ),
           ],
         ),
         onTap: () {
-          Navigator.pushNamed(
-            context,
-            'alimentos',
-            arguments: {
-              'tipoUsuario': tipoUsuario,
-              'idAlimento': idAlimento,
-              'idPet': widget.idPet,
-              'idDono': widget.idDono,
-              'stateAlimentacao': widget.stateAlimentacao,
-              'stateFeedback': widget.stateFeedback,
-            },
-          );
+          if (widget.tipoUsuario == 'Clientes' &&
+              !widget.stateAlimentacao &&
+              !widget.stateFeedback) {
+            Navigator.pushNamed(
+              context,
+              'alimentacao',
+              arguments: {
+                'tipoUsuario': widget.tipoUsuario,
+                'idAlimento': idAlimento,
+                'idPet': widget.idPet,
+                'stateAlimentacao': widget.stateAlimentacao,
+                'stateFeedback': widget.stateFeedback,
+              },
+            );
+          } else if (widget.tipoUsuario != 'Clientes' &&
+              !widget.stateAlimentacao &&
+              !widget.stateFeedback) {
+            Navigator.pushNamed(
+              context,
+              'alimentacao',
+              arguments: {
+                'tipoUsuario': widget.tipoUsuario,
+                'idAlimento': idAlimento,
+                'idPet': widget.idPet,
+                'stateAlimentacao': widget.stateAlimentacao,
+                'stateFeedback': widget.stateFeedback,
+              },
+            );
+          } else if (widget.tipoUsuario == 'Clientes' &&
+              widget.stateAlimentacao &&
+              !widget.stateFeedback) {
+            Navigator.pushNamed(
+              context,
+              'alimentacao',
+              arguments: {
+                'tipoUsuario': widget.tipoUsuario,
+                'idAlimento': idAlimento,
+                'idPet': widget.idPet,
+                'stateAlimentacao': widget.stateAlimentacao,
+                'stateFeedback': widget.stateFeedback,
+              },
+            );
+          } else if (widget.tipoUsuario != 'Clientes' &&
+              widget.stateAlimentacao &&
+              !widget.stateFeedback) {
+            Navigator.pushNamed(
+              context,
+              'alimentacao',
+              arguments: {
+                'tipoUsuario': widget.tipoUsuario,
+                'idAlimento': idAlimento,
+                'idPet': widget.idPet,
+                'stateAlimentacao': widget.stateAlimentacao,
+                'stateFeedback': widget.stateFeedback,
+              },
+            );
+          } else if (widget.tipoUsuario == 'Clientes' &&
+              !widget.stateAlimentacao &&
+              widget.stateFeedback) {
+            Navigator.pushNamed(
+              context,
+              'alimentacao',
+              arguments: {
+                'tipoUsuario': widget.tipoUsuario,
+                'idAlimento': idAlimento,
+                'idPet': widget.idPet,
+                'stateAlimentacao': widget.stateAlimentacao,
+                'stateFeedback': widget.stateFeedback,
+              },
+            );
+          } else if (widget.tipoUsuario != 'Clientes' &&
+              !widget.stateAlimentacao &&
+              widget.stateFeedback) {
+            Navigator.pushNamed(
+              context,
+              'alimentacao',
+              arguments: {
+                'tipoUsuario': widget.tipoUsuario,
+                'idAlimento': idAlimento,
+                'idPet': widget.idPet,
+                'stateAlimentacao': widget.stateAlimentacao,
+                'stateFeedback': widget.stateFeedback,
+              },
+            );
+          } else {
+            Navigator.pop(context);
+          }
         },
         onLongPress: () {
           dialog(idUsuario, idAlimento, context);
