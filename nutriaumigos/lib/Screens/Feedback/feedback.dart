@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -12,18 +13,42 @@ class FeedbackPage extends StatefulWidget {
   State<FeedbackPage> createState() => _FeedbackPageState();
 }
 
+var txtNomeAlimento = TextEditingController();
+var txtAvaliacao = TextEditingController();
+var txtRejeicao = TextEditingController();
+var txtQuantidade = TextEditingController();
+var txtObservacao = TextEditingController();
+
+final _formKey = GlobalKey<FormState>();
+
 class _FeedbackPageState extends State<FeedbackPage> {
   @override
   Widget build(BuildContext context) {
-    var txtNomeAlimento = TextEditingController();
-    var txtAvaliacao = TextEditingController();
-    var txtRejeicao = TextEditingController();
-    var txtQuantidade = TextEditingController();
-    var txtObservacao = TextEditingController();
-
-    final _formKey = GlobalKey<FormState>();
-
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Feedback",
+          style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800),
+        ),
+        centerTitle: true,
+        backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            cleanCampos();
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout_outlined),
+            onPressed: () async {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushReplacementNamed(context, 'login');
+            },
+          ),
+        ],
+      ),
       body: Container(
         color: kPrimaryColor,
         padding: const EdgeInsets.only(
@@ -271,4 +296,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
       ),
     );
   }
+}
+
+cleanCampos() {
+  txtAvaliacao.text = '';
+  txtRejeicao.text = '';
+  txtQuantidade.text = '';
+  txtObservacao.text = '';
 }
