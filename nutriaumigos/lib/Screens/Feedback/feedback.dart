@@ -1,13 +1,28 @@
 import 'dart:ffi';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nutriaumigos/constants.dart';
+import 'package:nutriaumigos/methods/feedback.dart';
 
 class FeedbackPage extends StatefulWidget {
-  const FeedbackPage({super.key});
+  const FeedbackPage(
+      {super.key,
+      required this.tipoUsuario,
+      required this.idPet,
+      required this.idAlimento,
+      required this.idFeedback,
+      required this.stateAlimentacao,
+      required this.stateFeedback});
+  final tipoUsuario;
+  final idPet;
+  final idAlimento;
+  final idFeedback;
+  final stateAlimentacao;
+  final stateFeedback;
 
   @override
   State<FeedbackPage> createState() => _FeedbackPageState();
@@ -22,8 +37,20 @@ var txtObservacao = TextEditingController();
 final _formKey = GlobalKey<FormState>();
 
 class _FeedbackPageState extends State<FeedbackPage> {
+  List allFeedback = [];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var idFeedback;
+    var idTeste;
+    if (widget.idFeedback != null) {
+      getFeedbackById(widget.idFeedback);
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -52,7 +79,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
       body: Container(
         color: kPrimaryColor,
         padding: const EdgeInsets.only(
-          top: 40,
+          top: 20,
           left: 40,
           right: 40,
         ),
@@ -60,20 +87,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
           key: _formKey,
           child: ListView(
             children: <Widget>[
-              const Center(
-                child: Text(
-                  "Feedback",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 40,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
               Row(
                 children: [
                   IconButton(
@@ -82,7 +95,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     onPressed: () {},
                   ),
                   const SizedBox(
-                    width: 25,
+                    width: 5,
                   ),
                   const Text(
                     "Cadastro de Feedback",
@@ -90,7 +103,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     style: TextStyle(
                       color: kPrimaryLightColor,
                       fontWeight: FontWeight.bold,
-                      fontSize: 25,
+                      fontSize: 20,
                     ),
                   ),
                 ],
@@ -279,16 +292,73 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         ),
                       ],
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.pop(context);
+                        if (allFeedback.isEmpty) {
+                          try {
+                            await FeedbackClass()
+                                .createFeedback(
+                                    widget.idPet,
+                                    widget.idAlimento,
+                                    txtAvaliacao.text,
+                                    txtRejeicao.text,
+                                    txtQuantidade.text,
+                                    txtObservacao.text,
+                                    context)
+                                .then(
+                              (value) {
+                                cleanCampos();
+                                Navigator.pop(context);
+                              },
+                            );
+                          } catch (e) {
+                            print(e);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Erro ao Cadastrar o Feedback"),
+                                duration: Duration(
+                                  seconds: 2,
+                                ),
+                              ),
+                            );
+                          }
+                        } else {
+                          try {
+                            await FeedbackClass()
+                                .updateFeedback(
+                                    widget.idPet,
+                                    widget.idAlimento,
+                                    txtAvaliacao.text,
+                                    txtRejeicao.text,
+                                    txtQuantidade.text,
+                                    txtObservacao.text,
+                                    idFeedback,
+                                    context)
+                                .then(
+                              (value) {
+                                Navigator.pop(context);
+                              },
+                            );
+                          } catch (e) {
+                            print(e);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Erro ao Atualizar o Animal"),
+                                duration: Duration(
+                                  seconds: 2,
+                                ),
+                              ),
+                            );
+                          }
+                        }
+                        //Navigator.pop(context);
                       }
                     },
                   ),
                 ),
               ),
               const SizedBox(
-                height: 5,
+                height: 20,
               ),
             ],
           ),
@@ -303,4 +373,17 @@ cleanCampos() {
   txtRejeicao.text = '';
   txtQuantidade.text = '';
   txtObservacao.text = '';
+}
+
+getFeedbackById(String idFeedback) async {
+  await FirebaseFirestore.instance
+      .collection('feedback')
+      .doc(idFeedback)
+      .get()
+      .then((value) {
+    txtAvaliacao.text = value.get('avaliacao');
+    txtRejeicao.text = value.get('rejeicao');
+    txtQuantidade.text = value.get('quantidade');
+    txtObservacao.text = value.get('observacao');
+  });
 }

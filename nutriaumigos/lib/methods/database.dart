@@ -40,12 +40,21 @@ class DatabaseMethods {
     return FirebaseFirestore.instance.collection('pets').doc(idPet).delete();
   }
 
-  Future addFeedbackInfoToDB(
-      String feedbackId, Map<String, dynamic> feedbackInfoMap) {
+  Future addFeedbackInfoToDB(Map<String, dynamic> feedbackInfoMap) {
     return FirebaseFirestore.instance
         .collection("feedback")
-        .doc(feedbackId)
+        .add(feedbackInfoMap);
+  }
+
+  Future updateFeedbackInfoToDB(Map<String, dynamic> feedbackInfoMap, String idFeedback) {
+    return FirebaseFirestore.instance
+        .collection("feedback")
+        .doc(idFeedback)
         .set(feedbackInfoMap);
+  }
+
+  Future deleteFeedbackInfoToDB(String idFeedback) {
+    return FirebaseFirestore.instance.collection('feedback').doc(idFeedback).delete();
   }
 
   Future<DocumentSnapshot> getUserFromDB(String userId) {

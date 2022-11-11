@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nutriaumigos/constants.dart';
 import 'package:nutriaumigos/methods/database.dart';
+import 'package:nutriaumigos/methods/feedback.dart';
 import 'package:nutriaumigos/methods/pets.dart';
 
 class ListaFeedbackPage extends StatefulWidget {
@@ -28,8 +29,7 @@ class ListaFeedbackPage extends StatefulWidget {
 class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
   String namePesquisa = '';
   var tipoUsuario;
-  var pets;
-  var nutricionista;
+  var feedback;
   String idUsuario = '';
 
   get kPrimaryColor => null;
@@ -37,36 +37,19 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
   @override
   void initState() {
     super.initState();
-    print(widget.tipoUsuario);
     idUsuario = FirebaseAuth.instance.currentUser!.uid;
-    print(idUsuario);
-    if (widget.tipoUsuario == 'Clientes') {
-      // pets = FirebaseFirestore.instance
-      //     .collection('pets')
-      //     .where('idDono', isEqualTo: idUsuario);
-    } else {
-      // pets = FirebaseFirestore.instance
-      //     .collection('pets')
-      //     .where('idDono', isEqualTo: widget.idDono);
-    }
+    feedback = FirebaseFirestore.instance
+          .collection('feedback')
+          .where('idAlimento', isEqualTo: widget.idAlimento);
   }
 
   @override
   Widget build(BuildContext context) {
-    print('StatusAlimentacao'+widget.stateAlimentacao.toString());
-    print('StateFeedback'+widget.stateFeedback.toString());
-    print("IdUsuario1:" + idUsuario);
-    String usuario = '';
-    if (widget.tipoUsuario == 'Clientes') {
-      usuario = 'Nutricionistas';
-    } else {
-      usuario = 'Clientes';
-    }
     return Scaffold(
       backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),
       floatingActionButton: _getFAB(),
       appBar: AppBar(
-        title: Text("Pets"),
+        title: Text("Feedbacks"),
         centerTitle: true,
         backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),
         leading: IconButton(
@@ -115,7 +98,7 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
           Container(
             child: StreamBuilder<QuerySnapshot>(
               //fonte de dados (coleção)
-              stream: pets.snapshots(),
+              stream: feedback.snapshots(),
 
               //exibir os dados recuperados
               builder: (context, snapshot) {
@@ -141,15 +124,15 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
                         itemBuilder: (context, index) {
                           var data = snapshot.data!.docs[index].data()
                               as Map<String, dynamic>;
-                          var idPet = snapshot.data!.docs[index].reference.id;
+                          var idFeedback = snapshot.data!.docs[index].reference.id;
                           if (namePesquisa.isEmpty) {
-                            return exibirItem(data, idUsuario, idPet);
+                            return exibirItem(data, idUsuario, idFeedback);
                           }
                           if (data['name']
                               .toString()
                               .toLowerCase()
                               .startsWith(namePesquisa.toLowerCase())) {
-                            return exibirItem(data, idUsuario, idPet);
+                            return exibirItem(data, idUsuario, idFeedback);
                           }
                           return Container();
                         },
@@ -179,30 +162,27 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
         ),
         onPressed: () {
           Navigator.pushNamed(
-            context,
-            'animais',
-            arguments: {
-              'idPets': '',
-              'tipoUsuario': tipoUsuario,
-            },
-          );
+              context,
+              'feedback',
+              arguments: {
+                'tipoUsuario': widget.tipoUsuario,
+                'idPet': widget.idPet,
+                'idAlimento': widget.idAlimento,
+                'idFeedback': '',
+                'stateAlimentacao': widget.stateAlimentacao,
+                'stateFeedback': widget.stateFeedback,
+              },
+            );
         },
       );
     }
   }
 
-  Widget exibirItem(item, String idUsuario, String idPet) {
-    print("IdUsuario2:" + idUsuario);
-    String nomePet = item['nome'];
-    String racaPet = item['raca'];
-    String generoPet = item['sexo'];
-    String pesoPet = item['peso'].toString();
-    String tipoAnimal = item['tipo'];
-    String iconDog = "assets/icons/dog.png";
-    String iconCat = "assets/icons/cat.png";
-
-    String iconPet =
-        tipoAnimal.toString().toLowerCase() == 'cachorro' ? iconDog : iconCat;
+  Widget exibirItem(item, String idUsuario, String idFeedback) {
+    String avaliacao = item['avaliacao'];
+    String observacao = item['observacao'];
+    String quantidade = item['quantidade'];
+    String rejeicao = item['rejeicao'];
 
     return Container(
       padding: EdgeInsets.only(top: 20),
@@ -214,9 +194,9 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
         contentPadding: EdgeInsets.all(10),
         dense: true,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        leading: Image.asset(iconPet),
+        //leading: Image.asset(iconPet),
         title: Text(
-          nomePet,
+          avaliacao,
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w500,
@@ -227,7 +207,7 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              racaPet,
+              rejeicao,
               textAlign: TextAlign.left,
               style: TextStyle(
                 fontSize: 18,
@@ -238,7 +218,7 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
               height: 10,
             ),
             Text(
-              generoPet,
+              observacao,
               textAlign: TextAlign.left,
               style: TextStyle(
                 fontSize: 16,
@@ -251,7 +231,7 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              pesoPet,
+              quantidade,
               textAlign: TextAlign.left,
               style: TextStyle(
                 fontSize: 16,
@@ -272,81 +252,28 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
           ],
         ),
         onTap: () {
-          if (widget.tipoUsuario == 'Clientes' &&
-              !widget.stateAlimentacao &&
-              !widget.stateFeedback) {
-            print("IdUsuario3:" + idUsuario);
+          if (widget.tipoUsuario == 'Clientes') {
             Navigator.pushNamed(
               context,
-              'animais',
+              'feedback',
               arguments: {
                 'tipoUsuario': widget.tipoUsuario,
-                'idPet': idPet,
+                'idPet': widget.idPet,
+                'idAlimento': widget.idAlimento,
+                'idFeedback': idFeedback,
                 'stateAlimentacao': widget.stateAlimentacao,
                 'stateFeedback': widget.stateFeedback,
               },
             );
-          } else if (widget.tipoUsuario != 'Clientes' &&
-              !widget.stateAlimentacao &&
-              !widget.stateFeedback) {
+          } else if (widget.tipoUsuario != 'Clientes') {
             Navigator.pushNamed(
               context,
-              'animais',
+              'feedback',
               arguments: {
                 'tipoUsuario': widget.tipoUsuario,
-                'idPet': idPet,
-                'stateAlimentacao': widget.stateAlimentacao,
-                'stateFeedback': widget.stateFeedback,
-              },
-            );
-          } else if (widget.tipoUsuario == 'Clientes' &&
-              widget.stateAlimentacao &&
-              !widget.stateFeedback) {
-            Navigator.pushNamed(
-              context,
-              'listaAlimentos',
-              arguments: {
-                'tipoUsuario': widget.tipoUsuario,
-                'idPet': idPet,
-                'stateAlimentacao': widget.stateAlimentacao,
-                'stateFeedback': widget.stateFeedback,
-              },
-            );
-          } else if (widget.tipoUsuario != 'Clientes' &&
-              widget.stateAlimentacao &&
-              !widget.stateFeedback) {
-            Navigator.pushNamed(
-              context,
-              'listaAlimentos',
-              arguments: {
-                'tipoUsuario': widget.tipoUsuario,
-                'idPet': idPet,
-                'stateAlimentacao': widget.stateAlimentacao,
-                'stateFeedback': widget.stateFeedback,
-              },
-            );
-          } else if (widget.tipoUsuario == 'Clientes' &&
-              !widget.stateAlimentacao &&
-              widget.stateFeedback) {
-            Navigator.pushNamed(
-              context,
-              'listaAlimentos',
-              arguments: {
-                'tipoUsuario': widget.tipoUsuario,
-                'idPet': idPet,
-                'stateAlimentacao': widget.stateAlimentacao,
-                'stateFeedback': widget.stateFeedback,
-              },
-            );
-          } else if (widget.tipoUsuario != 'Clientes' &&
-              !widget.stateAlimentacao &&
-              widget.stateFeedback) {
-            Navigator.pushNamed(
-              context,
-              'listaAlimentos',
-              arguments: {
-                'tipoUsuario': widget.tipoUsuario,
-                'idPet': idPet,
+                'idPet': widget.idPet,
+                'idAlimento': widget.idAlimento,
+                'idFeedback': idFeedback,
                 'stateAlimentacao': widget.stateAlimentacao,
                 'stateFeedback': widget.stateFeedback,
               },
@@ -356,25 +283,25 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
           }
         },
         onLongPress: () {
-          dialog(idUsuario, idPet, context);
+          dialog(idUsuario, idFeedback, context);
         },
       ),
     );
   }
 }
 
-Future<void> dialog(String idUsuario, String idPet, context) {
+Future<void> dialog(String idUsuario, String idFeedback, context) {
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text('Excluir Pet?'),
+        title: const Text('Excluir Feedback?'),
         content: SingleChildScrollView(
           child: ListBody(
             children: const <Widget>[
               Text(
-                  'Você excluirá permanentemente o Pet junto com seus alimentos!'),
+                  'Você excluirá permanentemente o Feedback!'),
             ],
           ),
         ),
@@ -389,12 +316,12 @@ Future<void> dialog(String idUsuario, String idPet, context) {
             child: const Text('Excluir'),
             onPressed: () async {
               try {
-                await Pets().deletePet(idPet);
+                await FeedbackClass().deleteFeedback(idFeedback);
               } catch (e) {
                 print(e);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text("Erro ao Excluir o Animal"),
+                    content: Text("Erro ao Excluir o deleteFeedback"),
                     duration: Duration(
                       seconds: 2,
                     ),

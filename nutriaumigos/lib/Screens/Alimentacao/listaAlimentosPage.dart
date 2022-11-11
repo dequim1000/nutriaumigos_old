@@ -297,7 +297,7 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
             Text(
               quantidadeAlimento.toString(),
               textAlign: TextAlign.left,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
                 color: kSecondColor,
@@ -311,7 +311,7 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
             Text(
               horarioAlimento.toString(),
               textAlign: TextAlign.left,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
                 color: Colors.orange,
@@ -328,7 +328,7 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
                 onPressed: () async {
                   Navigator.pushNamed(
                     context,
-                    'feedback',
+                    'listaFeedback',
                     arguments: {
                       'tipoUsuario': widget.tipoUsuario,
                       'idAlimento': idAlimento,

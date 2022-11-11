@@ -39,17 +39,15 @@ class MyApp extends StatelessWidget {
         'recuperacao': (context) => const RecuperacaoSenhaPage(),
         'menuPrincipal': (context) => const HomePage(),
         'alimentacao': (context) => AlimentacaoPage(
-              tipoUsuario: (ModalRoute.of(context)?.settings.arguments
-                  as Map)['tipoUsuario'],
-              idAlimento: (ModalRoute.of(context)?.settings.arguments
-                  as Map)['idAlimento'],
-              idPet:
-                  (ModalRoute.of(context)?.settings.arguments as Map)['idPet'],
-              stateAlimentacao: (ModalRoute.of(context)?.settings.arguments
-                  as Map)['stateAlimentacao'],
-              stateFeedback: (ModalRoute.of(context)?.settings.arguments
-                  as Map)['stateFeedback']
-            ),
+            tipoUsuario: (ModalRoute.of(context)?.settings.arguments
+                as Map)['tipoUsuario'],
+            idAlimento: (ModalRoute.of(context)?.settings.arguments
+                as Map)['idAlimento'],
+            idPet: (ModalRoute.of(context)?.settings.arguments as Map)['idPet'],
+            stateAlimentacao: (ModalRoute.of(context)?.settings.arguments
+                as Map)['stateAlimentacao'],
+            stateFeedback: (ModalRoute.of(context)?.settings.arguments
+                as Map)['stateFeedback']),
         'animais': (context) => AnimaisPage(
               idPet:
                   (ModalRoute.of(context)?.settings.arguments as Map)['idPet'],
@@ -82,14 +80,27 @@ class MyApp extends StatelessWidget {
               stateFeedback: (ModalRoute.of(context)?.settings.arguments
                   as Map)['stateFeedback'],
             ),
-        'feedback': (context) => const FeedbackPage(),
+        'feedback': (context) => FeedbackPage(
+              tipoUsuario: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['tipoUsuario'],
+              idPet:
+                  (ModalRoute.of(context)?.settings.arguments as Map)['idPet'],
+              idAlimento: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['idAlimento'],
+              idFeedback: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['idFeedback'],
+              stateAlimentacao: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['stateAlimentacao'],
+              stateFeedback: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['stateFeedback'],
+            ),
         'listaFeedback': ((context) => ListaFeedbackPage(
               tipoUsuario: (ModalRoute.of(context)?.settings.arguments
                   as Map)['tipoUsuario'],
               idPet:
                   (ModalRoute.of(context)?.settings.arguments as Map)['idPet'],
-              idAlimento:
-                  (ModalRoute.of(context)?.settings.arguments as Map)['idAlimento'],
+              idAlimento: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['idAlimento'],
               stateAlimentacao: (ModalRoute.of(context)?.settings.arguments
                   as Map)['stateAlimentacao'],
               stateFeedback: (ModalRoute.of(context)?.settings.arguments

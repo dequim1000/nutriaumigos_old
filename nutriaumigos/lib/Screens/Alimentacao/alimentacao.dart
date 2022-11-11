@@ -10,7 +10,13 @@ import 'package:nutriaumigos/constants.dart';
 import 'package:nutriaumigos/methods/alimentos.dart';
 
 class AlimentacaoPage extends StatefulWidget {
-  const AlimentacaoPage({super.key, required this.tipoUsuario, required this.idAlimento, required this.idPet, required this.stateAlimentacao, required this.stateFeedback});
+  const AlimentacaoPage(
+      {super.key,
+      required this.tipoUsuario,
+      required this.idAlimento,
+      required this.idPet,
+      required this.stateAlimentacao,
+      required this.stateFeedback});
   final idAlimento;
   final tipoUsuario;
   final idPet;
@@ -20,24 +26,25 @@ class AlimentacaoPage extends StatefulWidget {
   @override
   State<AlimentacaoPage> createState() => _AlimentacaoPageState();
 }
-    List<String> items = [
-    'Segunda-Feira',
-    'Terça-Feira',
-    'Quarta-Feira',
-    'Quinta-Feira',
-    'Sexta-Feira',
-    'Sábado',
-    'Domingo'
-  ];
-  String? selectedItem = 'Segunda-Feira';
 
+List<String> items = [
+  'Segunda-Feira',
+  'Terça-Feira',
+  'Quarta-Feira',
+  'Quinta-Feira',
+  'Sexta-Feira',
+  'Sábado',
+  'Domingo'
+];
+String? selectedItem = 'Segunda-Feira';
 
-    var txtNomeAlimento = TextEditingController();
-    var txtHorario = TextEditingController();
-    var txtQuantidade = TextEditingController();
-    var txtDescricao = TextEditingController();
+var txtNomeAlimento = TextEditingController();
+var txtHorario = TextEditingController();
+var txtQuantidade = TextEditingController();
+var txtDescricao = TextEditingController();
 
-    final _formKey = GlobalKey<FormState>();
+final _formKey = GlobalKey<FormState>();
+
 class _AlimentacaoPageState extends State<AlimentacaoPage> {
   @override
   Widget build(BuildContext context) {
@@ -53,12 +60,16 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Alimentos", style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800),),
+        title: const Text(
+          "Alimentos",
+          style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800),
+        ),
         centerTitle: true,
         backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
+            clearCampos();
             Navigator.pop(context);
           },
         ),
@@ -66,6 +77,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
           IconButton(
             icon: Icon(Icons.logout_outlined),
             onPressed: () async {
+              clearCampos();
               FirebaseAuth.instance.signOut();
               Navigator.pushReplacementNamed(context, 'login');
             },
@@ -123,10 +135,13 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                   items: items
                       .map((item) => DropdownMenuItem<String>(
                             value: item,
-                            child: Text(item, style: const TextStyle(fontSize: 20)),
+                            child: Text(item,
+                                style: const TextStyle(fontSize: 20)),
                           ))
                       .toList(),
-                  onChanged: widget.tipoUsuario != 'Clientes' ? (item) => setState(() => selectedItem = item) : null,
+                  onChanged: widget.tipoUsuario != 'Clientes'
+                      ? (item) => setState(() => selectedItem = item)
+                      : null,
                 ),
               ),
               const SizedBox(
@@ -284,131 +299,131 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
               const SizedBox(
                 height: 40,
               ),
-              if(widget.tipoUsuario != 'Clientes')
-              Container(
-                height: 60,
-                alignment: Alignment.centerLeft,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    stops: [0.3, 1],
-                    colors: [
-                      Color.fromARGB(255, 238, 214, 3),
-                      Color.fromARGB(255, 247, 225, 32),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                ),
-                child: SizedBox.expand(
-                  child: TextButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        SizedBox(
-                          height: 32,
-                          width: 32,
-                          child: Image.asset("assets/icons/paw_dog.png"),
-                        ),
-                        const Text(
-                          "Cadastrar",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            wordSpacing: 10,
-                            color: Colors.black,
-                            fontSize: 20,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 32,
-                          width: 32,
-                          child:
-                              Image.asset("assets/icons/icon_bone_verde.png"),
-                        ),
+              if (widget.tipoUsuario != 'Clientes')
+                Container(
+                  height: 60,
+                  alignment: Alignment.centerLeft,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      stops: [0.3, 1],
+                      colors: [
+                        Color.fromARGB(255, 238, 214, 3),
+                        Color.fromARGB(255, 247, 225, 32),
                       ],
                     ),
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        if (widget.idAlimento == null || widget.idAlimento == '') {
-                          try {
-                            await Alimentos()
-                                .createAlimento(
-                                    widget.idPet,
-                                    selectedItem.toString(),
-                                    txtNomeAlimento.text,
-                                    txtHorario.text,
-                                    txtQuantidade.text,
-                                    txtDescricao.text,
-                                    context)
-                                .then(
-                              (value) {
-                                Navigator.pop(context);
-                              },
-                            );
-                          } catch (e) {
-                            print(e);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Erro ao Cadastrar o Animal"),
-                                duration: Duration(
-                                  seconds: 2,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  child: SizedBox.expand(
+                    child: TextButton(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 32,
+                            width: 32,
+                            child: Image.asset("assets/icons/paw_dog.png"),
+                          ),
+                          const Text(
+                            "Cadastrar",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              wordSpacing: 10,
+                              color: Colors.black,
+                              fontSize: 20,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 32,
+                            width: 32,
+                            child:
+                                Image.asset("assets/icons/icon_bone_verde.png"),
+                          ),
+                        ],
+                      ),
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          if (widget.idAlimento == null ||
+                              widget.idAlimento == '') {
+                            try {
+                              await Alimentos()
+                                  .createAlimento(
+                                      widget.idPet,
+                                      selectedItem.toString(),
+                                      txtNomeAlimento.text,
+                                      txtHorario.text,
+                                      txtQuantidade.text,
+                                      txtDescricao.text,
+                                      context)
+                                  .then(
+                                (value) {
+                                  Navigator.pop(context);
+                                },
+                              );
+                            } catch (e) {
+                              print(e);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Erro ao Cadastrar o Animal"),
+                                  duration: Duration(
+                                    seconds: 2,
+                                  ),
                                 ),
-                              ),
-                            );
-                          }
-                        } else {
-                          try {
-                            await Alimentos()
-                                .updateAlimento(
-                                    widget.idPet,
-                                    selectedItem.toString(),
-                                    txtNomeAlimento.text,
-                                    txtHorario.text,
-                                    txtQuantidade.text,
-                                    txtDescricao.text,
-                                    widget.idAlimento.toString(),
-                                    context)
-                                .then(
-                              (value) {
-                                Navigator.pop(context);
-                              },
-                            );
-                          } catch (e) {
-                            print(e);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Erro ao Atualizar o Animal"),
-                                duration: Duration(
-                                  seconds: 2,
+                              );
+                            }
+                          } else {
+                            try {
+                              await Alimentos()
+                                  .updateAlimento(
+                                      widget.idPet,
+                                      selectedItem.toString(),
+                                      txtNomeAlimento.text,
+                                      txtHorario.text,
+                                      txtQuantidade.text,
+                                      txtDescricao.text,
+                                      widget.idAlimento.toString(),
+                                      context)
+                                  .then(
+                                (value) {
+                                  Navigator.pop(context);
+                                },
+                              );
+                            } catch (e) {
+                              print(e);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Erro ao Atualizar o Animal"),
+                                  duration: Duration(
+                                    seconds: 2,
+                                  ),
                                 ),
-                              ),
-                            );
+                              );
+                            }
                           }
                         }
-                      }
-                    },
+                      },
+                    ),
                   ),
                 ),
-              ),
-              if(widget.tipoUsuario != 'Clientes')
-              Container(
-                height: 40,
-                alignment: Alignment.center,
-                child: TextButton(
-                  child: const Text(
-                    "Cancelar",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: kSecondColor),
-                  ),
-                  onPressed: () {
-                    cleanCampos();
-                    Navigator.pop(context, false);
-                  } 
+              if (widget.tipoUsuario != 'Clientes')
+                Container(
+                  height: 40,
+                  alignment: Alignment.center,
+                  child: TextButton(
+                      child: const Text(
+                        "Cancelar",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: kSecondColor),
+                      ),
+                      onPressed: () {
+                        cleanCampos();
+                        Navigator.pop(context, false);
+                      }),
                 ),
-              ),
               const SizedBox(
                 height: 5,
               ),
@@ -421,16 +436,23 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
 }
 
 getAlimentosById(String idAlimento) async {
-  print(idAlimento);
-  // await FirebaseFirestore.instance
-  //     .collection('alimentos')
-  //     .doc(idAlimento)
-  //     .get()
-  //     .then((value) {
-  //   txtNomeAlimento.text = value.get('nomeAlimento');
-  //   txtHorario.text = value.get('horario');
-  //   txtQuantidade.text = value.get('quantidade');
-  //   txtDescricao.text = value.get('descricao');
-  //   selectedItem = value.get('diaSemana');
-  // });
+  await FirebaseFirestore.instance
+      .collection('alimentos')
+      .doc(idAlimento)
+      .get()
+      .then((value) {
+    txtNomeAlimento.text = value.get('nomeAlimento');
+    txtHorario.text = value.get('horario');
+    txtQuantidade.text = value.get('quantidade');
+    txtDescricao.text = value.get('descricao');
+    selectedItem = value.get('diaSemana');
+  });
+}
+
+clearCampos(){
+    txtNomeAlimento.text = '';
+    txtHorario.text = '';
+    txtQuantidade.text = '';
+    txtDescricao.text = '';
+    selectedItem = '';
 }
