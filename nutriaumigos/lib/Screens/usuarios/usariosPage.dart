@@ -34,6 +34,8 @@ class _UsuariosPageState extends State<UsuariosPage> {
   var nutricionista;
   List allData = [];
   String idUsuario = '';
+  var teste;
+  List<String> lista = [];
 
   CollectionReference _collectionReference =
       FirebaseFirestore.instance.collection("usernutri");
@@ -67,9 +69,11 @@ class _UsuariosPageState extends State<UsuariosPage> {
           .where('crmv', isNotEqualTo: '');
     } else {
       Timer(Duration(seconds: 1), () => getDataNutri());
+
       usuarios = FirebaseFirestore.instance
           .collection('user')
           .where('crmv', isEqualTo: '');
+      //.where("uid", isEqualTo: teste['idClientes']);
     }
     idUsuario = FirebaseAuth.instance.currentUser!.uid;
   }
@@ -78,12 +82,41 @@ class _UsuariosPageState extends State<UsuariosPage> {
   Widget build(BuildContext context) {
     print("IdUsuario1:" + idUsuario);
     String usuario = '';
-    print(allData);
+    // print(allData);
+    // if (allData.isNotEmpty) {
+    //   //var index = allData.length;
+    //   int index;
+    //   for (index = 0; index <= allData.length - 1; index++) {
+    //     teste = allData[index] as Map<String, dynamic>;
+    //     print("ESTOU AQUI");
+    //     print(teste['idClientes']);
+    //   }
+    //   var usuario = usuarios;
+    //   print("ESTOU AQUI 2");
+    //   print(usuario);
+    // }
 
     if (widget.tipoUsuario == 'Clientes') {
       usuario = 'Nutricionistas';
     } else {
       usuario = 'Clientes';
+
+      if (allData.isNotEmpty) {
+        //var index = allData.length;
+        int index;
+        teste = [];
+        for (index = 0; index <= allData.length - 1; index++) {
+          teste = allData[index] as Map<String, dynamic>;
+
+          lista.add(teste['idClientes']);
+          print("TESTE:");
+          print(teste);
+          // usuarios = FirebaseFirestore.instance
+          //     .collection('user')
+          //     .where("uid", isEqualTo: teste['idClientes']);
+        }
+      }
+      print(usuarios);
     }
     return Scaffold(
       backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),
@@ -186,6 +219,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
               ),
             ),
           if (allData.isNotEmpty && widget.tipoUsuario == 'Clientes')
+            //Listar o Nutricionista Vinculado
             Container(
               child: Text("Usuario já tem um nutricionista cadastrado"),
             ),
@@ -223,12 +257,13 @@ class _UsuariosPageState extends State<UsuariosPage> {
                             var idNutri =
                                 snapshot.data!.docs[index].reference.id;
                             if (namePesquisa.isEmpty) {
-                              var teste = allData[0] as Map<String, dynamic>;
-                              teste['idNutri'];
-                              print("Ola" + teste['idNutri']);
-                              if (idNutri == teste['idNutri']) {
-                                print("Oi" + teste['idNutri']);
-                              }
+                              print("DATA----------");
+                              print(data);
+                              print("TESTE---------");
+                              print(teste);
+                              print("LISTA---------");
+                              print(lista);
+
                               return exibirItem(data, idUsuario, idNutri);
                             }
                             if (data['name']
