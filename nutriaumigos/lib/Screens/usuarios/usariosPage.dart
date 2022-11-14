@@ -402,6 +402,12 @@ Future<void> dialog(String idCliente, String idNutri, context) {
         ),
         actions: <Widget>[
           TextButton(
+            child: const Text('Cancelar'),
+            onPressed: () async {
+              Navigator.pop(context);
+            },
+          ),
+          TextButton(
             child: const Text('Vincular'),
             onPressed: () async {
               try {

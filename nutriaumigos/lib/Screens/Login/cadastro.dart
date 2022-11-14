@@ -58,42 +58,11 @@ class _CadastroPageState extends State<CadastroPage> {
                 alignment: const Alignment(0.0, 1.15),
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("assets/icons/profile_dog.png"),
+                    image: AssetImage("assets/images/Logo.png"),
                     fit: BoxFit.fitHeight,
                   ),
                 ),
-                child: Container(
-                  height: 56,
-                  width: 56,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      stops: [0.3, 1.0],
-                      colors: [
-                        kPrimaryColor,
-                        kSecondColor,
-                      ],
-                    ),
-                    border: Border.all(
-                      width: 4.0,
-                      color: const Color(0xFFFFFFFF),
-                    ),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(56),
-                    ),
-                  ),
-                  child: SizedBox.expand(
-                    child: TextButton(
-                      child: const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
-                ),
+                child: Container(),
               ),
               const SizedBox(
                 height: 20,
@@ -378,6 +347,9 @@ class _CadastroPageState extends State<CadastroPage> {
                   child: const Text(
                     "Cancelar",
                     textAlign: TextAlign.center,
+                    style: TextStyle(
+                    color: kPrimaryColor,
+                  ),
                   ),
                   onPressed: () => Navigator.pop(context, false),
                 ),
@@ -406,34 +378,6 @@ class _CadastroPageState extends State<CadastroPage> {
     if (userCredential != null) {
       DatabaseMethods().addUserInfoToDB(auth.currentUser!.uid, userInfoMap);
     }
-
-    // FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: senha).then((value) {
-    //   salvarUsuario(nome ,email, senha, telefone, data, cpf, crmv, context);
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(
-    //       content: Text('Usuário criado com sucesso!'),
-    //       duration: Duration(
-    //         seconds: 2,
-    //       ),
-    //     ),
-    //   );
-    //   Navigator.pop(context);
-    // }).catchError((erro) {
-    //   var msg = '';
-    //   if (erro.code == 'email-already-in-use') {
-    //     msg = 'ERRO: O email informado já está em uso';
-    //   } else {
-    //     msg = 'ERRO: ${erro.message}';
-    //   }
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(
-    //       content: Text(msg),
-    //       duration: const Duration(
-    //         seconds: 2,
-    //       ),
-    //     ),
-    //   );
-    // });
   }
 
   void salvarUsuario(nome, email, senha, telefone, data, cpf, crmv, context) {

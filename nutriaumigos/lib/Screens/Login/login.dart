@@ -75,6 +75,9 @@ class LoginPage extends StatelessWidget {
                 child: const Text(
                   "Recuperar Senha",
                   textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: kPrimaryColor,
+                  ),
                 ),
                 onPressed: () {
                   Navigator.push(
@@ -149,6 +152,9 @@ class LoginPage extends StatelessWidget {
                 child: const Text(
                   "Cadastre-se",
                   textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: kPrimaryColor,
+                  ),
                 ),
                 onPressed: () {
                   Navigator.push(
