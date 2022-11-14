@@ -197,7 +197,7 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
                       height: MediaQuery.of(context).size.height -
                           MediaQuery.of(context).padding.top -
                           AppBar().preferredSize.height -
-                          150,
+                          160,
                       child: ListView.builder(
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {

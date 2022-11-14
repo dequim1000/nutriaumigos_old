@@ -48,7 +48,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   Widget build(BuildContext context) {
     var idFeedback;
     var idTeste;
-    if (widget.idFeedback != null) {
+    if (widget.idFeedback != null && widget.idFeedback != '') {
       getFeedbackById(widget.idFeedback);
     }
     return Scaffold(
@@ -114,6 +114,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
               TextFormField(
                 controller: txtAvaliacao,
                 autofocus: true,
+                enabled: widget.tipoUsuario == 'Clientes',
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -151,6 +152,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
               TextFormField(
                 controller: txtRejeicao,
                 autofocus: true,
+                enabled: widget.tipoUsuario == 'Clientes',
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -182,6 +184,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
               TextFormField(
                 controller: txtQuantidade,
                 autofocus: true,
+                enabled: widget.tipoUsuario == 'Clientes',
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -219,6 +222,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
               TextFormField(
                 controller: txtObservacao,
                 autofocus: true,
+                enabled: widget.tipoUsuario == 'Clientes',
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -247,116 +251,117 @@ class _FeedbackPageState extends State<FeedbackPage> {
               const SizedBox(
                 height: 40,
               ),
-              Container(
-                height: 60,
-                alignment: Alignment.centerLeft,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    stops: [0.3, 1],
-                    colors: [
-                      Color.fromARGB(255, 238, 214, 3),
-                      Color.fromARGB(255, 247, 225, 32),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                ),
-                child: SizedBox.expand(
-                  child: TextButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        SizedBox(
-                          height: 32,
-                          width: 32,
-                          child: Image.asset("assets/icons/paw_dog.png"),
-                        ),
-                        const Text(
-                          "Cadastrar",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            wordSpacing: 10,
-                            color: Colors.black,
-                            fontSize: 20,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 32,
-                          width: 32,
-                          child:
-                              Image.asset("assets/icons/icon_bone_verde.png"),
-                        ),
+              if (widget.tipoUsuario == 'Clientes')
+                Container(
+                  height: 60,
+                  alignment: Alignment.centerLeft,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      stops: [0.3, 1],
+                      colors: [
+                        Color.fromARGB(255, 238, 214, 3),
+                        Color.fromARGB(255, 247, 225, 32),
                       ],
                     ),
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        if (allFeedback.isEmpty) {
-                          try {
-                            await FeedbackClass()
-                                .createFeedback(
-                                    widget.idPet,
-                                    widget.idAlimento,
-                                    txtAvaliacao.text,
-                                    txtRejeicao.text,
-                                    txtQuantidade.text,
-                                    txtObservacao.text,
-                                    context)
-                                .then(
-                              (value) {
-                                cleanCampos();
-                                Navigator.pop(context);
-                              },
-                            );
-                          } catch (e) {
-                            print(e);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Erro ao Cadastrar o Feedback"),
-                                duration: Duration(
-                                  seconds: 2,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  child: SizedBox.expand(
+                    child: TextButton(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 32,
+                            width: 32,
+                            child: Image.asset("assets/icons/paw_dog.png"),
+                          ),
+                          const Text(
+                            "Cadastrar",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              wordSpacing: 10,
+                              color: Colors.black,
+                              fontSize: 20,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 32,
+                            width: 32,
+                            child:
+                                Image.asset("assets/icons/icon_bone_verde.png"),
+                          ),
+                        ],
+                      ),
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          if (allFeedback.isEmpty) {
+                            try {
+                              await FeedbackClass()
+                                  .createFeedback(
+                                      widget.idPet,
+                                      widget.idAlimento,
+                                      txtAvaliacao.text,
+                                      txtRejeicao.text,
+                                      txtQuantidade.text,
+                                      txtObservacao.text,
+                                      context)
+                                  .then(
+                                (value) {
+                                  cleanCampos();
+                                  Navigator.pop(context);
+                                },
+                              );
+                            } catch (e) {
+                              print(e);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Erro ao Cadastrar o Feedback"),
+                                  duration: Duration(
+                                    seconds: 2,
+                                  ),
                                 ),
-                              ),
-                            );
-                          }
-                        } else {
-                          try {
-                            await FeedbackClass()
-                                .updateFeedback(
-                                    widget.idPet,
-                                    widget.idAlimento,
-                                    txtAvaliacao.text,
-                                    txtRejeicao.text,
-                                    txtQuantidade.text,
-                                    txtObservacao.text,
-                                    idFeedback,
-                                    context)
-                                .then(
-                              (value) {
-                                Navigator.pop(context);
-                              },
-                            );
-                          } catch (e) {
-                            print(e);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Erro ao Atualizar o Animal"),
-                                duration: Duration(
-                                  seconds: 2,
+                              );
+                            }
+                          } else {
+                            try {
+                              await FeedbackClass()
+                                  .updateFeedback(
+                                      widget.idPet,
+                                      widget.idAlimento,
+                                      txtAvaliacao.text,
+                                      txtRejeicao.text,
+                                      txtQuantidade.text,
+                                      txtObservacao.text,
+                                      idFeedback,
+                                      context)
+                                  .then(
+                                (value) {
+                                  Navigator.pop(context);
+                                },
+                              );
+                            } catch (e) {
+                              print(e);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Erro ao Atualizar o Animal"),
+                                  duration: Duration(
+                                    seconds: 2,
+                                  ),
                                 ),
-                              ),
-                            );
+                              );
+                            }
                           }
+                          //Navigator.pop(context);
                         }
-                        //Navigator.pop(context);
-                      }
-                    },
+                      },
+                    ),
                   ),
                 ),
-              ),
               const SizedBox(
                 height: 20,
               ),

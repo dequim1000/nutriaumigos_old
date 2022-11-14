@@ -33,7 +33,7 @@ final _formKey = GlobalKey<FormState>();
 class _AnimaisPageState extends State<AnimaisPage> {
   @override
   Widget build(BuildContext context) {
-    if (widget.idPet != null) {
+    if (widget.idPet != null && widget.idPet != '') {
       getPetById(widget.idPet);
     }
     return Scaffold(
@@ -549,145 +549,144 @@ class _AnimaisPageState extends State<AnimaisPage> {
               const SizedBox(
                 height: 40,
               ),
-              if(widget.tipoUsuario == 'Clientes')
-              Container(
-                height: 60,
-                alignment: Alignment.centerLeft,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    stops: [0.3, 1],
-                    colors: [
-                      Color.fromARGB(255, 238, 214, 3),
-                      Color.fromARGB(255, 247, 225, 32),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                ),
-                child: SizedBox.expand(
-                  child: TextButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        SizedBox(
-                          height: 32,
-                          width: 32,
-                          child: Image.asset("assets/icons/paw_dog.png"),
-                        ),
-                        const Text(
-                          "Cadastrar",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            wordSpacing: 10,
-                            color: Colors.black,
-                            fontSize: 20,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          height: 32,
-                          width: 32,
-                          child:
-                              Image.asset("assets/icons/icon_bone_verde.png"),
-                        ),
+              if (widget.tipoUsuario == 'Clientes')
+                Container(
+                  height: 60,
+                  alignment: Alignment.centerLeft,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      stops: [0.3, 1],
+                      colors: [
+                        Color.fromARGB(255, 238, 214, 3),
+                        Color.fromARGB(255, 247, 225, 32),
                       ],
                     ),
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        if (widget.idPet == null || widget.idPet == '') {
-                          try {
-                            await Pets()
-                                .createPets(
-                                    txtNomeAnimal.text,
-                                    txtTipo.text,
-                                    txtRaca.text,
-                                    txtCor.text,
-                                    txtSexo.text,
-                                    double.parse(txtIdade.text),
-                                    double.parse(txtPeso.text),
-                                    txtAlergias.text,
-                                    txtRejeicao.text,
-                                    txtProblemas.text,
-                                    txtObservacao.text,
-                                    txtDescricao.text,
-                                    context)
-                                .then(
-                              (value) {
-                                cleanCampos();
-                                Navigator.pop(context);
-                              },
-                            );
-                          } catch (e) {
-                            print(e);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Erro ao Cadastrar o Animal"),
-                                duration: Duration(
-                                  seconds: 2,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  child: SizedBox.expand(
+                    child: TextButton(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 32,
+                            width: 32,
+                            child: Image.asset("assets/icons/paw_dog.png"),
+                          ),
+                          const Text(
+                            "Cadastrar",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              wordSpacing: 10,
+                              color: Colors.black,
+                              fontSize: 20,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 32,
+                            width: 32,
+                            child:
+                                Image.asset("assets/icons/icon_bone_verde.png"),
+                          ),
+                        ],
+                      ),
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          if (widget.idPet == null || widget.idPet == '') {
+                            try {
+                              await Pets()
+                                  .createPets(
+                                      txtNomeAnimal.text,
+                                      txtTipo.text,
+                                      txtRaca.text,
+                                      txtCor.text,
+                                      txtSexo.text,
+                                      double.parse(txtIdade.text),
+                                      double.parse(txtPeso.text),
+                                      txtAlergias.text,
+                                      txtRejeicao.text,
+                                      txtProblemas.text,
+                                      txtObservacao.text,
+                                      txtDescricao.text,
+                                      context)
+                                  .then(
+                                (value) {
+                                  cleanCampos();
+                                  Navigator.pop(context);
+                                },
+                              );
+                            } catch (e) {
+                              print(e);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Erro ao Cadastrar o Animal"),
+                                  duration: Duration(
+                                    seconds: 2,
+                                  ),
                                 ),
-                              ),
-                            );
-                          }
-                        } else {
-                          try {
-                            await Pets()
-                                .updatePets(
-                                    txtNomeAnimal.text,
-                                    txtTipo.text,
-                                    txtRaca.text,
-                                    txtCor.text,
-                                    txtSexo.text,
-                                    double.parse(txtIdade.text),
-                                    double.parse(txtPeso.text),
-                                    txtAlergias.text,
-                                    txtRejeicao.text,
-                                    txtProblemas.text,
-                                    txtObservacao.text,
-                                    txtDescricao.text,
-                                    widget.idPet.toString(),
-                                    context)
-                                .then(
-                              (value) {
-                                cleanCampos();
-                                Navigator.pop(context);
-                              },
-                            );
-                          } catch (e) {
-                            print(e);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Erro ao Atualizar o Animal"),
-                                duration: Duration(
-                                  seconds: 2,
+                              );
+                            }
+                          } else {
+                            try {
+                              await Pets()
+                                  .updatePets(
+                                      txtNomeAnimal.text,
+                                      txtTipo.text,
+                                      txtRaca.text,
+                                      txtCor.text,
+                                      txtSexo.text,
+                                      double.parse(txtIdade.text),
+                                      double.parse(txtPeso.text),
+                                      txtAlergias.text,
+                                      txtRejeicao.text,
+                                      txtProblemas.text,
+                                      txtObservacao.text,
+                                      txtDescricao.text,
+                                      widget.idPet.toString(),
+                                      context)
+                                  .then(
+                                (value) {
+                                  cleanCampos();
+                                  Navigator.pop(context);
+                                },
+                              );
+                            } catch (e) {
+                              print(e);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Erro ao Atualizar o Animal"),
+                                  duration: Duration(
+                                    seconds: 2,
+                                  ),
                                 ),
-                              ),
-                            );
+                              );
+                            }
                           }
                         }
-                      }
-                    },
+                      },
+                    ),
                   ),
                 ),
-              ),
-              if(widget.tipoUsuario == 'Clientes')
-              Container(
-                height: 40,
-                alignment: Alignment.center,
-                child: TextButton(
-                  child: const Text(
-                    "Cancelar",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: kSecondColor),
-                  ),
-                  onPressed: () {
-                    cleanCampos();
-                    Navigator.pop(context, false);
-                  } 
+              if (widget.tipoUsuario == 'Clientes')
+                Container(
+                  height: 40,
+                  alignment: Alignment.center,
+                  child: TextButton(
+                      child: const Text(
+                        "Cancelar",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: kSecondColor),
+                      ),
+                      onPressed: () {
+                        cleanCampos();
+                        Navigator.pop(context, false);
+                      }),
                 ),
-              ),
               const SizedBox(
                 height: 5,
               ),

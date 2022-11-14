@@ -51,8 +51,8 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('StatusAlimentacao'+widget.stateAlimentacao.toString());
-    print('StateFeedback'+widget.stateFeedback.toString());
+    print('StatusAlimentacao' + widget.stateAlimentacao.toString());
+    print('StateFeedback' + widget.stateFeedback.toString());
     print("IdUsuario1:" + idUsuario);
     String usuario = '';
     if (widget.tipoUsuario == 'Clientes') {
@@ -133,7 +133,7 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
                       height: MediaQuery.of(context).size.height -
                           MediaQuery.of(context).padding.top -
                           AppBar().preferredSize.height -
-                          82,
+                          110,
                       child: ListView.builder(
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {

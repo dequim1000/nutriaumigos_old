@@ -39,8 +39,8 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
     super.initState();
     idUsuario = FirebaseAuth.instance.currentUser!.uid;
     feedback = FirebaseFirestore.instance
-          .collection('feedback')
-          .where('idAlimento', isEqualTo: widget.idAlimento);
+        .collection('feedback')
+        .where('idAlimento', isEqualTo: widget.idAlimento);
   }
 
   @override
@@ -118,13 +118,14 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
                       height: MediaQuery.of(context).size.height -
                           MediaQuery.of(context).padding.top -
                           AppBar().preferredSize.height -
-                          82,
+                          110,
                       child: ListView.builder(
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
                           var data = snapshot.data!.docs[index].data()
                               as Map<String, dynamic>;
-                          var idFeedback = snapshot.data!.docs[index].reference.id;
+                          var idFeedback =
+                              snapshot.data!.docs[index].reference.id;
                           if (namePesquisa.isEmpty) {
                             return exibirItem(data, idUsuario, idFeedback);
                           }
@@ -162,17 +163,17 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
         ),
         onPressed: () {
           Navigator.pushNamed(
-              context,
-              'feedback',
-              arguments: {
-                'tipoUsuario': widget.tipoUsuario,
-                'idPet': widget.idPet,
-                'idAlimento': widget.idAlimento,
-                'idFeedback': '',
-                'stateAlimentacao': widget.stateAlimentacao,
-                'stateFeedback': widget.stateFeedback,
-              },
-            );
+            context,
+            'feedback',
+            arguments: {
+              'tipoUsuario': widget.tipoUsuario,
+              'idPet': widget.idPet,
+              'idAlimento': widget.idAlimento,
+              'idFeedback': '',
+              'stateAlimentacao': widget.stateAlimentacao,
+              'stateFeedback': widget.stateFeedback,
+            },
+          );
         },
       );
     }
@@ -300,8 +301,7 @@ Future<void> dialog(String idUsuario, String idFeedback, context) {
         content: SingleChildScrollView(
           child: ListBody(
             children: const <Widget>[
-              Text(
-                  'Você excluirá permanentemente o Feedback!'),
+              Text('Você excluirá permanentemente o Feedback!'),
             ],
           ),
         ),
