@@ -241,10 +241,11 @@ class _UsuariosPageState extends State<UsuariosPage> {
                                 return exibirItem(data, idUsuario, idNutri);
                               }
                             }
-                            if (namePesquisa != '' && data['name']
-                                .toString()
-                                .toLowerCase()
-                                .startsWith(namePesquisa.toLowerCase())) {
+                            if (namePesquisa != '' &&
+                                data['name']
+                                    .toString()
+                                    .toLowerCase()
+                                    .startsWith(namePesquisa.toLowerCase())) {
                               return exibirItem(data, idUsuario, idNutri);
                             }
                             return Container();
@@ -368,8 +369,17 @@ class _UsuariosPageState extends State<UsuariosPage> {
           ],
         ),
         onTap: () {
-          if (widget.tipoUsuario == 'Clientes') {
+          if (widget.tipoUsuario == 'Clientes' && allData.isEmpty) {
             dialog(idUsuario, idItem, context);
+          } else if (widget.tipoUsuario == 'Clientes' && allData.isNotEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Nutricionista já vinculado!"),
+                duration: Duration(
+                  seconds: 2,
+                ),
+              ),
+            );
           } else {
             Navigator.pushNamed(context, 'listaAnimais', arguments: {
               'tipoUsuario': widget.tipoUsuario,
