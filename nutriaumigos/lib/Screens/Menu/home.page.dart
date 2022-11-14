@@ -33,6 +33,9 @@ class _HomePageState extends State<HomePage> {
   var index = 0;
   String usuario = '';
   String nomeUsuario = '';
+  String iconeUsuario = '';
+  final ICON_CLIENTE = 'assets/icons/cliente_icon.png';
+  final ICON_NUTRI = 'assets/icons/nutricionista_icon.png';
   final USER_CLIENTE = 'Clientes';
   final USER_NUTRI = 'Nutricionistas';
 
@@ -78,6 +81,7 @@ class _HomePageState extends State<HomePage> {
                 ? USER_CLIENTE
                 : USER_NUTRI;
             nomeUsuario = usuario == USER_CLIENTE ? USER_NUTRI : USER_CLIENTE;
+            iconeUsuario = usuario == USER_CLIENTE ? ICON_NUTRI : ICON_CLIENTE;
           } else {
             tipoUsuario = null;
           }
@@ -97,7 +101,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _actions(context, usuario, nomeUsuario),
+              _actions(context, usuario, nomeUsuario, iconeUsuario),
               _banner(altura),
               _cardAlimentacao(context, tipoUsuario),
             ],
@@ -118,7 +122,8 @@ class _HomePageState extends State<HomePage> {
     return FirebaseFirestore.instance.collection('pets').doc(idPet).snapshots();
   }
 
-  _actions(context, String tipoUsuario, String nomeUsuario) {
+  _actions(
+      context, String tipoUsuario, String nomeUsuario, String iconeUsuario) {
     String navegacaoTela = '';
     if (tipoUsuario == 'Clientes') {
       navegacaoTela = 'listaAnimais';
@@ -137,23 +142,17 @@ class _HomePageState extends State<HomePage> {
                 left: 7,
               ),
             ),
-            _buildCard(
-                context,
-                nomeUsuario,
-                tipoUsuario,
-                'assets/icons/patinhaColor_icon.png',
-                'listaUsuarios',
-                false,
-                false),
+            _buildCard(context, nomeUsuario, tipoUsuario, iconeUsuario,
+                'listaUsuarios', false, false),
             const SizedBox(width: 5),
             _buildCard(context, 'Pet', tipoUsuario,
-                'assets/icons/patinha_icon.png', navegacaoTela, false, false),
+                'assets/icons/animais_icon.png', navegacaoTela, false, false),
             const SizedBox(width: 5),
             _buildCard(context, 'Alimentos', tipoUsuario,
-                'assets/icons/osso-de-cao.png', navegacaoTela, true, false),
+                'assets/icons/alimento_icon.png', navegacaoTela, true, false),
             const SizedBox(width: 5),
             _buildCard(context, 'FeedBack', tipoUsuario,
-                'assets/icons/estrela.png', navegacaoTela, false, true),
+                'assets/icons/feedback_icon.png', navegacaoTela, false, true),
             const Padding(
               padding: EdgeInsets.only(
                 right: 15,

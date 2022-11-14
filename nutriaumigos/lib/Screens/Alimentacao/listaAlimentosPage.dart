@@ -324,7 +324,7 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
             Container(
               child: TextButton(
                 child: Image.asset(
-                  'assets/icons/osso-de-cao.png',
+                  'assets/icons/feedback.png',
                   height: 40,
                   width: 40,
                   color: kPrimaryColor,

@@ -177,7 +177,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
                         height: MediaQuery.of(context).size.height -
                             MediaQuery.of(context).padding.top -
                             AppBar().preferredSize.height -
-                            82,
+                            100,
                         child: ListView.builder(
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
