@@ -125,197 +125,215 @@ class _UsuariosPageState extends State<UsuariosPage> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          TextField(
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              hintText: 'Pesquisar...',
-              filled: true,
-              fillColor: Colors.white,
-              border: UnderlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                borderSide: BorderSide(
-                  width: 0,
-                  style: BorderStyle.none,
-                ),
+      body: LayoutBuilder(
+        builder: (context, constrains) {
+          return Column(
+            children: [
+              const SizedBox(
+                height: 10,
               ),
-            ),
-            onChanged: ((value) {
-              setState(() {
-                namePesquisa = value;
-              });
-            }),
-          ),
-          //Mostrar Lista de Nutricionistas Disponiveis
-          if (allData.isEmpty && widget.tipoUsuario == 'Clientes')
-            Container(
-              child: StreamBuilder<QuerySnapshot>(
-                //fonte de dados (coleção)
-                stream: usuarios.snapshots(),
-
-                //exibir os dados recuperados
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                      return const Center(
-                        child: Text('Não foi possível conectar ao Firestore'),
-                      );
-
-                    case ConnectionState.waiting:
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-
-                    default:
-                      return Container(
-                        height: MediaQuery.of(context).size.height -
-                            MediaQuery.of(context).padding.top -
-                            AppBar().preferredSize.height -
-                            100,
-                        child: ListView.builder(
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            var data = snapshot.data!.docs[index].data()
-                                as Map<String, dynamic>;
-                            var idNutri =
-                                snapshot.data!.docs[index].reference.id;
-                            if (namePesquisa.isEmpty) {
-                              return exibirItem(data, idUsuario, idNutri);
-                            }
-                            if (data['name']
-                                .toString()
-                                .toLowerCase()
-                                .startsWith(namePesquisa.toLowerCase())) {
-                              return exibirItem(data, idUsuario, idNutri);
-                            }
-                            return Container();
-                          },
-                          padding: EdgeInsets.all(20),
-                        ),
-                      );
-                  }
-                },
+              TextField(
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.search),
+                  hintText: 'Pesquisar...',
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: UnderlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    borderSide: BorderSide(
+                      width: 0,
+                      style: BorderStyle.none,
+                    ),
+                  ),
+                ),
+                onChanged: ((value) {
+                  setState(() {
+                    namePesquisa = value;
+                  });
+                }),
               ),
-            ),
-          if (allData.isNotEmpty && widget.tipoUsuario == 'Clientes')
-            //Listar o Nutricionista Vinculado
-            Container(
-              child: StreamBuilder<QuerySnapshot>(
-                //fonte de dados (coleção)
-                stream: usuarios.snapshots(),
+              //Mostrar Lista de Nutricionistas Disponiveis
+              if (allData.isEmpty && widget.tipoUsuario == 'Clientes')
+                Container(
+                  width: constrains.maxWidth,
+                  height: constrains.maxHeight,
+                  child: StreamBuilder<QuerySnapshot>(
+                    //fonte de dados (coleção)
+                    stream: usuarios.snapshots(),
 
-                //exibir os dados recuperados
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                      return const Center(
-                        child: Text('Não foi possível conectar ao Firestore'),
-                      );
+                    //exibir os dados recuperados
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                          return const Center(
+                            child:
+                                Text('Não foi possível conectar ao Firestore'),
+                          );
 
-                    case ConnectionState.waiting:
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                        case ConnectionState.waiting:
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
 
-                    default:
-                      return Container(
-                        height: MediaQuery.of(context).size.height -
-                            MediaQuery.of(context).padding.top -
-                            AppBar().preferredSize.height -
-                            82,
-                        child: ListView.builder(
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            var data = snapshot.data!.docs[index].data()
-                                as Map<String, dynamic>;
-                            var idNutri =
-                                snapshot.data!.docs[index].reference.id;
-                            if (namePesquisa.isEmpty) {
-                              if (lista.contains(idNutri)) {
-                                return exibirItem(data, idUsuario, idNutri);
-                              }
-                            }
-                            if (namePesquisa != '' &&
-                                data['name']
+                        default:
+                          return Container(
+                            height: MediaQuery.of(context).size.height -
+                                MediaQuery.of(context).padding.top -
+                                AppBar().preferredSize.height -
+                                82,
+                            child: ListView.builder(
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                var data = snapshot.data!.docs[index].data()
+                                    as Map<String, dynamic>;
+                                var idNutri =
+                                    snapshot.data!.docs[index].reference.id;
+                                if (namePesquisa.isEmpty) {
+                                  return exibirItem(data, idUsuario, idNutri);
+                                }
+                                if (data['name']
                                     .toString()
                                     .toLowerCase()
                                     .startsWith(namePesquisa.toLowerCase())) {
-                              return exibirItem(data, idUsuario, idNutri);
-                            }
-                            return Container();
-                          },
-                          padding: EdgeInsets.all(20),
-                        ),
-                      );
-                  }
-                },
-              ),
-            ),
-          //Mostrar Usuarios Cadastrados daquele nutri
-          if (allData.isNotEmpty && widget.tipoUsuario != 'Clientes')
-            Container(
-              child: StreamBuilder<QuerySnapshot>(
-                //fonte de dados (coleção)
-                stream: usuarios.snapshots(),
+                                  return exibirItem(data, idUsuario, idNutri);
+                                }
+                                return Container();
+                              },
+                              padding: EdgeInsets.all(20),
+                            ),
+                          );
+                      }
+                    },
+                  ),
+                ),
+              if (allData.isNotEmpty && widget.tipoUsuario == 'Clientes')
+                //Listar o Nutricionista Vinculado
+                Container(
+                  width: constrains.maxWidth,
+                  height: constrains.maxHeight,
+                  child: StreamBuilder<QuerySnapshot>(
+                    //fonte de dados (coleção)
+                    stream: usuarios.snapshots(),
 
-                //exibir os dados recuperados
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                      return const Center(
-                        child: Text('Não foi possível conectar ao Firestore'),
-                      );
+                    //exibir os dados recuperados
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                          return const Center(
+                            child:
+                                Text('Não foi possível conectar ao Firestore'),
+                          );
 
-                    case ConnectionState.waiting:
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                        case ConnectionState.waiting:
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
 
-                    default:
-                      return Container(
-                        height: MediaQuery.of(context).size.height -
-                            MediaQuery.of(context).padding.top -
-                            AppBar().preferredSize.height -
-                            82,
-                        child: ListView.builder(
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            var data = snapshot.data!.docs[index].data()
-                                as Map<String, dynamic>;
-                            var idCliente =
-                                snapshot.data!.docs[index].reference.id;
-                            if (namePesquisa.isEmpty) {
-                              if (lista.contains(idCliente)) {
-                                return exibirItem(data, idUsuario, idCliente);
-                              }
-                            }
-                            if (namePesquisa != '' &&
-                                data['name']
-                                    .toString()
-                                    .toLowerCase()
-                                    .startsWith(namePesquisa.toLowerCase())) {
-                              return exibirItem(data, idUsuario, idCliente);
-                            }
-                            return Container();
-                          },
-                          padding: EdgeInsets.all(20),
-                        ),
-                      );
-                  }
-                },
-              ),
-            ),
-          if (allData.isEmpty && widget.tipoUsuario != 'Clientes')
-            Container(
-              child: Text("Você não possui nenhum cliente vinculado!"),
-            ),
-        ],
+                        default:
+                          return Container(
+                            height: MediaQuery.of(context).size.height -
+                                MediaQuery.of(context).padding.top -
+                                AppBar().preferredSize.height -
+                                82,
+                            child: ListView.builder(
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                var data = snapshot.data!.docs[index].data()
+                                    as Map<String, dynamic>;
+                                var idNutri =
+                                    snapshot.data!.docs[index].reference.id;
+                                if (namePesquisa.isEmpty) {
+                                  if (lista.contains(idNutri)) {
+                                    return exibirItem(data, idUsuario, idNutri);
+                                  }
+                                }
+                                if (namePesquisa != '' &&
+                                    data['name']
+                                        .toString()
+                                        .toLowerCase()
+                                        .startsWith(
+                                            namePesquisa.toLowerCase())) {
+                                  return exibirItem(data, idUsuario, idNutri);
+                                }
+                                return Container();
+                              },
+                              padding: EdgeInsets.all(20),
+                            ),
+                          );
+                      }
+                    },
+                  ),
+                ),
+              //Mostrar Usuarios Cadastrados daquele nutri
+              if (allData.isNotEmpty && widget.tipoUsuario != 'Clientes')
+                Container(
+                  width: constrains.maxWidth,
+                  height: constrains.maxHeight,
+                  child: StreamBuilder<QuerySnapshot>(
+                    //fonte de dados (coleção)
+                    stream: usuarios.snapshots(),
+
+                    //exibir os dados recuperados
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                          return const Center(
+                            child:
+                                Text('Não foi possível conectar ao Firestore'),
+                          );
+
+                        case ConnectionState.waiting:
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+
+                        default:
+                          return Container(
+                            height: MediaQuery.of(context).size.height -
+                                MediaQuery.of(context).padding.top -
+                                AppBar().preferredSize.height -
+                                82,
+                            child: ListView.builder(
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                var data = snapshot.data!.docs[index].data()
+                                    as Map<String, dynamic>;
+                                var idCliente =
+                                    snapshot.data!.docs[index].reference.id;
+                                if (namePesquisa.isEmpty) {
+                                  if (lista.contains(idCliente)) {
+                                    return exibirItem(
+                                        data, idUsuario, idCliente);
+                                  }
+                                }
+                                if (namePesquisa != '' &&
+                                    data['name']
+                                        .toString()
+                                        .toLowerCase()
+                                        .startsWith(
+                                            namePesquisa.toLowerCase())) {
+                                  return exibirItem(data, idUsuario, idCliente);
+                                }
+                                return Container();
+                              },
+                              padding: EdgeInsets.all(20),
+                            ),
+                          );
+                      }
+                    },
+                  ),
+                ),
+              if (allData.isEmpty && widget.tipoUsuario != 'Clientes')
+                Container(
+                  width: constrains.maxWidth,
+                  height: constrains.maxHeight,
+                  child: Text("Você não possui nenhum cliente vinculado!"),
+                ),
+            ],
+          );
+        },
       ),
     );
   }
