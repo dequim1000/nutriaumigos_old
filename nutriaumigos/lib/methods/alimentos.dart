@@ -10,8 +10,10 @@ class Alimentos{
 
   Future<void> createAlimento(
       String idPet,
+      String idDono,
       String diaSemana,
       String nomeAlimento,
+      String nomePet,
       String horario,
       String quantidade,
       String descricao,
@@ -19,9 +21,10 @@ class Alimentos{
     Map<String, dynamic> petsInfoMap = {
       'idNutri': auth.currentUser?.uid,
       'idPet': idPet,
-      //'idDono': auth.currentUser?.uid,
+      'idDono': idDono,
       'diaSemana': diaSemana,
       'nomeAlimento': nomeAlimento,
+      'nomePet': nomePet,
       'horario': horario,
       'quantidade': quantidade,
       'descricao': descricao,
@@ -32,8 +35,10 @@ class Alimentos{
 
   Future<void> updateAlimento(
       String idPet,
+      String idDono,
       String diaSemana,
       String nomeAlimento,
+      String nomePet,
       String horario,
       String quantidade,
       String descricao,
@@ -42,9 +47,10 @@ class Alimentos{
     Map<String, dynamic> petsInfoMap = {
       'idNutri': auth.currentUser?.uid,
       'idPet': idPet,
-      //'idDono': auth.currentUser?.uid,
+      'idDono': idDono,
       'diaSemana': diaSemana,
       'nomeAlimento': nomeAlimento,
+      'nomePet': nomePet,
       'horario': horario,
       'quantidade': quantidade,
       'descricao': descricao,

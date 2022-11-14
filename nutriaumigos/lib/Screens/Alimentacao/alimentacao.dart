@@ -15,11 +15,13 @@ class AlimentacaoPage extends StatefulWidget {
       required this.tipoUsuario,
       required this.idAlimento,
       required this.idPet,
+      required this.idDono,
       required this.stateAlimentacao,
       required this.stateFeedback});
   final idAlimento;
   final tipoUsuario;
   final idPet;
+  final idDono;
   final stateAlimentacao;
   final stateFeedback;
 
@@ -39,22 +41,19 @@ List<String> items = [
 String? selectedItem = 'Segunda-Feira';
 
 var txtNomeAlimento = TextEditingController();
+var txtNomePet = TextEditingController();
 var txtHorario = TextEditingController();
 var txtQuantidade = TextEditingController();
 var txtDescricao = TextEditingController();
+
+var idDono;
 
 final _formKey = GlobalKey<FormState>();
 
 class _AlimentacaoPageState extends State<AlimentacaoPage> {
   @override
   Widget build(BuildContext context) {
-    print("OI ANDRE");
-    print(widget.idPet);
-    print(widget.idAlimento);
-    print(widget.stateAlimentacao);
-    print(widget.stateFeedback);
-    print(widget.tipoUsuario);
-    if (widget.idAlimento != null) {
+    if (widget.idAlimento != null && widget.idAlimento !="") {
       getAlimentosById(widget.idAlimento);
     }
 
@@ -178,6 +177,44 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                 validator: ((value) {
                   if (value == null || value.isEmpty) {
                     return 'Preencha o campo de Nome do Alimento';
+                  }
+                  return null;
+                }),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: txtNomePet,
+                autofocus: true,
+                enabled: widget.tipoUsuario != 'Clientes',
+                decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  isDense: true,
+                  contentPadding: EdgeInsets.all(20),
+                  border: UnderlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    borderSide: BorderSide(
+                      width: 0,
+                      style: BorderStyle.none,
+                    ),
+                  ),
+                  labelText: "Nome do Pet",
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 20,
+                  ),
+                ),
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+                validator: ((value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Preencha o campo de Nome do Pet';
                   }
                   return null;
                 }),
@@ -353,8 +390,10 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                               await Alimentos()
                                   .createAlimento(
                                       widget.idPet,
+                                      widget.idDono,
                                       selectedItem.toString(),
                                       txtNomeAlimento.text,
+                                      txtNomePet.text,
                                       txtHorario.text,
                                       txtQuantidade.text,
                                       txtDescricao.text,
@@ -380,8 +419,10 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                               await Alimentos()
                                   .updateAlimento(
                                       widget.idPet,
+                                      widget.idDono,
                                       selectedItem.toString(),
                                       txtNomeAlimento.text,
+                                      txtNomePet.text,
                                       txtHorario.text,
                                       txtQuantidade.text,
                                       txtDescricao.text,
@@ -404,6 +445,7 @@ class _AlimentacaoPageState extends State<AlimentacaoPage> {
                               );
                             }
                           }
+                          clearCampos();
                         }
                       },
                     ),
@@ -442,6 +484,7 @@ getAlimentosById(String idAlimento) async {
       .get()
       .then((value) {
     txtNomeAlimento.text = value.get('nomeAlimento');
+    txtNomePet.text = value.get('nomePet');
     txtHorario.text = value.get('horario');
     txtQuantidade.text = value.get('quantidade');
     txtDescricao.text = value.get('descricao');
@@ -451,8 +494,9 @@ getAlimentosById(String idAlimento) async {
 
 clearCampos(){
     txtNomeAlimento.text = '';
+    txtNomePet.text = '';
     txtHorario.text = '';
     txtQuantidade.text = '';
     txtDescricao.text = '';
-    selectedItem = '';
+    selectedItem = 'Segunda-Feira';
 }

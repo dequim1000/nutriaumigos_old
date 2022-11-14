@@ -13,16 +13,60 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String namePesquisa = '';
   var tipoUsuario;
+  var alimentos;
+  var nutricionista;
+  String idUsuario = '';
+
+  var date = DateTime.now();
+  List diasdaSemana = [
+    'Segunda-Feira',
+    'Terça-Feira',
+    'Quarta-Feira',
+    'Quinta-Feira',
+    'Sexta-Feira',
+    'Sábado',
+    'Domingo'
+  ];
+
+  var index = 0;
   String usuario = '';
   String nomeUsuario = '';
   final USER_CLIENTE = 'Clientes';
   final USER_NUTRI = 'Nutricionistas';
 
   @override
+  void initState() {
+    super.initState();
+    idUsuario = FirebaseAuth.instance.currentUser!.uid;
+    print(idUsuario);
+    index = date.weekday - 1;
+    alimentos = getAlimentos(index);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),
+      appBar: AppBar(
+        title: const Text(
+          "NutriAumigos",
+          style: TextStyle(
+              fontSize: 28, fontWeight: FontWeight.w800, color: Colors.white),
+        ),
+        centerTitle: true,
+        backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout_outlined),
+            onPressed: () async {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushReplacementNamed(context, 'login');
+            },
+          ),
+        ],
+      ),
       body: FutureBuilder<DocumentSnapshot>(
         future: DatabaseMethods()
             .getUserFromDB(FirebaseAuth.instance.currentUser!.uid),
@@ -53,10 +97,8 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _title(),
               _actions(context, usuario, nomeUsuario),
               _banner(altura),
-              _diasSemanas(tipoUsuario),
               _cardAlimentacao(context, tipoUsuario),
             ],
           ),
@@ -64,299 +106,347 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
 
-_title() {
-  return Container(
-    margin: const EdgeInsets.only(top: 30),
-    child: const Center(
-      child: Text(
-        "NutriAumigos",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: 40,
-        ),
-      ),
-    ),
-  );
-}
-
-_actions(context, String tipoUsuario, String nomeUsuario) {
-  String navegacaoTela = '';
-  if (tipoUsuario == 'Clientes') {
-    navegacaoTela = 'listaAnimais';
-  } else {
-    navegacaoTela = 'listaUsuarios';
+  getAlimentos(int index) {
+    return FirebaseFirestore.instance
+        .collection('alimentos')
+        .where('idDono', isEqualTo: idUsuario)
+        .where('diaSemana', isEqualTo: diasdaSemana[index]);
   }
-  return Container(
-    height: 100,
-    margin: const EdgeInsets.only(top: 30),
-    child: SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(
-              left: 7,
-            ),
-          ),
-          _buildCard(
-              context,
-              nomeUsuario,
-              tipoUsuario,
-              'assets/icons/patinhaColor_icon.png',
-              'listaUsuarios',
-              false,
-              false),
-          const SizedBox(width: 5),
-          _buildCard(context, 'Pet', tipoUsuario,
-              'assets/icons/patinha_icon.png', navegacaoTela, false, false),
-          const SizedBox(width: 5),
-          _buildCard(context, 'Alimentos', tipoUsuario,
-              'assets/icons/osso-de-cao.png', navegacaoTela, true, false),
-          const SizedBox(width: 5),
-          _buildCard(context, 'FeedBack', tipoUsuario,
-              'assets/icons/estrela.png', navegacaoTela, false, true),
-          const Padding(
-            padding: EdgeInsets.only(
-              right: 15,
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
 
-_banner(double altura) {
-  return Container(
-    width: 400,
-    height: altura,
-    margin: const EdgeInsets.all(20),
-    decoration: const BoxDecoration(
-      borderRadius: BorderRadius.all(
-        Radius.circular(15.0),
-      ),
-      color: kSecondColor,
-    ),
-    child: const Center(
-      child: Text(
-        "Anuncie Aqui!",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: kPrimaryColor,
-          fontWeight: FontWeight.bold,
-          fontSize: 40,
-        ),
-      ),
-    ),
-  );
-}
+  getPet(String idPet) {
+    return FirebaseFirestore.instance.collection('pets').doc(idPet).snapshots();
+  }
 
-_diasSemanas(tipoUsuario) {
-  if (tipoUsuario == '' || tipoUsuario == null) {
+  _actions(context, String tipoUsuario, String nomeUsuario) {
+    String navegacaoTela = '';
+    if (tipoUsuario == 'Clientes') {
+      navegacaoTela = 'listaAnimais';
+    } else {
+      navegacaoTela = 'listaUsuarios';
+    }
     return Container(
-      margin: const EdgeInsets.only(top: 5, left: 20),
-      child: Row(
-        children: [
-          const Text(
-            "Plano Alimentar",
-            textAlign: TextAlign.start,
-            style: TextStyle(
-              color: kPrimaryLightColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
-          const SizedBox(
-            width: 25,
-          ),
-          IconButton(
-            icon: const Icon(Icons.arrow_back),
-            color: Colors.white,
-            onPressed: () {},
-          ),
-          const Text(
-            "Terça",
-            textAlign: TextAlign.end,
-            style: TextStyle(
-              color: kPrimaryLightColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.arrow_forward),
-            color: Colors.white,
-            onPressed: () {},
-          ),
-        ],
-      ),
-    );
-  } else {
-    return Container();
-  }
-}
-
-_cardAlimentacao(context, tipoUsuario) {
-  if (tipoUsuario == '' || tipoUsuario == null) {
-    return Container(
-      width: 400,
-      margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
-      child: ListView(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _listaAlimentos(),
-              _listaAlimentos(),
-              _listaAlimentos(),
-              _listaAlimentos(),
-            ],
-          ),
-        ],
-      ),
-    );
-  } else {
-    return Container();
-  }
-}
-
-_listaAlimentos() {
-  var imageAlimento = 'assets/icons/patinha_icon.png';
-  var nomeAlimento = 'Banana Com Aveia e Mel';
-  var pesoAlimento = '200g';
-  var nomePet = 'Joselito Soares';
-  var horarioAlimento = '12:00';
-
-  return Container(
-    width: 400,
-    height: 100,
-    margin: const EdgeInsets.only(top: 20, bottom: 10),
-    decoration: BoxDecoration(
-      color: kPrimaryLightColor,
-      border: Border.all(
-          color: Color.fromARGB(255, 218, 218, 218),
-          width: 3.0), // Set border width
-      borderRadius: const BorderRadius.all(
-          Radius.circular(10.0)), // Set rounded corner radius
-    ),
-    child: Row(
-      children: [
-        const Padding(
-          padding: EdgeInsets.only(left: 5),
-        ),
-        Image.asset(imageAlimento, height: 60, width: 60),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
+      height: 100,
+      margin: const EdgeInsets.only(top: 30),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
           children: [
-            Container(
-              margin: const EdgeInsets.only(top: 15),
-              child: Text(
-                nomeAlimento,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+            const Padding(
+              padding: EdgeInsets.only(
+                left: 7,
               ),
             ),
-            Container(
-              margin: const EdgeInsets.only(top: 2),
-              child: Text(
-                nomePet,
-                textAlign: TextAlign.left,
-                style:
-                    const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 10),
-              child: Row(
-                children: [
-                  Text(
-                    pesoAlimento,
-                    style: const TextStyle(
-                        color: Colors.red,
-                        fontSize: 16,
-                        fontStyle: FontStyle.italic),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 130),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.star,
-                          size: 16,
-                          color: Colors.orange,
-                        ),
-                        Text(
-                          horarioAlimento,
-                          style: const TextStyle(
-                              color: Colors.orange, fontSize: 18),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+            _buildCard(
+                context,
+                nomeUsuario,
+                tipoUsuario,
+                'assets/icons/patinhaColor_icon.png',
+                'listaUsuarios',
+                false,
+                false),
+            const SizedBox(width: 5),
+            _buildCard(context, 'Pet', tipoUsuario,
+                'assets/icons/patinha_icon.png', navegacaoTela, false, false),
+            const SizedBox(width: 5),
+            _buildCard(context, 'Alimentos', tipoUsuario,
+                'assets/icons/osso-de-cao.png', navegacaoTela, true, false),
+            const SizedBox(width: 5),
+            _buildCard(context, 'FeedBack', tipoUsuario,
+                'assets/icons/estrela.png', navegacaoTela, false, true),
+            const Padding(
+              padding: EdgeInsets.only(
+                right: 15,
               ),
             ),
           ],
         ),
-      ],
-    ),
-  );
-}
+      ),
+    );
+  }
 
-_buildCard(
-    BuildContext context,
-    String tituloCard,
-    String tipoUsuario,
-    String imageButton,
-    String nomeTela,
-    bool stateAlimentacao,
-    bool stateFeedback) {
-  return SizedBox(
-    width: 110,
-    height: 110,
-    child: Column(
-      children: [
-        GestureDetector(
-          onTap: () => {
-            Navigator.pushNamed(context, nomeTela, arguments: {
-              'tipoUsuario': tipoUsuario,
-              'stateAlimentacao': stateAlimentacao,
-              'stateFeedback': stateFeedback,
-            })
-          },
-          child: Container(
-            width: 74,
-            height: 74,
-            decoration: BoxDecoration(
-              color: const Color.fromRGBO(239, 239, 239, 1),
-              border: Border.all(
-                  color: const Color.fromRGBO(239, 239, 239, 1),
-                  width: 3.0), // Set border width
-              borderRadius: const BorderRadius.all(
-                  Radius.circular(10.0)), // Set rounded corner radius
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Image.asset(imageButton, height: 37, width: 37),
-            ),
+  _banner(double altura) {
+    return Container(
+      width: 400,
+      height: altura,
+      margin: const EdgeInsets.all(20),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(15.0),
+        ),
+        color: kSecondColor,
+      ),
+      child: const Center(
+        child: Text(
+          "Anuncie Aqui!",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: kPrimaryColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 40,
           ),
         ),
-        Text(
-          tituloCard,
-          style: const TextStyle(
-              fontFamily: 'Inter',
-              fontWeight: FontWeight.w500,
-              color: Color.fromRGBO(196, 196, 196, 1),
-              fontSize: 16),
-        )
+      ),
+    );
+  }
+
+  _cardAlimentacao(context, tipoUsuario) {
+    //TipoUsario Cliente
+    if (tipoUsuario == '' || tipoUsuario == null) {
+      return Container(
+        width: 400,
+        margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+        child: _listaAlimentos(),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  _listaAlimentos() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            const Text(
+              "Plano Alimentar",
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                color: kPrimaryLightColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            Container(
+              height: 50,
+              child: Center(
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      color: Colors.white,
+                      onPressed: () {
+                        setState(() {
+                          index--;
+                          if (index < 0) {
+                            index = 6;
+                          }
+                          alimentos = getAlimentos(index);
+                        });
+                      },
+                    ),
+                    Text(
+                      diasdaSemana[index],
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w900,
+                        color: kPrimaryLightColor,
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.arrow_forward),
+                      color: Colors.white,
+                      onPressed: () {
+                        setState(() {
+                          index++;
+                          if (index > 6) {
+                            index = 0;
+                          }
+                          alimentos = getAlimentos(index);
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        Container(
+          child: StreamBuilder<QuerySnapshot>(
+            //fonte de dados (coleção)
+            stream: alimentos.snapshots(),
+
+            //exibir os dados recuperados
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return const Center(
+                    child: Text('Não foi possível conectar ao Firestore'),
+                  );
+
+                case ConnectionState.waiting:
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+
+                default:
+                  return Container(
+                    height: MediaQuery.of(context).size.height -
+                        MediaQuery.of(context).padding.top -
+                        AppBar().preferredSize.height -
+                        300,
+                    child: ListView.builder(
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        var data = snapshot.data!.docs[index].data()
+                            as Map<String, dynamic>;
+                        var idAlimento =
+                            snapshot.data!.docs[index].reference.id;
+                        return exibirItem(data, idUsuario, idAlimento);
+                      },
+                      padding: EdgeInsets.all(20),
+                    ),
+                  );
+              }
+            },
+          ),
+        ),
       ],
-    ),
-  );
+    );
+  }
+
+  Widget exibirItem(item, String idUsuario, String idAlimento) {
+    String? diaSemanaAlimento = item['diaSemana'];
+    String? nomeAnimalAlimento = item['nomeAlimento'];
+    String? horarioAlimento = item['horario'];
+    String? quantidadeAlimento = item['quantidade'];
+    String? descricaoAlimento = item['descricao'];
+    String? nomePet = item['nomePet'];
+
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+      ),
+      child: ListTile(
+        tileColor: Colors.white,
+        contentPadding: const EdgeInsets.all(10),
+        dense: true,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        //leading: Image.asset('assets/icons/osso-de-cao.png'),
+        title: Text(
+          nomeAnimalAlimento.toString(),
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              descricaoAlimento.toString(),
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                fontSize: 16,
+                color: kPrimaryColor,
+              ),
+            ),
+            Text(
+              quantidadeAlimento.toString(),
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                color: kSecondColor,
+              ),
+            ),
+          ],
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Column(
+              children: [
+                Text(
+                  horarioAlimento.toString(),
+                  textAlign: TextAlign.left,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.orange,
+                  ),
+                ),
+                Text(
+                  nomePet.toString(),
+                  textAlign: TextAlign.left,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    color: kPrimaryColor,
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              child: TextButton(
+                child: Image.asset(
+                  'assets/icons/osso-de-cao.png',
+                  height: 40,
+                  width: 40,
+                  color: kSecondColor,
+                ),
+                onPressed: () async {},
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _buildCard(
+      BuildContext context,
+      String tituloCard,
+      String tipoUsuario,
+      String imageButton,
+      String nomeTela,
+      bool stateAlimentacao,
+      bool stateFeedback) {
+    return SizedBox(
+      width: 110,
+      height: 110,
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: () => {
+              Navigator.pushNamed(context, nomeTela, arguments: {
+                'tipoUsuario': tipoUsuario,
+                'stateAlimentacao': stateAlimentacao,
+                'stateFeedback': stateFeedback,
+              })
+            },
+            child: Container(
+              width: 74,
+              height: 74,
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(239, 239, 239, 1),
+                border: Border.all(
+                    color: const Color.fromRGBO(239, 239, 239, 1),
+                    width: 3.0), // Set border width
+                borderRadius: const BorderRadius.all(
+                    Radius.circular(10.0)), // Set rounded corner radius
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Image.asset(imageButton, height: 37, width: 37),
+              ),
+            ),
+          ),
+          Text(
+            tituloCard,
+            style: const TextStyle(
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.w500,
+                color: Color.fromRGBO(196, 196, 196, 1),
+                fontSize: 16),
+          )
+        ],
+      ),
+    );
+  }
 }

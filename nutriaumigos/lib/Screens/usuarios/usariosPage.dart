@@ -34,7 +34,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
   var nutricionista;
   List allData = [];
   String idUsuario = '';
-  var teste;
+  var listaAux;
   List<String> lista = [];
 
   CollectionReference _collectionReference =
@@ -73,50 +73,35 @@ class _UsuariosPageState extends State<UsuariosPage> {
       usuarios = FirebaseFirestore.instance
           .collection('user')
           .where('crmv', isEqualTo: '');
-      //.where("uid", isEqualTo: teste['idClientes']);
     }
     idUsuario = FirebaseAuth.instance.currentUser!.uid;
   }
 
   @override
   Widget build(BuildContext context) {
-    print("IdUsuario1:" + idUsuario);
     String usuario = '';
-    // print(allData);
-    // if (allData.isNotEmpty) {
-    //   //var index = allData.length;
-    //   int index;
-    //   for (index = 0; index <= allData.length - 1; index++) {
-    //     teste = allData[index] as Map<String, dynamic>;
-    //     print("ESTOU AQUI");
-    //     print(teste['idClientes']);
-    //   }
-    //   var usuario = usuarios;
-    //   print("ESTOU AQUI 2");
-    //   print(usuario);
-    // }
 
     if (widget.tipoUsuario == 'Clientes') {
-      usuario = 'Nutricionistas';
+      int index;
+      listaAux = [];
+      for (index = 0; index <= allData.length - 1; index++) {
+        listaAux = allData[index] as Map<String, dynamic>;
+
+        lista.add(listaAux['idNutri']);
+      }
     } else {
       usuario = 'Clientes';
 
       if (allData.isNotEmpty) {
         //var index = allData.length;
         int index;
-        teste = [];
+        listaAux = [];
         for (index = 0; index <= allData.length - 1; index++) {
-          teste = allData[index] as Map<String, dynamic>;
+          listaAux = allData[index] as Map<String, dynamic>;
 
-          lista.add(teste['idClientes']);
-          print("TESTE:");
-          print(teste);
-          // usuarios = FirebaseFirestore.instance
-          //     .collection('user')
-          //     .where("uid", isEqualTo: teste['idClientes']);
+          lista.add(listaAux['idClientes']);
         }
       }
-      print(usuarios);
     }
     return Scaffold(
       backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),
@@ -221,7 +206,55 @@ class _UsuariosPageState extends State<UsuariosPage> {
           if (allData.isNotEmpty && widget.tipoUsuario == 'Clientes')
             //Listar o Nutricionista Vinculado
             Container(
-              child: Text("Usuario já tem um nutricionista cadastrado"),
+              child: StreamBuilder<QuerySnapshot>(
+                //fonte de dados (coleção)
+                stream: usuarios.snapshots(),
+
+                //exibir os dados recuperados
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return const Center(
+                        child: Text('Não foi possível conectar ao Firestore'),
+                      );
+
+                    case ConnectionState.waiting:
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+
+                    default:
+                      return Container(
+                        height: MediaQuery.of(context).size.height -
+                            MediaQuery.of(context).padding.top -
+                            AppBar().preferredSize.height -
+                            82,
+                        child: ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            var data = snapshot.data!.docs[index].data()
+                                as Map<String, dynamic>;
+                            var idNutri =
+                                snapshot.data!.docs[index].reference.id;
+                            if (namePesquisa.isEmpty) {
+                              if (lista.contains(idNutri)) {
+                                return exibirItem(data, idUsuario, idNutri);
+                              }
+                            }
+                            if (namePesquisa != '' && data['name']
+                                .toString()
+                                .toLowerCase()
+                                .startsWith(namePesquisa.toLowerCase())) {
+                              return exibirItem(data, idUsuario, idNutri);
+                            }
+                            return Container();
+                          },
+                          padding: EdgeInsets.all(20),
+                        ),
+                      );
+                  }
+                },
+              ),
             ),
           //Mostrar Usuarios Cadastrados daquele nutri
           if (allData.isNotEmpty && widget.tipoUsuario != 'Clientes')
@@ -254,23 +287,19 @@ class _UsuariosPageState extends State<UsuariosPage> {
                           itemBuilder: (context, index) {
                             var data = snapshot.data!.docs[index].data()
                                 as Map<String, dynamic>;
-                            var idNutri =
+                            var idCliente =
                                 snapshot.data!.docs[index].reference.id;
                             if (namePesquisa.isEmpty) {
-                              print("DATA----------");
-                              print(data);
-                              print("TESTE---------");
-                              print(teste);
-                              print("LISTA---------");
-                              print(lista);
-
-                              return exibirItem(data, idUsuario, idNutri);
+                              if (lista.contains(idCliente)) {
+                                return exibirItem(data, idUsuario, idCliente);
+                              }
                             }
-                            if (data['name']
-                                .toString()
-                                .toLowerCase()
-                                .startsWith(namePesquisa.toLowerCase())) {
-                              return exibirItem(data, idUsuario, idNutri);
+                            if (namePesquisa != '' &&
+                                data['name']
+                                    .toString()
+                                    .toLowerCase()
+                                    .startsWith(namePesquisa.toLowerCase())) {
+                              return exibirItem(data, idUsuario, idCliente);
                             }
                             return Container();
                           },
@@ -291,7 +320,6 @@ class _UsuariosPageState extends State<UsuariosPage> {
   }
 
   Widget exibirItem(item, String idUsuario, String idItem) {
-    print("IdUsuario2:" + idUsuario);
     String nomeUsuario = item['nome'];
     String descricao = item['crmv'] == '' ? 'Cliente' : item['crmv'];
 
@@ -341,12 +369,8 @@ class _UsuariosPageState extends State<UsuariosPage> {
         ),
         onTap: () {
           if (widget.tipoUsuario == 'Clientes') {
-            print("IdUsuario3:" + idUsuario);
             dialog(idUsuario, idItem, context);
           } else {
-            print(idUsuario);
-            print(idItem);
-
             Navigator.pushNamed(context, 'listaAnimais', arguments: {
               'tipoUsuario': widget.tipoUsuario,
               'idDono': idItem,
@@ -362,7 +386,6 @@ class _UsuariosPageState extends State<UsuariosPage> {
 }
 
 Future<void> dialog(String idCliente, String idNutri, context) {
-  print("IdUsuario4:" + idCliente);
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!

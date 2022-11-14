@@ -8,16 +8,19 @@ import 'package:nutriaumigos/methods/database.dart';
 import 'package:intl/intl.dart';
 
 class ListaAlimentosPage extends StatefulWidget {
-  const ListaAlimentosPage(
-      {super.key,
-      required this.tipoUsuario,
-      required this.idPet,
-      required this.stateAlimentacao,
-      required this.stateFeedback});
+  const ListaAlimentosPage({
+    super.key,
+    required this.tipoUsuario,
+    required this.idPet,
+    required this.stateAlimentacao,
+    required this.stateFeedback,
+    required this.idDono,
+  });
   final tipoUsuario;
   final idPet;
   final stateAlimentacao;
   final stateFeedback;
+  final idDono;
 
   @override
   State<ListaAlimentosPage> createState() => _ListaAlimentosPageState();
@@ -243,11 +246,12 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
             context,
             'alimentacao',
             arguments: {
-                'tipoUsuario': widget.tipoUsuario,
-                'idAlimento': '',
-                'idPet': widget.idPet,
-                'stateAlimentacao': widget.stateAlimentacao,
-                'stateFeedback': widget.stateFeedback,
+              'tipoUsuario': widget.tipoUsuario,
+              'idAlimento': '',
+              'idPet': widget.idPet,
+              'idDono': widget.idDono,
+              'stateAlimentacao': widget.stateAlimentacao,
+              'stateFeedback': widget.stateFeedback,
             },
           );
         },

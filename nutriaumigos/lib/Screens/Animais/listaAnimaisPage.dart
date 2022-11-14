@@ -140,14 +140,17 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
                           var data = snapshot.data!.docs[index].data()
                               as Map<String, dynamic>;
                           var idPet = snapshot.data!.docs[index].reference.id;
+                          var idDono = data['idDono'];
+                          print("IDDONO:");
+                          print(idDono);
                           if (namePesquisa.isEmpty) {
-                            return exibirItem(data, idUsuario, idPet);
+                            return exibirItem(data, idUsuario, idPet, idDono);
                           }
                           if (data['name']
                               .toString()
                               .toLowerCase()
                               .startsWith(namePesquisa.toLowerCase())) {
-                            return exibirItem(data, idUsuario, idPet);
+                            return exibirItem(data, idUsuario, idPet, idDono);
                           }
                           return Container();
                         },
@@ -189,7 +192,7 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
     }
   }
 
-  Widget exibirItem(item, String idUsuario, String idPet) {
+  Widget exibirItem(item, String idUsuario, String idPet, String idDono) {
     print("IdUsuario2:" + idUsuario);
     String nomePet = item['nome'];
     String racaPet = item['raca'];
@@ -280,6 +283,7 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
               arguments: {
                 'tipoUsuario': widget.tipoUsuario,
                 'idPet': idPet,
+                'idDono': idDono,
                 'stateAlimentacao': widget.stateAlimentacao,
                 'stateFeedback': widget.stateFeedback,
               },
@@ -293,6 +297,7 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
               arguments: {
                 'tipoUsuario': widget.tipoUsuario,
                 'idPet': idPet,
+                'idDono': idDono,
                 'stateAlimentacao': widget.stateAlimentacao,
                 'stateFeedback': widget.stateFeedback,
               },
@@ -306,6 +311,7 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
               arguments: {
                 'tipoUsuario': widget.tipoUsuario,
                 'idPet': idPet,
+                'idDono': idDono,
                 'stateAlimentacao': widget.stateAlimentacao,
                 'stateFeedback': widget.stateFeedback,
               },
@@ -319,6 +325,7 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
               arguments: {
                 'tipoUsuario': widget.tipoUsuario,
                 'idPet': idPet,
+                'idDono': idDono,
                 'stateAlimentacao': widget.stateAlimentacao,
                 'stateFeedback': widget.stateFeedback,
               },
@@ -332,6 +339,7 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
               arguments: {
                 'tipoUsuario': widget.tipoUsuario,
                 'idPet': idPet,
+                'idDono': idDono,
                 'stateAlimentacao': widget.stateAlimentacao,
                 'stateFeedback': widget.stateFeedback,
               },
@@ -345,6 +353,7 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
               arguments: {
                 'tipoUsuario': widget.tipoUsuario,
                 'idPet': idPet,
+                'idDono': idDono,
                 'stateAlimentacao': widget.stateAlimentacao,
                 'stateFeedback': widget.stateFeedback,
               },

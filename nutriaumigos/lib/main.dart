@@ -39,15 +39,19 @@ class MyApp extends StatelessWidget {
         'recuperacao': (context) => const RecuperacaoSenhaPage(),
         'menuPrincipal': (context) => const HomePage(),
         'alimentacao': (context) => AlimentacaoPage(
-            tipoUsuario: (ModalRoute.of(context)?.settings.arguments
-                as Map)['tipoUsuario'],
-            idAlimento: (ModalRoute.of(context)?.settings.arguments
-                as Map)['idAlimento'],
-            idPet: (ModalRoute.of(context)?.settings.arguments as Map)['idPet'],
-            stateAlimentacao: (ModalRoute.of(context)?.settings.arguments
-                as Map)['stateAlimentacao'],
-            stateFeedback: (ModalRoute.of(context)?.settings.arguments
-                as Map)['stateFeedback']),
+              tipoUsuario: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['tipoUsuario'],
+              idAlimento: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['idAlimento'],
+              idPet:
+                  (ModalRoute.of(context)?.settings.arguments as Map)['idPet'],
+              stateAlimentacao: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['stateAlimentacao'],
+              stateFeedback: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['stateFeedback'],
+              idDono: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['idDono'],
+            ),
         'animais': (context) => AnimaisPage(
               idPet:
                   (ModalRoute.of(context)?.settings.arguments as Map)['idPet'],
@@ -75,6 +79,8 @@ class MyApp extends StatelessWidget {
                   as Map)['tipoUsuario'],
               idPet:
                   (ModalRoute.of(context)?.settings.arguments as Map)['idPet'],
+              idDono:
+                  (ModalRoute.of(context)?.settings.arguments as Map)['idDono'],
               stateAlimentacao: (ModalRoute.of(context)?.settings.arguments
                   as Map)['stateAlimentacao'],
               stateFeedback: (ModalRoute.of(context)?.settings.arguments
