@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:nutriaumigos/constants.dart';
 import 'package:nutriaumigos/methods/auth.dart';
 import 'package:nutriaumigos/methods/database.dart';
+
+import '../../methods/images.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -165,27 +168,21 @@ class _HomePageState extends State<HomePage> {
   }
 
   _banner(double altura) {
-    return Container(
-      width: 400,
-      height: altura,
-      margin: const EdgeInsets.all(20),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(15.0),
-        ),
-        color: kSecondColor,
-      ),
-      child: const Center(
-        child: Text(
-          "Anuncie Aqui!",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: kPrimaryColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 40,
-          ),
-        ),
-      ),
+    return FutureBuilder(
+      future: FireStoreDataBase().getData(usuario),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Text(
+            "Erro ao Buscar Propaganda",
+          );
+        }
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Image.network(
+            snapshot.data.toString(),
+          );
+        }
+        return const Center(child: CircularProgressIndicator());
+      },
     );
   }
 
