@@ -115,10 +115,6 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
 
                   default:
                     return Expanded(
-                      // height: MediaQuery.of(context).size.height -
-                      //     MediaQuery.of(context).padding.top -
-                      //     AppBar().preferredSize.height -
-                      //     110,
                       child: ListView.builder(
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {

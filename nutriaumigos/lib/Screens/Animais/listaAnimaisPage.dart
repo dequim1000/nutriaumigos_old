@@ -35,10 +35,7 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
   @override
   void initState() {
     super.initState();
-    print("TIPO USUARIO LISTA");
-    print(widget.tipoUsuario);
     idUsuario = FirebaseAuth.instance.currentUser!.uid;
-    print(idUsuario);
     if (widget.tipoUsuario == 'Clientes') {
       pets = FirebaseFirestore.instance
           .collection('pets')
@@ -52,9 +49,6 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('StatusAlimentacao' + widget.stateAlimentacao.toString());
-    print('StateFeedback' + widget.stateFeedback.toString());
-    print("IdUsuario1:" + idUsuario);
     String usuario = '';
     if (widget.tipoUsuario == 'Clientes') {
       usuario = 'Nutricionistas';
@@ -142,8 +136,6 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
                               as Map<String, dynamic>;
                           var idPet = snapshot.data!.docs[index].reference.id;
                           var idDono = data['idDono'];
-                          print("IDDONO:");
-                          print(idDono);
                           if (namePesquisa.isEmpty) {
                             return exibirItem(data, idUsuario, idPet, idDono);
                           }
@@ -194,7 +186,6 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
   }
 
   Widget exibirItem(item, String idUsuario, String idPet, String idDono) {
-    print("IdUsuario2:" + idUsuario);
     String nomePet = item['nome'];
     String racaPet = item['raca'];
     String generoPet = item['sexo'];
@@ -277,7 +268,6 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
           if (widget.tipoUsuario == 'Clientes' &&
               !widget.stateAlimentacao &&
               !widget.stateFeedback) {
-            print("IdUsuario3:" + idUsuario);
             Navigator.pushNamed(
               context,
               'animais',

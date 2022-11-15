@@ -46,7 +46,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     idUsuario = FirebaseAuth.instance.currentUser!.uid;
-    print(idUsuario);
     index = date.weekday - 1;
     alimentos = getAlimentos(index);
   }

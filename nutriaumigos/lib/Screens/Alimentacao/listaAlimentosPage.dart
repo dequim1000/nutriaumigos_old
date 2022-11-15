@@ -69,9 +69,6 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('StatusAlimentacao' + widget.stateAlimentacao.toString());
-    print('StateFeedback' + widget.stateFeedback.toString());
-    print("IdUsuario1:" + idUsuario);
     String usuario = '';
     if (widget.tipoUsuario == 'Clientes') {
       usuario = 'Nutricionistas';
@@ -143,7 +140,6 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
                           index = 6;
                         }
                         alimentos = getAlimentos(index);
-                        print(index);
                       });
                     },
                   ),
@@ -166,7 +162,6 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
                           index = 0;
                         }
                         alimentos = getAlimentos(index);
-                        print(index);
                       });
                     },
                   ),
@@ -225,7 +220,6 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
   }
 
   Widget _getFAB() {
-    print(widget.tipoUsuario);
     if (widget.tipoUsuario == 'Clientes') {
       return Container();
     } else {
@@ -256,8 +250,6 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
   }
 
   Widget exibirItem(item, String idUsuario, String idAlimento) {
-    print("IdUsuario2:" + idUsuario);
-    print(idAlimento);
     String? diaSemanaAlimento = item['diaSemana'];
     String? nomeAnimalAlimento = item['nomeAlimento'];
     String? horarioAlimento = item['horario'];
