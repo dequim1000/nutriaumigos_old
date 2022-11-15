@@ -33,6 +33,8 @@ final _formKey = GlobalKey<FormState>();
 class _AnimaisPageState extends State<AnimaisPage> {
   @override
   Widget build(BuildContext context) {
+    print("TipoUsuario");
+    print(widget.tipoUsuario);
     if (widget.idPet != null && widget.idPet != '') {
       getPetById(widget.idPet);
     }

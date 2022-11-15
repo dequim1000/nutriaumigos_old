@@ -89,6 +89,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
 
         lista.add(listaAux['idNutri']);
       }
+      usuario = 'Nutricionistas';
     } else {
       usuario = 'Clientes';
 

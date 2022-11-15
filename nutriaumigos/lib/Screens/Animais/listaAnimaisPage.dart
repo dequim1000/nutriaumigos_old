@@ -35,6 +35,7 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
   @override
   void initState() {
     super.initState();
+    print("TIPO USUARIO LISTA");
     print(widget.tipoUsuario);
     idUsuario = FirebaseAuth.instance.currentUser!.uid;
     print(idUsuario);
@@ -83,35 +84,39 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          TextField(
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              hintText: 'Pesquisar...',
-              filled: true,
-              fillColor: Colors.white,
-              border: UnderlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                borderSide: BorderSide(
-                  width: 0,
-                  style: BorderStyle.none,
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            TextField(
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.search),
+                hintText: 'Pesquisar...',
+                filled: true,
+                fillColor: Colors.white,
+                border: UnderlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                  borderSide: BorderSide(
+                    width: 0,
+                    style: BorderStyle.none,
+                  ),
                 ),
               ),
+              onChanged: ((value) {
+                setState(() {
+                  namePesquisa = value;
+                });
+              }),
             ),
-            onChanged: ((value) {
-              setState(() {
-                namePesquisa = value;
-              });
-            }),
-          ),
-          Container(
-            child: StreamBuilder<QuerySnapshot>(
+            const SizedBox(
+              height: 10,
+            ),
+            StreamBuilder<QuerySnapshot>(
               //fonte de dados (coleção)
               stream: pets.snapshots(),
 
@@ -129,11 +134,7 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
                     );
 
                   default:
-                    return Container(
-                      height: MediaQuery.of(context).size.height -
-                          MediaQuery.of(context).padding.top -
-                          AppBar().preferredSize.height -
-                          110,
+                    return Expanded(
                       child: ListView.builder(
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
@@ -160,8 +161,8 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
                 }
               },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -184,7 +185,7 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
             'animais',
             arguments: {
               'idPets': '',
-              'tipoUsuario': tipoUsuario,
+              'tipoUsuario': widget.tipoUsuario,
             },
           );
         },
