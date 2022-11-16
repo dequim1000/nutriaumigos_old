@@ -73,6 +73,8 @@ class MyApp extends StatelessWidget {
                   as Map)['stateAlimentacao'],
               stateFeedback: (ModalRoute.of(context)?.settings.arguments
                   as Map)['stateFeedback'],
+              idDono: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['idDono'],
             ),
         'listaAlimentos': (context) => ListaAlimentosPage(
               tipoUsuario: (ModalRoute.of(context)?.settings.arguments

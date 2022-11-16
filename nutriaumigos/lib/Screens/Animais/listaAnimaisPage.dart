@@ -13,7 +13,7 @@ class ListaAnimaisPage extends StatefulWidget {
       required this.tipoUsuario,
       required this.stateAlimentacao,
       required this.stateFeedback,
-      this.idDono});
+      required this.idDono});
   final tipoUsuario;
   final stateAlimentacao;
   final stateFeedback;
