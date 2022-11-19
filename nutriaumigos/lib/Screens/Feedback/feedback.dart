@@ -90,7 +90,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
               Row(
                 children: [
                   IconButton(
-                    icon: Image.asset("assets/icons/feedback.png"),
+                    icon: Image.asset("assets/icons/feedback_white.png"),
                     color: Colors.white,
                     onPressed: () {},
                   ),
@@ -361,6 +361,21 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       },
                     ),
                   ),
+                ),
+                if (widget.tipoUsuario == 'Clientes')
+                Container(
+                  height: 40,
+                  alignment: Alignment.center,
+                  child: TextButton(
+                      child: const Text(
+                        "Cancelar",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: kSecondColor),
+                      ),
+                      onPressed: () {
+                        cleanCampos();
+                        Navigator.pop(context, false);
+                      }),
                 ),
               const SizedBox(
                 height: 20,

@@ -85,27 +85,30 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
             const SizedBox(
               height: 10,
             ),
-            TextField(
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.search),
-                hintText: 'Pesquisar...',
-                filled: true,
-                fillColor: Colors.white,
-                border: UnderlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10.0),
-                  ),
-                  borderSide: BorderSide(
-                    width: 0,
-                    style: BorderStyle.none,
+            Container(
+              padding: EdgeInsets.only(right: 20, left: 20),
+              child: TextField(
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.search),
+                  hintText: 'Pesquisar...',
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: UnderlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    borderSide: BorderSide(
+                      width: 0,
+                      style: BorderStyle.none,
+                    ),
                   ),
                 ),
+                onChanged: ((value) {
+                  setState(() {
+                    namePesquisa = value;
+                  });
+                }),
               ),
-              onChanged: ((value) {
-                setState(() {
-                  namePesquisa = value;
-                });
-              }),
             ),
             const SizedBox(
               height: 10,
