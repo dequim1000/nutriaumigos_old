@@ -225,11 +225,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
                       );
 
                     default:
-                      return Container(
-                        height: MediaQuery.of(context).size.height -
-                            MediaQuery.of(context).padding.top -
-                            AppBar().preferredSize.height -
-                            110,
+                      return Expanded(
                         child: ListView.builder(
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
@@ -279,11 +275,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
                       );
 
                     default:
-                      return Container(
-                        height: MediaQuery.of(context).size.height -
-                            MediaQuery.of(context).padding.top -
-                            AppBar().preferredSize.height -
-                            110,
+                      return Expanded(
                         child: ListView.builder(
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
