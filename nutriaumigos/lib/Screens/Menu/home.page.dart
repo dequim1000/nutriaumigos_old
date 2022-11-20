@@ -144,20 +144,44 @@ class _HomePageState extends State<HomePage> {
                 left: 7,
               ),
             ),
-            _buildCard(context, nomeUsuario, tipoUsuario, iconeUsuario,
-                'listaUsuarios', false, false),
-            const SizedBox(width: 4),
-            _buildCard(context, 'Pet', tipoUsuario,
-                'assets/icons/animais_icon.png', navegacaoTela, false, false),
-            const SizedBox(width: 4),
-            _buildCard(context, 'Alimentos', tipoUsuario,
-                'assets/icons/alimento_icon.png', navegacaoTela, true, false),
-            const SizedBox(width: 4),
-            _buildCard(context, 'FeedBack', tipoUsuario,
-                'assets/icons/feedback_icon.png', navegacaoTela, false, true),
-            const Padding(
-              padding: EdgeInsets.only(
-                right: 15,
+            Expanded(
+              child: Column(
+                children: [
+                  _buildCard(context, nomeUsuario, tipoUsuario, iconeUsuario,
+                      'listaUsuarios', false, false),
+                  const SizedBox(width: 4),
+                  _buildCard(
+                      context,
+                      'Pet',
+                      tipoUsuario,
+                      'assets/icons/animais_icon.png',
+                      navegacaoTela,
+                      false,
+                      false),
+                  const SizedBox(width: 4),
+                  _buildCard(
+                      context,
+                      'Alimentos',
+                      tipoUsuario,
+                      'assets/icons/alimento_icon.png',
+                      navegacaoTela,
+                      true,
+                      false),
+                  const SizedBox(width: 4),
+                  _buildCard(
+                      context,
+                      'FeedBack',
+                      tipoUsuario,
+                      'assets/icons/feedback_icon.png',
+                      navegacaoTela,
+                      false,
+                      true),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      right: 15,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
