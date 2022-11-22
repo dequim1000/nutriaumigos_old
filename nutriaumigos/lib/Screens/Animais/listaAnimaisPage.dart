@@ -142,7 +142,7 @@ class _ListaAnimaisPageState extends State<ListaAnimaisPage> {
                           if (namePesquisa.isEmpty) {
                             return exibirItem(data, idUsuario, idPet, idDono);
                           }
-                          if (data['name']
+                          if (data['nome']
                               .toString()
                               .toLowerCase()
                               .startsWith(namePesquisa.toLowerCase())) {

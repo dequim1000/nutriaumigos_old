@@ -189,11 +189,14 @@ class _UsuariosPageState extends State<UsuariosPage> {
                             if (namePesquisa.isEmpty) {
                               return exibirItem(data, idUsuario, idNutri);
                             }
-                            if (data['name']
-                                .toString()
-                                .toLowerCase()
-                                .startsWith(namePesquisa.toLowerCase())) {
-                              return exibirItem(data, idUsuario, idNutri);
+                            if (namePesquisa != '' &&
+                                data['nome']
+                                    .toString()
+                                    .toLowerCase()
+                                    .startsWith(namePesquisa.toLowerCase())) {
+                              if (lista.contains(idNutri)) {
+                                return exibirItem(data, idUsuario, idNutri);
+                              }
                             }
                             return Container();
                           },
@@ -239,11 +242,13 @@ class _UsuariosPageState extends State<UsuariosPage> {
                               }
                             }
                             if (namePesquisa != '' &&
-                                data['name']
+                                data['nome']
                                     .toString()
                                     .toLowerCase()
                                     .startsWith(namePesquisa.toLowerCase())) {
-                              return exibirItem(data, idUsuario, idNutri);
+                              if (lista.contains(idNutri)) {
+                                return exibirItem(data, idUsuario, idNutri);
+                              }
                             }
                             return Container();
                           },
@@ -289,11 +294,13 @@ class _UsuariosPageState extends State<UsuariosPage> {
                               }
                             }
                             if (namePesquisa != '' &&
-                                data['name']
+                                data['nome']
                                     .toString()
                                     .toLowerCase()
                                     .startsWith(namePesquisa.toLowerCase())) {
-                              return exibirItem(data, idUsuario, idCliente);
+                              if (lista.contains(idCliente)) {
+                                return exibirItem(data, idUsuario, idCliente);
+                              }
                             }
                             return Container();
                           },

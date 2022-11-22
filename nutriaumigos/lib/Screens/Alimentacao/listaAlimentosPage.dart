@@ -202,7 +202,7 @@ class _ListaAlimentosPageState extends State<ListaAlimentosPage> {
                           if (namePesquisa.isEmpty) {
                             return exibirItem(data, idUsuario, idAlimento);
                           }
-                          if (data['name']
+                          if (data['nomeAlimento']
                               .toString()
                               .toLowerCase()
                               .startsWith(namePesquisa.toLowerCase())) {

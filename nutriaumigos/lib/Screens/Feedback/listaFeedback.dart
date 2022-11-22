@@ -128,7 +128,7 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
                           if (namePesquisa.isEmpty) {
                             return exibirItem(data, idUsuario, idFeedback);
                           }
-                          if (data['name']
+                          if (data['avaliacao']
                               .toString()
                               .toLowerCase()
                               .startsWith(namePesquisa.toLowerCase())) {
