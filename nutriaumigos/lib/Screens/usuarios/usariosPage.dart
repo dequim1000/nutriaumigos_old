@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nutriaumigos/constants.dart';
-import 'package:nutriaumigos/methods/database.dart';
+import 'package:nutriaumigos/Models/database.dart';
 
-import '../../methods/usuarios.dart';
+import '../../Models/usuarios.dart';
 
 class UsuariosPage extends StatefulWidget {
   const UsuariosPage(
@@ -372,21 +372,23 @@ class _UsuariosPageState extends State<UsuariosPage> {
           if (widget.tipoUsuario == 'Clientes' && allData.isEmpty) {
             dialog(idUsuario, idItem, context);
           } else if (widget.tipoUsuario == 'Clientes' && allData.isNotEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Nutricionista já vinculado!"),
-                duration: Duration(
-                  seconds: 2,
-                ),
-              ),
-            );
+            Navigator.pushNamed(context, '/chat', arguments: idItem);
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   const SnackBar(
+            //     content: Text("Nutricionista já vinculado!"),
+            //     duration: Duration(
+            //       seconds: 2,
+            //     ),
+            //   ),
+            // );
           } else {
-            Navigator.pushNamed(context, 'listaAnimais', arguments: {
-              'tipoUsuario': widget.tipoUsuario,
-              'idDono': idItem,
-              'stateAlimentacao': widget.stateAlimentacao,
-              'stateFeedback': widget.stateFeedback,
-            });
+            Navigator.pushNamed(context, '/chat', arguments: idItem);
+            // Navigator.pushNamed(context, 'listaAnimais', arguments: {
+            //   'tipoUsuario': widget.tipoUsuario,
+            //   'idDono': idItem,
+            //   'stateAlimentacao': widget.stateAlimentacao,
+            //   'stateFeedback': widget.stateFeedback,
+            // });
             //Navigator.pop(context);
           }
         },

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nutriaumigos/constants.dart';
-import 'package:nutriaumigos/methods/database.dart';
-import 'package:nutriaumigos/methods/pets.dart';
+import 'package:nutriaumigos/Models/database.dart';
+import 'package:nutriaumigos/Models/pets.dart';
 
 class ListaAnimaisPage extends StatefulWidget {
   const ListaAnimaisPage(

@@ -3,7 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nutriaumigos/constants.dart';
 
-import '../../methods/auth.dart';
+import '../../Models/auth.dart';
 
 class RecuperacaoSenhaPage extends StatelessWidget {
   const RecuperacaoSenhaPage({super.key});

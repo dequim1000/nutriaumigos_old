@@ -5,6 +5,7 @@ import 'package:nutriaumigos/Screens/Alimentacao/listaAlimentosPage.dart';
 import 'package:nutriaumigos/Screens/Animais/listaAnimaisPage.dart';
 import 'package:nutriaumigos/Screens/Feedback/feedback.dart';
 import 'package:nutriaumigos/Screens/Feedback/listaFeedback.dart';
+import 'package:nutriaumigos/Screens/Feedback/reply.dart';
 import 'package:nutriaumigos/Screens/Login/cadastro.dart';
 import 'package:nutriaumigos/Screens/Login/recuperacao_senha.dart';
 import 'package:nutriaumigos/Screens/Menu/home.page.dart';
@@ -12,6 +13,7 @@ import 'package:nutriaumigos/Screens/usuarios/usariosPage.dart';
 import 'package:nutriaumigos/constants.dart';
 
 import 'Screens/Animais/animais.dart';
+import 'Screens/Chat/ChatScreen.dart';
 import 'Screens/Login/login.dart';
 
 void main() async {
@@ -49,8 +51,8 @@ class MyApp extends StatelessWidget {
                   as Map)['stateAlimentacao'],
               stateFeedback: (ModalRoute.of(context)?.settings.arguments
                   as Map)['stateFeedback'],
-              idDono: (ModalRoute.of(context)?.settings.arguments
-                  as Map)['idDono'],
+              idDono:
+                  (ModalRoute.of(context)?.settings.arguments as Map)['idDono'],
             ),
         'animais': (context) => AnimaisPage(
               idPet:
@@ -73,8 +75,8 @@ class MyApp extends StatelessWidget {
                   as Map)['stateAlimentacao'],
               stateFeedback: (ModalRoute.of(context)?.settings.arguments
                   as Map)['stateFeedback'],
-              idDono: (ModalRoute.of(context)?.settings.arguments
-                  as Map)['idDono'],
+              idDono:
+                  (ModalRoute.of(context)?.settings.arguments as Map)['idDono'],
             ),
         'listaAlimentos': (context) => ListaAlimentosPage(
               tipoUsuario: (ModalRoute.of(context)?.settings.arguments
@@ -113,7 +115,22 @@ class MyApp extends StatelessWidget {
                   as Map)['stateAlimentacao'],
               stateFeedback: (ModalRoute.of(context)?.settings.arguments
                   as Map)['stateFeedback'],
-            ))
+            )),
+        'replyPage': (context) => ReplyPage(
+              tipoUsuario: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['tipoUsuario'],
+              idPet:
+                  (ModalRoute.of(context)?.settings.arguments as Map)['idPet'],
+              idAlimento: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['idAlimento'],
+              idFeedback: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['idFeedback'],
+              stateAlimentacao: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['stateAlimentacao'],
+              stateFeedback: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['stateFeedback'],
+            ),
+        '/chat': (context) => const ChatScreen(),
       },
     );
   }

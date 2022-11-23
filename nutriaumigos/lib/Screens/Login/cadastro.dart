@@ -8,7 +8,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:nutriaumigos/constants.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:nutriaumigos/methods/auth.dart';
+import 'package:nutriaumigos/Models/auth.dart';
 
 enum SingingCharacter { cliente, nutricionista }
 

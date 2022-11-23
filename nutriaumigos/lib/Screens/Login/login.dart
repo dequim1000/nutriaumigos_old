@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:nutriaumigos/Screens/Login/cadastro.dart';
 import 'package:nutriaumigos/Screens/Login/recuperacao_senha.dart';
 import 'package:nutriaumigos/Screens/Menu/home.page.dart';
-import 'package:nutriaumigos/methods/auth.dart';
+import 'package:nutriaumigos/Models/auth.dart';
 
 import '../../constants.dart';
 

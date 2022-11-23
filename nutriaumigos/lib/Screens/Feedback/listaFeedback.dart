@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nutriaumigos/constants.dart';
-import 'package:nutriaumigos/methods/database.dart';
-import 'package:nutriaumigos/methods/feedback.dart';
-import 'package:nutriaumigos/methods/pets.dart';
+import 'package:nutriaumigos/Models/database.dart';
+import 'package:nutriaumigos/Models/feedback.dart';
+import 'package:nutriaumigos/Models/pets.dart';
 
 class ListaFeedbackPage extends StatefulWidget {
   const ListaFeedbackPage(
@@ -31,8 +31,23 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
   var tipoUsuario;
   var feedback;
   String idUsuario = '';
+  List allData = [];
+  var listaAux;
 
   get kPrimaryColor => null;
+
+  CollectionReference _collectionReference =
+      FirebaseFirestore.instance.collection("replyFeedback");
+
+  Future<void> getDataReply(String idFeedback) async {
+    QuerySnapshot querySnapshot = await _collectionReference
+        .where("idFeedback", isEqualTo: idFeedback)
+        .get();
+
+    setState(() {
+      allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    });
+  }
 
   @override
   void initState() {
@@ -183,6 +198,12 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
     String observacao = item['observacao'];
     String quantidade = item['quantidade'];
     String rejeicao = item['rejeicao'];
+    //getDataReply(idFeedback);
+    if(allData.isNotEmpty){
+      listaAux = allData[0] as Map<String, dynamic>;
+      print(listaAux);
+    }
+    
 
     return Container(
       padding: EdgeInsets.only(top: 20),
@@ -241,14 +262,90 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
             const SizedBox(
               width: 10,
             ),
-            Container(
-              child: Image.asset(
-                'assets/icons/osso-de-cao.png',
-                height: 40,
-                width: 40,
-                color: kPrimaryColor,
+            if (widget.tipoUsuario != 'Clientes' && allData.isNotEmpty)
+              Container(
+                child: TextButton(
+                  child: Image.asset(
+                    'assets/icons/feedback.png',
+                    height: 40,
+                    width: 40,
+                    color: kPrimaryColor,
+                  ),
+                  onPressed: () async {
+                    Navigator.pushNamed(
+                      context,
+                      'replyPage',
+                      arguments: {
+                        'tipoUsuario': widget.tipoUsuario,
+                        'idAlimento': widget.idAlimento,
+                        'idPet': widget.idPet,
+                        'idFeedback': idFeedback,
+                        'stateAlimentacao': widget.stateAlimentacao,
+                        'stateFeedback': widget.stateFeedback,
+                      },
+                    );
+                  },
+                ),
               ),
-            ),
+            if (widget.tipoUsuario != 'Clientes' && allData.isEmpty)
+              Container(
+                child: TextButton(
+                  child: Image.asset(
+                    'assets/icons/feedback.png',
+                    height: 40,
+                    width: 40,
+                    color: kPrimaryColor,
+                  ),
+                  onPressed: () async {
+                    Navigator.pushNamed(
+                      context,
+                      'replyPage',
+                      arguments: {
+                        'tipoUsuario': widget.tipoUsuario,
+                        'idAlimento': widget.idAlimento,
+                        'idPet': widget.idPet,
+                        'idFeedback': idFeedback,
+                        'stateAlimentacao': widget.stateAlimentacao,
+                        'stateFeedback': widget.stateFeedback,
+                      },
+                    );
+                  },
+                ),
+              ),
+            if (widget.tipoUsuario == 'Clientes' && allData.isNotEmpty)
+              Container(
+                child: TextButton(
+                  child: Image.asset(
+                    'assets/icons/feedback.png',
+                    height: 40,
+                    width: 40,
+                    color: kPrimaryColor,
+                  ),
+                  onPressed: () async {
+                    Navigator.pushNamed(
+                      context,
+                      'replyPage',
+                      arguments: {
+                        'tipoUsuario': widget.tipoUsuario,
+                        'idAlimento': widget.idAlimento,
+                        'idPet': widget.idPet,
+                        'idFeedback': idFeedback,
+                        'stateAlimentacao': widget.stateAlimentacao,
+                        'stateFeedback': widget.stateFeedback,
+                      },
+                    );
+                  },
+                ),
+              ),
+            if (widget.tipoUsuario == 'Clientes' && allData.isEmpty)
+              Container(
+                child: Image.asset(
+                  'assets/icons/osso-de-cao.png',
+                  height: 40,
+                  width: 40,
+                  color: kPrimaryColor,
+                ),
+              ),
           ],
         ),
         onTap: () {

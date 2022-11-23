@@ -57,6 +57,12 @@ class DatabaseMethods {
     return FirebaseFirestore.instance.collection('feedback').doc(idFeedback).delete();
   }
 
+  Future addReplyInfoToDB(Map<String, dynamic> replyInfoMap) {
+    return FirebaseFirestore.instance
+        .collection("replyFeedback")
+        .add(replyInfoMap);
+  }
+
   Future<DocumentSnapshot> getUserFromDB(String userId) {
     return FirebaseFirestore.instance.collection("user").doc(userId).get();
   }

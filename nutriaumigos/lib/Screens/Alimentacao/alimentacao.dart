@@ -7,7 +7,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nutriaumigos/Screens/Animais/animais.dart';
 import 'package:nutriaumigos/constants.dart';
-import 'package:nutriaumigos/methods/alimentos.dart';
+import 'package:nutriaumigos/Models/alimentos.dart';
 
 class AlimentacaoPage extends StatefulWidget {
   const AlimentacaoPage(

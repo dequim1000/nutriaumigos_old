@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nutriaumigos/constants.dart';
 
-import '../../methods/pets.dart';
+import '../../Models/pets.dart';
 
 class AnimaisPage extends StatefulWidget {
   const AnimaisPage(

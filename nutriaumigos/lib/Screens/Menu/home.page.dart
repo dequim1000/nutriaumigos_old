@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:nutriaumigos/constants.dart';
-import 'package:nutriaumigos/methods/auth.dart';
-import 'package:nutriaumigos/methods/database.dart';
+import 'package:nutriaumigos/Models/auth.dart';
+import 'package:nutriaumigos/Models/database.dart';
 
-import '../../methods/images.dart';
+import '../../Models/images.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

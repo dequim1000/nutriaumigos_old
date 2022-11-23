@@ -55,6 +55,23 @@ class FeedbackClass{
     await DatabaseMethods().deleteFeedbackInfoToDB(idFeedback);
   }
 
+  Future<void> createReply(
+      String idPet,
+      String idAlimento,
+      String idFeedback,
+      String reply,
+      context) async {
+    Map<String, dynamic> replyInfoMap = {
+      'idCliente': auth.currentUser?.uid,
+      'idPet': idPet,
+      'idAlimento': idAlimento,
+      'idFeedback': idFeedback,
+      'reply': reply,
+    };
+
+    DatabaseMethods().addReplyInfoToDB(replyInfoMap);
+  }
+
   Future<void> logout() async {
     await auth.signOut();
   }
