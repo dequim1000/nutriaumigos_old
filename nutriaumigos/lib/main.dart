@@ -5,7 +5,6 @@ import 'package:nutriaumigos/Screens/Alimentacao/listaAlimentosPage.dart';
 import 'package:nutriaumigos/Screens/Animais/listaAnimaisPage.dart';
 import 'package:nutriaumigos/Screens/Feedback/feedback.dart';
 import 'package:nutriaumigos/Screens/Feedback/listaFeedback.dart';
-import 'package:nutriaumigos/Screens/Feedback/reply.dart';
 import 'package:nutriaumigos/Screens/Login/cadastro.dart';
 import 'package:nutriaumigos/Screens/Login/recuperacao_senha.dart';
 import 'package:nutriaumigos/Screens/Menu/home.page.dart';
@@ -67,6 +66,8 @@ class MyApp extends StatelessWidget {
                   as Map)['stateAlimentacao'],
               stateFeedback: (ModalRoute.of(context)?.settings.arguments
                   as Map)['stateFeedback'],
+              statePets: (ModalRoute.of(context)?.settings.arguments
+                  as Map)['statePets'],
             ),
         'listaAnimais': (context) => ListaAnimaisPage(
               tipoUsuario: (ModalRoute.of(context)?.settings.arguments
@@ -116,21 +117,12 @@ class MyApp extends StatelessWidget {
               stateFeedback: (ModalRoute.of(context)?.settings.arguments
                   as Map)['stateFeedback'],
             )),
-        'replyPage': (context) => ReplyPage(
+        '/chat': (context) => ChatScreen(
               tipoUsuario: (ModalRoute.of(context)?.settings.arguments
                   as Map)['tipoUsuario'],
-              idPet:
-                  (ModalRoute.of(context)?.settings.arguments as Map)['idPet'],
-              idAlimento: (ModalRoute.of(context)?.settings.arguments
-                  as Map)['idAlimento'],
-              idFeedback: (ModalRoute.of(context)?.settings.arguments
-                  as Map)['idFeedback'],
-              stateAlimentacao: (ModalRoute.of(context)?.settings.arguments
-                  as Map)['stateAlimentacao'],
-              stateFeedback: (ModalRoute.of(context)?.settings.arguments
-                  as Map)['stateFeedback'],
+              idItem:
+                  (ModalRoute.of(context)?.settings.arguments as Map)['idItem'],
             ),
-        '/chat': (context) => const ChatScreen(),
       },
     );
   }

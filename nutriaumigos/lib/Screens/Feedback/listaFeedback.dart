@@ -198,12 +198,6 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
     String observacao = item['observacao'];
     String quantidade = item['quantidade'];
     String rejeicao = item['rejeicao'];
-    //getDataReply(idFeedback);
-    if(allData.isNotEmpty){
-      listaAux = allData[0] as Map<String, dynamic>;
-      print(listaAux);
-    }
-    
 
     return Container(
       padding: EdgeInsets.only(top: 20),
@@ -287,97 +281,45 @@ class _ListaFeedbackPageState extends State<ListaFeedbackPage> {
                   },
                 ),
               ),
-            if (widget.tipoUsuario != 'Clientes' && allData.isEmpty)
-              Container(
-                child: TextButton(
-                  child: Image.asset(
-                    'assets/icons/feedback.png',
-                    height: 40,
-                    width: 40,
-                    color: kPrimaryColor,
-                  ),
-                  onPressed: () async {
-                    Navigator.pushNamed(
-                      context,
-                      'replyPage',
-                      arguments: {
-                        'tipoUsuario': widget.tipoUsuario,
-                        'idAlimento': widget.idAlimento,
-                        'idPet': widget.idPet,
-                        'idFeedback': idFeedback,
-                        'stateAlimentacao': widget.stateAlimentacao,
-                        'stateFeedback': widget.stateFeedback,
-                      },
-                    );
-                  },
-                ),
-              ),
-            if (widget.tipoUsuario == 'Clientes' && allData.isNotEmpty)
-              Container(
-                child: TextButton(
-                  child: Image.asset(
-                    'assets/icons/feedback.png',
-                    height: 40,
-                    width: 40,
-                    color: kPrimaryColor,
-                  ),
-                  onPressed: () async {
-                    Navigator.pushNamed(
-                      context,
-                      'replyPage',
-                      arguments: {
-                        'tipoUsuario': widget.tipoUsuario,
-                        'idAlimento': widget.idAlimento,
-                        'idPet': widget.idPet,
-                        'idFeedback': idFeedback,
-                        'stateAlimentacao': widget.stateAlimentacao,
-                        'stateFeedback': widget.stateFeedback,
-                      },
-                    );
-                  },
-                ),
-              ),
-            if (widget.tipoUsuario == 'Clientes' && allData.isEmpty)
-              Container(
+            Container(
+              child: TextButton(
                 child: Image.asset(
-                  'assets/icons/osso-de-cao.png',
+                  'assets/icons/feedback.png',
                   height: 40,
                   width: 40,
                   color: kPrimaryColor,
                 ),
+                onPressed: () async {
+                  Navigator.pushNamed(
+                    context,
+                    'replyPage',
+                    arguments: {
+                      'tipoUsuario': widget.tipoUsuario,
+                      'idAlimento': widget.idAlimento,
+                      'idPet': widget.idPet,
+                      'idFeedback': idFeedback,
+                      'stateAlimentacao': widget.stateAlimentacao,
+                      'stateFeedback': widget.stateFeedback,
+                    },
+                  );
+                },
               ),
+            ),
           ],
         ),
         onTap: () {
-          if (widget.tipoUsuario == 'Clientes') {
-            Navigator.pushNamed(
-              context,
-              'feedback',
-              arguments: {
-                'tipoUsuario': widget.tipoUsuario,
-                'idPet': widget.idPet,
-                'idAlimento': widget.idAlimento,
-                'idFeedback': idFeedback,
-                'stateAlimentacao': widget.stateAlimentacao,
-                'stateFeedback': widget.stateFeedback,
-              },
-            );
-          } else if (widget.tipoUsuario != 'Clientes') {
-            Navigator.pushNamed(
-              context,
-              'feedback',
-              arguments: {
-                'tipoUsuario': widget.tipoUsuario,
-                'idPet': widget.idPet,
-                'idAlimento': widget.idAlimento,
-                'idFeedback': idFeedback,
-                'stateAlimentacao': widget.stateAlimentacao,
-                'stateFeedback': widget.stateFeedback,
-              },
-            );
-          } else {
-            Navigator.pop(context);
-          }
+          Navigator.pushNamed(
+            context,
+            'feedback',
+            arguments: {
+              'tipoUsuario': widget.tipoUsuario,
+              'idPet': widget.idPet,
+              'idAlimento': widget.idAlimento,
+              'idFeedback': idFeedback,
+              'stateAlimentacao': widget.stateAlimentacao,
+              'stateFeedback': widget.stateFeedback,
+            },
+          );
         },
         onLongPress: () {
           dialog(idUsuario, idFeedback, context);

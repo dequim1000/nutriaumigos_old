@@ -18,7 +18,8 @@ class DatabaseMethods {
         .add(alimentoInfoMap);
   }
 
-  Future updateAlimentosInfoToDB(Map<String, dynamic> alimentoInfoMap, String idAlimento) {
+  Future updateAlimentosInfoToDB(
+      Map<String, dynamic> alimentoInfoMap, String idAlimento) {
     return FirebaseFirestore.instance
         .collection("alimentos")
         .doc(idAlimento)
@@ -46,7 +47,8 @@ class DatabaseMethods {
         .add(feedbackInfoMap);
   }
 
-  Future updateFeedbackInfoToDB(Map<String, dynamic> feedbackInfoMap, String idFeedback) {
+  Future updateFeedbackInfoToDB(
+      Map<String, dynamic> feedbackInfoMap, String idFeedback) {
     return FirebaseFirestore.instance
         .collection("feedback")
         .doc(idFeedback)
@@ -54,13 +56,10 @@ class DatabaseMethods {
   }
 
   Future deleteFeedbackInfoToDB(String idFeedback) {
-    return FirebaseFirestore.instance.collection('feedback').doc(idFeedback).delete();
-  }
-
-  Future addReplyInfoToDB(Map<String, dynamic> replyInfoMap) {
     return FirebaseFirestore.instance
-        .collection("replyFeedback")
-        .add(replyInfoMap);
+        .collection('feedback')
+        .doc(idFeedback)
+        .delete();
   }
 
   Future<DocumentSnapshot> getUserFromDB(String userId) {

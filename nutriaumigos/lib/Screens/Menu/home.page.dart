@@ -145,16 +145,37 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             _buildCard(context, nomeUsuario, tipoUsuario, iconeUsuario,
-                'listaUsuarios', false, false),
+                'listaUsuarios', false, false, true),
             const SizedBox(width: 4),
-            _buildCard(context, 'Pet', tipoUsuario,
-                'assets/icons/animais_icon.png', navegacaoTela, false, false),
+            _buildCard(
+                context,
+                'Pet',
+                tipoUsuario,
+                'assets/icons/animais_icon.png',
+                navegacaoTela,
+                false,
+                false,
+                false),
             const SizedBox(width: 4),
-            _buildCard(context, 'Alimentos', tipoUsuario,
-                'assets/icons/alimento_icon.png', navegacaoTela, true, false),
+            _buildCard(
+                context,
+                'Alimentos',
+                tipoUsuario,
+                'assets/icons/alimento_icon.png',
+                navegacaoTela,
+                true,
+                false,
+                false),
             const SizedBox(width: 4),
-            _buildCard(context, 'FeedBack', tipoUsuario,
-                'assets/icons/feedback_icon.png', navegacaoTela, false, true),
+            _buildCard(
+                context,
+                'FeedBack',
+                tipoUsuario,
+                'assets/icons/feedback_icon.png',
+                navegacaoTela,
+                false,
+                true,
+                false),
             const Padding(
               padding: EdgeInsets.only(
                 right: 15,
@@ -401,7 +422,8 @@ class _HomePageState extends State<HomePage> {
       String imageButton,
       String nomeTela,
       bool stateAlimentacao,
-      bool stateFeedback) {
+      bool stateFeedback,
+      bool statePets) {
     return SizedBox(
       width: 110,
       height: 110,
@@ -413,6 +435,7 @@ class _HomePageState extends State<HomePage> {
                 'tipoUsuario': tipoUsuario,
                 'stateAlimentacao': stateAlimentacao,
                 'stateFeedback': stateFeedback,
+                'statePets': statePets,
               })
             },
             child: Container(

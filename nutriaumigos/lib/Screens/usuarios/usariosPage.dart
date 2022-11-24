@@ -17,10 +17,12 @@ class UsuariosPage extends StatefulWidget {
       {super.key,
       required this.tipoUsuario,
       required this.stateAlimentacao,
-      required this.stateFeedback});
+      required this.stateFeedback,
+      required this.statePets});
   final tipoUsuario;
   final stateAlimentacao;
   final stateFeedback;
+  final statePets;
   @override
   State<UsuariosPage> createState() => _UsuariosPageState();
 }
@@ -372,24 +374,28 @@ class _UsuariosPageState extends State<UsuariosPage> {
           if (widget.tipoUsuario == 'Clientes' && allData.isEmpty) {
             dialog(idUsuario, idItem, context);
           } else if (widget.tipoUsuario == 'Clientes' && allData.isNotEmpty) {
-            Navigator.pushNamed(context, '/chat', arguments: idItem);
-            // ScaffoldMessenger.of(context).showSnackBar(
-            //   const SnackBar(
-            //     content: Text("Nutricionista já vinculado!"),
-            //     duration: Duration(
-            //       seconds: 2,
-            //     ),
-            //   ),
-            // );
+            Navigator.pushNamed(context, '/chat', arguments: {
+              'idItem': idItem,
+              'tipoUsuario': widget.tipoUsuario
+            });
+          } else if (widget.tipoUsuario != 'Clientes' &&
+              allData.isNotEmpty &&
+              widget.statePets) {
+            Navigator.pushNamed(context, '/chat', arguments: {
+              'idItem': idItem,
+              'tipoUsuario': widget.tipoUsuario
+            });
+          } else if (widget.tipoUsuario != 'Clientes' &&
+              allData.isNotEmpty &&
+              !widget.statePets) {
+            Navigator.pushNamed(context, 'listaAnimais', arguments: {
+              'tipoUsuario': widget.tipoUsuario,
+              'idDono': idItem,
+              'stateAlimentacao': widget.stateAlimentacao,
+              'stateFeedback': widget.stateFeedback,
+            });
           } else {
-            Navigator.pushNamed(context, '/chat', arguments: idItem);
-            // Navigator.pushNamed(context, 'listaAnimais', arguments: {
-            //   'tipoUsuario': widget.tipoUsuario,
-            //   'idDono': idItem,
-            //   'stateAlimentacao': widget.stateAlimentacao,
-            //   'stateFeedback': widget.stateFeedback,
-            // });
-            //Navigator.pop(context);
+            Navigator.pop(context);
           }
         },
       ),

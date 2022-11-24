@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'database.dart';
 
-class FeedbackClass{
+class FeedbackClass {
   final FirebaseAuth auth = FirebaseAuth.instance;
-  
-  Future<User> getcurrentUser() async{
+
+  Future<User> getcurrentUser() async {
     return await auth.currentUser!;
   }
 
@@ -15,6 +15,7 @@ class FeedbackClass{
       String rejeicao,
       String quantidade,
       String observacao,
+      String resposta,
       context) async {
     Map<String, dynamic> feedBackInfoMap = {
       'idCliente': auth.currentUser?.uid,
@@ -24,6 +25,7 @@ class FeedbackClass{
       'rejeicao': rejeicao,
       'quantidade': quantidade,
       'observacao': observacao,
+      'resposta': resposta,
     };
 
     DatabaseMethods().addFeedbackInfoToDB(feedBackInfoMap);
@@ -36,6 +38,7 @@ class FeedbackClass{
       String rejeicao,
       String quantidade,
       String observacao,
+      String resposta,
       idFeedback,
       context) async {
     Map<String, dynamic> feedBackInfoMap = {
@@ -46,6 +49,7 @@ class FeedbackClass{
       'rejeicao': rejeicao,
       'quantidade': quantidade,
       'observacao': observacao,
+      'resposta': resposta,
     };
 
     DatabaseMethods().updateFeedbackInfoToDB(feedBackInfoMap, idFeedback);
@@ -53,23 +57,6 @@ class FeedbackClass{
 
   Future<void> deleteFeedback(idFeedback) async {
     await DatabaseMethods().deleteFeedbackInfoToDB(idFeedback);
-  }
-
-  Future<void> createReply(
-      String idPet,
-      String idAlimento,
-      String idFeedback,
-      String reply,
-      context) async {
-    Map<String, dynamic> replyInfoMap = {
-      'idCliente': auth.currentUser?.uid,
-      'idPet': idPet,
-      'idAlimento': idAlimento,
-      'idFeedback': idFeedback,
-      'reply': reply,
-    };
-
-    DatabaseMethods().addReplyInfoToDB(replyInfoMap);
   }
 
   Future<void> logout() async {

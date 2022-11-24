@@ -33,6 +33,7 @@ var txtAvaliacao = TextEditingController();
 var txtRejeicao = TextEditingController();
 var txtQuantidade = TextEditingController();
 var txtObservacao = TextEditingController();
+var txtResposta = TextEditingController();
 
 final _formKey = GlobalKey<FormState>();
 
@@ -46,8 +47,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   @override
   Widget build(BuildContext context) {
-    var idFeedback;
-    var idTeste;
     if (widget.idFeedback != null && widget.idFeedback != '') {
       getFeedbackById(widget.idFeedback);
     }
@@ -249,57 +248,90 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 ),
               ),
               const SizedBox(
-                height: 40,
+                height: 10,
               ),
-              if (widget.tipoUsuario == 'Clientes')
-                Container(
-                  height: 60,
-                  alignment: Alignment.centerLeft,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      stops: [0.3, 1],
-                      colors: [
-                        Color.fromARGB(255, 238, 214, 3),
-                        Color.fromARGB(255, 247, 225, 32),
-                      ],
-                    ),
+              TextFormField(
+                controller: txtResposta,
+                autofocus: true,
+                enabled: widget.tipoUsuario != 'Clientes',
+                decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  isDense: true,
+                  contentPadding: EdgeInsets.all(20),
+                  border: UnderlineInputBorder(
                     borderRadius: BorderRadius.all(
-                      Radius.circular(5),
+                      Radius.circular(10.0),
+                    ),
+                    borderSide: BorderSide(
+                      width: 0,
+                      style: BorderStyle.none,
                     ),
                   ),
-                  child: SizedBox.expand(
-                    child: TextButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          SizedBox(
-                            height: 32,
-                            width: 32,
-                            child: Image.asset("assets/icons/paw_dog.png"),
+                  labelText: "Resposta",
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 20,
+                  ),
+                ),
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              Container(
+                height: 60,
+                alignment: Alignment.centerLeft,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    stops: [0.3, 1],
+                    colors: [
+                      Color.fromARGB(255, 238, 214, 3),
+                      Color.fromARGB(255, 247, 225, 32),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5),
+                  ),
+                ),
+                child: SizedBox.expand(
+                  child: TextButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 32,
+                          width: 32,
+                          child: Image.asset("assets/icons/paw_dog.png"),
+                        ),
+                        const Text(
+                          "Cadastrar",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            wordSpacing: 10,
+                            color: Colors.black,
+                            fontSize: 20,
                           ),
-                          const Text(
-                            "Cadastrar",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              wordSpacing: 10,
-                              color: Colors.black,
-                              fontSize: 20,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                          SizedBox(
-                            height: 32,
-                            width: 32,
-                            child:
-                                Image.asset("assets/icons/icon_bone_verde.png"),
-                          ),
-                        ],
-                      ),
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          if (allFeedback.isEmpty) {
+                          textAlign: TextAlign.left,
+                        ),
+                        SizedBox(
+                          height: 32,
+                          width: 32,
+                          child:
+                              Image.asset("assets/icons/icon_bone_verde.png"),
+                        ),
+                      ],
+                    ),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        if (widget.tipoUsuario == 'Clientes') {
+                          if (widget.idFeedback == null ||
+                              widget.idFeedback == '') {
                             try {
                               await FeedbackClass()
                                   .createFeedback(
@@ -309,6 +341,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                       txtRejeicao.text,
                                       txtQuantidade.text,
                                       txtObservacao.text,
+                                      '',
                                       context)
                                   .then(
                                 (value) {
@@ -337,7 +370,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                       txtRejeicao.text,
                                       txtQuantidade.text,
                                       txtObservacao.text,
-                                      idFeedback,
+                                      txtResposta.text == ''
+                                          ? ''
+                                          : txtResposta.text,
+                                      widget.idFeedback,
                                       context)
                                   .then(
                                 (value) {
@@ -348,7 +384,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               print(e);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text("Erro ao Atualizar o Animal"),
+                                  content: Text("Erro ao Atualizar o Feedback"),
                                   duration: Duration(
                                     seconds: 2,
                                   ),
@@ -356,27 +392,60 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               );
                             }
                           }
-                          //Navigator.pop(context);
+                        } else {
+                          if (widget.idFeedback != null ||
+                              widget.idFeedback != '') {
+                            try {
+                              await FeedbackClass()
+                                  .updateFeedback(
+                                      widget.idPet,
+                                      widget.idAlimento,
+                                      txtAvaliacao.text,
+                                      txtRejeicao.text,
+                                      txtQuantidade.text,
+                                      txtObservacao.text,
+                                      txtResposta.text,
+                                      widget.idFeedback,
+                                      context)
+                                  .then(
+                                (value) {
+                                  Navigator.pop(context);
+                                },
+                              );
+                            } catch (e) {
+                              print(e);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Erro ao Atualizar o Feedback"),
+                                  duration: Duration(
+                                    seconds: 2,
+                                  ),
+                                ),
+                              );
+                            }
+                          }
                         }
-                      },
-                    ),
+
+                        //Navigator.pop(context);
+                      }
+                    },
                   ),
                 ),
-                if (widget.tipoUsuario == 'Clientes')
-                Container(
-                  height: 40,
-                  alignment: Alignment.center,
-                  child: TextButton(
-                      child: const Text(
-                        "Cancelar",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: kSecondColor),
-                      ),
-                      onPressed: () {
-                        cleanCampos();
-                        Navigator.pop(context, false);
-                      }),
-                ),
+              ),
+              Container(
+                height: 40,
+                alignment: Alignment.center,
+                child: TextButton(
+                    child: const Text(
+                      "Cancelar",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: kSecondColor),
+                    ),
+                    onPressed: () {
+                      cleanCampos();
+                      Navigator.pop(context, false);
+                    }),
+              ),
               const SizedBox(
                 height: 20,
               ),
@@ -393,6 +462,7 @@ cleanCampos() {
   txtRejeicao.text = '';
   txtQuantidade.text = '';
   txtObservacao.text = '';
+  txtResposta.text = '';
 }
 
 getFeedbackById(String idFeedback) async {
@@ -405,5 +475,6 @@ getFeedbackById(String idFeedback) async {
     txtRejeicao.text = value.get('rejeicao');
     txtQuantidade.text = value.get('quantidade');
     txtObservacao.text = value.get('observacao');
+    txtResposta.text = value.get('resposta');
   });
 }
