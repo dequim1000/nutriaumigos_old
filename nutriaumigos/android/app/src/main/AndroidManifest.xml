@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.nutriaumigos">
    <application
-        android:label="nutriaumigos"
+        android:label="NutriAumigos"
         android:name="${applicationName}"
-        android:icon="@drawable/logo">
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:exported="true"

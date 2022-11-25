@@ -46,6 +46,8 @@ dependencies:
   mask_text_input_formatter: ^2.4.0
   intl: ^0.17.0
   firebase_storage: ^10.3.11
+  flutter_native_splash: ^2.2.15
+  flutter_launcher_icons: ^0.11.0
   
 
 dev_dependencies:
@@ -61,6 +63,18 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_native_splash:
+  color: "#03989E"
+  image: "assets/images/LogoNutriAumigos.png"
+  android: true
+  ios: true
+
+flutter_icons:
+  android: "ic_launcher"
+  ios: true
+  image_path: "assets/images/LogoNutriAumigos.png"
+  remove_alpha_ios: true
 
 # The following section is specific to Flutter packages.
 flutter:
