@@ -33,8 +33,8 @@ class InputMessageWidget extends StatelessWidget {
                 filled: true,
                 fillColor: Colors.white,
                 labelText: 'Digite a Mensagem',
-                hintStyle: TextStyle(color: Colors.black),
-                labelStyle: TextStyle(color: Colors.black),
+                hintStyle: TextStyle(color: Colors.black45),
+                labelStyle: TextStyle(color: Colors.black45),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
                   borderRadius: BorderRadius.all(Radius.circular(60.0)),
@@ -58,7 +58,9 @@ class InputMessageWidget extends StatelessWidget {
               ),
               child: IconButton(
                 onPressed: () => handleSubmit(messageEditingController.text),
-                icon: const Icon(Icons.send_rounded),
+                icon: const Icon(
+                  Icons.pets,
+                ),
                 color: Colors.white,
               ),
             ),

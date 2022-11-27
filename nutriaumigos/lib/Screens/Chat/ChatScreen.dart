@@ -69,7 +69,7 @@ class _ChatScreenState extends State<ChatScreen> {
       getMenssage = chatProvider.getMessageList(idUsuario, widget.idItem);
     }
     return Scaffold(
-      backgroundColor: kPrimaryColor,
+      backgroundColor: kPrimaryLightColor,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: const Color.fromRGBO(3, 152, 158, 0.73),

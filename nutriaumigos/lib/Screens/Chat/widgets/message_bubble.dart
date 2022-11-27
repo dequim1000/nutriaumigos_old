@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nutriaumigos/constants.dart';
 
 import '../../../Models/message.dart';
 import 'message_timestamp.dart';
@@ -30,7 +31,7 @@ class MessageBubbleWidget extends StatelessWidget {
                   : const EdgeInsets.only(left: 10),
               width: 200,
               decoration: BoxDecoration(
-                color: isMe ? Colors.greenAccent : Colors.black45,
+                color: isMe ? kPrimaryColor : Colors.black45,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
@@ -40,7 +41,7 @@ class MessageBubbleWidget extends StatelessWidget {
                   Text(
                     chatMessage.message,
                     style: const TextStyle(fontSize: 16, color: Colors.white),
-                  ),
+                  )
                 ],
               ),
             ),
