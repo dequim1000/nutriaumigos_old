@@ -460,8 +460,8 @@ class _HomePageState extends State<HomePage> {
             style: const TextStyle(
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.w500,
-                color: Color.fromRGBO(196, 196, 196, 1),
-                fontSize: 16),
+                color: Colors.white,
+                fontSize: 14),
           )
         ],
       ),
